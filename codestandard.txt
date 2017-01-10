@@ -1,0 +1,44 @@
+// SPACING, LINE BREAKS AND INDENTATION //
+
+function() {
+}
+
+for (var i; i < x.length; i++) {
+}
+
+Indentation hard tabs, 4 spaces.
+
+// COMMENTS //
+
+In JavaScript, comments above code or on specific line:
+// Comment
+
+In HTML, comments above code or on specific line:
+<!— Comment —>
+
+In CSS, comments above code:
+/* Comment */
+
+// CSS STRUCTURE //
+
+If possible, use modular CSS classes:
+
+.noMargin {
+	margin: 0;
+}
+
+.floatLeft {
+	float: left;
+}
+
+Avoid using ID tags in CSS.
+
+// NAMING CONVENTIONS //
+
+JavaScript variables in camelCase.
+
+ID tags in camelCase:
+#boardGame
+
+Class tags in lower case with hyphens:
+.board-game
