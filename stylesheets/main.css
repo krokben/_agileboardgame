@@ -1,0 +1,103 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 98vh;
+}
+
+.header {
+    display: flex;
+    flex: 1;
+}
+
+.row {
+    flex: 8;
+    display: flex;
+}
+
+.footer {
+    flex: 1;
+    display: flex;
+}
+
+.item {
+    box-sizing: border-box;
+    flex: 1;
+    padding: 5px;
+}
+
+.column {
+    background: DeepSkyBlue;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.column-item {
+    flex: 1;
+}
+
+.card {
+    background: peachpuff;
+    height: 150px;
+    margin-bottom: 5px;
+}
+
+.dice-rolls {
+    background: #fff;
+    flex: 0.2;
+}
+
+.portrait {
+    flex: 0.2;
+}
+
+.bulletin-container {
+    box-sizing: border-box;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.bulletin {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 5px;
+}
+
+.mission {
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid black;
+    flex: 1;
+}
+
+.mission:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.workday {
+    flex: 4;
+}
+
+.workers {
+    display: flex;
+}
+
+.worker {
+    background: coral;
+    box-sizing: border-box;
+    border: 1px solid black;
+    flex: 2;
+}
+
+.calendar {
+    flex: 1;
+}
+
+.play-button {
+    flex: 1;
+}
