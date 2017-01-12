@@ -42,3 +42,5 @@ ID tags in camelCase:
 
 Class tags in lower case with hyphens:
 .board-game
+
+Comments and Objects must be in English
