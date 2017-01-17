@@ -1,3 +1,23 @@
+-- Adminer 4.2.5 MySQL dump
+
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
+DROP TABLE IF EXISTS `cards`;
+CREATE TABLE `cards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `index` int(11) NOT NULL,
+  `type` varchar(20) COLLATE utf8_bin NOT NULL,
+  `title` varchar(20) COLLATE utf8_bin NOT NULL,
+  `price` int(11) NOT NULL,
+  `analysis` int(11) NOT NULL,
+  `development` int(11) NOT NULL,
+  `test` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 INSERT INTO `cards` (`id`, `index`, `type`, `title`, `price`, `analysis`, `development`, `test`) VALUES
 (1,	1,	'userstory',	'us1',	100,	4,	7,	6),
 (2,	2,	'userstory',	'us2',	200,	3,	4,	7),
@@ -71,3 +91,5 @@ INSERT INTO `cards` (`id`, `index`, `type`, `title`, `price`, `analysis`, `devel
 (70,	70,	'maintenance',	'm3',	0,	3,	8,	7),
 (71,	71,	'maintenance',	'm4',	0,	2,	5,	4),
 (72,	72,	'maintenance',	'm5',	0,	5,	7,	3);
+
+-- 2017-01-17 10:34:44
