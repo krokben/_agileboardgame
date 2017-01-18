@@ -1,5 +1,8 @@
 <?php
-$db = mysqli_connect('localhost', 'root','' , 'krokben');
+header('Access-Control-Allow-Origin: http://localhost:3000', false);
+$db = mysqli_connect('localhost', 'root','' , 'agileboardgame');
+
+$method = $_SERVER['REQUEST_METHOD'];
 
 $sql = "SELECT * FROM cards";
 $result = mysqli_query($db, $sql);
@@ -29,8 +32,7 @@ function utf8_converter($array) { // Convert array to UTF8 function
     return $array;
 }
 
-// echo json_encode(utf8_converter($data));
+echo json_encode(utf8_converter($data));
 // echo json_last_error_msg();
 
-  echo "hej";
 ?>

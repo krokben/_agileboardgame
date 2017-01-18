@@ -30,7 +30,7 @@ export default class CardPool extends Component {
         $.ajax({
         	context: this, // bind this
         	method: 'GET',
-            url: 'http://localhost/php/api.php',
+            url: 'http://localhost/_agileboardgame/php/api.php',
             data: "",
             dataType: 'json',
             success: function(data) {
