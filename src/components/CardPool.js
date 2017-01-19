@@ -23,7 +23,7 @@ export default class CardPool extends Component {
 	render() {
 		return (
 			<div style={{background: 'DeepSkyBlue'}}>
-				<UserStories cards={this.state.cards} onDragStart={this.drag()} />
+				<UserStories cards={this.state.cards} drag={() => {this.drag()}} />
 				<MaintenanceCards />
 				<DefectCards />
 			</div>
@@ -59,5 +59,21 @@ export default class CardPool extends Component {
 
     drag() {
     	console.log('kör en post som ändrar hidden på nästa kort till 0')
+        $.ajax({
+            context: this, // bind this
+            method: 'POST',
+            url: 'http://localhost/_agileboardgame/php/updatehidden.php',
+            data: {
+                id: this.state.cards[1].id,
+                hidden: 0
+            },
+            dataType: 'json',
+            success: function(data) {
+                console.log(data.hidden);
+            },
+            error: function (req, status, err) {
+                console.log('Something went wrong', status, err);
+            }
+        }).done(this.loadResults); // bind this
     }
 }

@@ -45,7 +45,7 @@ export default class UserStories extends Component {
     renderUserStories() {
     	return this.props.cards.map((item) => {
     		if (item.type === 'userstory') {
-				return <div style={this.cssStyle('userStory')} key={item.id} draggable>
+				return <div style={this.cssStyle('userStory')} key={item.id} draggable onDragStart={this.props.drag}>
 							{item.title}<br />
 							Analysis: {item.analysis}<br />
 							Development: {item.development}<br />

@@ -4,7 +4,9 @@ $db = mysqli_connect('localhost', 'root','' , 'agileboardgame');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-$sql = "SELECT * FROM cards";
+$table = $_POST['table'];
+
+$sql = "UPDATE cards SET hidden=$hidden WHERE $id = $_POST['id'];";
 $result = mysqli_query($db, $sql);
 
 $data = array();
