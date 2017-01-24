@@ -14,14 +14,18 @@ export default class App extends Component {
 		return (
 			<div>
 				<Header />
-				<div style={{display: 'flex', justifyContent: 'space-between'}}>
-					<CardPool />
-					<Backlog />
-					<Analysis />
-					<Development />
-					<Test />
-					<Done />
-					<Status />
+				<div className="App_board">
+					<div style={{display: 'flex', flex: '6', justifyContent: 'space-between', width: '80vw', height: '85vh'}}>
+						<CardPool />
+						<Backlog />
+						<Analysis />
+						<Development />
+						<Test />
+						<Done />
+					</div>
+					<div style={{flex: '1'}}>
+						<Status />
+					</div>
 				</div>
 				<Footer />
 			</div>

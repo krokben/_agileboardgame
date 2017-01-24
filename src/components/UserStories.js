@@ -7,8 +7,6 @@ export default class UserStories extends Component {
 			case 'divStyle':
 				return (
 					{
-						background: '#FFDAB9',
-						width: '300px',
 						color: '#fff'
 					}
 				);
@@ -16,8 +14,7 @@ export default class UserStories extends Component {
 			case 'userStory':
 				return (
 					{
-						background: '#F74169',
-						width: '150px',
+						background: '#5D9CEC',
 						marginBottom: '15px',
 						color: '#fff'
 					}

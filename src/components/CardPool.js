@@ -22,7 +22,7 @@ export default class CardPool extends Component {
 
 	render() {
 		return (
-			<div style={{background: 'DeepSkyBlue'}}>
+			<div style={{background: '#4FC1E9', flex: '1', padding: '5px'}}>
 				<UserStories cards={this.state.cards} drag={() => {this.drag()}} />
 				<MaintenanceCards />
 				<DefectCards />
