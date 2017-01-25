@@ -6,7 +6,7 @@ import CalendarLink from './CalendarLink';
 export default class Header extends Component {
 	render() {
 		return (
-			<div style={{display: 'flex', justifyContent: 'space-between'}}>
+			<div className="Footer_container">
 				<WorkDay />
 				<Workers />
 				<CalendarLink />

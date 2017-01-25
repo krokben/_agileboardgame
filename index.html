@@ -11,6 +11,23 @@
 	Analysis
 \*--------------------------------------*/
 
+.Analysis_boardColumn {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	padding: 5px;
+}
+
+.Analysis_cardHolder {
+	background: #4FC1E9;
+	flex: 6;
+}
+
+.Analysis_diceHolder {
+	background: #fff;
+	flex: 1;
+}
+
 /*--------------------------------------*\
 	App
 \*--------------------------------------*/
@@ -20,9 +37,16 @@
 	justify-content: space-between;
 }
 
-.App_boardColumn {
+.App_mainBoard {
+	display: flex;
+	flex: 6;
+	justify-content: space-between;
+	width: 80vw;
+	height: 85vh;
+}
+
+.App_status {
 	flex: 1;
-	padding: 5px;
 }
 
 /*--------------------------------------*\
@@ -33,13 +57,39 @@
 	CalendarLink
 \*--------------------------------------*/
 
+.CalendarLink_container {
+	background: #48CFAD;
+	height: 400px;
+	margin-right: -120px;
+	position: absolute;
+	right: 0;
+	transform: rotate(-30deg);
+	width: 200px;
+}
+
+.CalendarLink_icon {
+	font-size: 100px;
+	margin-left: 5px;
+	margin-top: 0;
+}
+
 /*--------------------------------------*\
 	CardPool
 \*--------------------------------------*/
 
+.CardPool_container {
+	background: #EC87C0;
+	flex: 1;
+	padding: 5px;
+}
+
 /*--------------------------------------*\
 	DefectCards
 \*--------------------------------------*/
+
+.DefectCards_container {
+	background: #FFDAB9;
+}
 
 /*--------------------------------------*\
 	Development
@@ -52,6 +102,11 @@
 /*--------------------------------------*\
 	Footer
 \*--------------------------------------*/
+
+.Footer_container {
+	display: flex;
+	justify-content: space-between;
+}
 
 /*--------------------------------------*\
 	Header
@@ -76,6 +131,12 @@
 /*--------------------------------------*\
 	UserStories
 \*--------------------------------------*/
+
+.UserStories_userStory {
+	background: #5D9CEC;
+	color: #fff;
+	margin-bottom: 15px;
+}
 
 /*--------------------------------------*\
 	WorkDay

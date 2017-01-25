@@ -15,7 +15,7 @@ export default class App extends Component {
 			<div>
 				<Header />
 				<div className="App_board">
-					<div style={{display: 'flex', flex: '6', justifyContent: 'space-between', width: '80vw', height: '85vh'}}>
+					<div className="App_mainBoard">
 						<CardPool />
 						<Backlog />
 						<Analysis />
@@ -23,7 +23,7 @@ export default class App extends Component {
 						<Test />
 						<Done />
 					</div>
-					<div style={{flex: '1'}}>
+					<div className="App_status">
 						<Status />
 					</div>
 				</div>

@@ -5,7 +5,7 @@ import PlayButton from './PlayButton';
 export default class Footer extends Component {
 	render() {
 		return (
-			<div style={{display: 'flex', justifyContent: 'space-between'}}>
+			<div className="Footer_container">
 				<Actions />
 				<div>Logo</div>
 				<PlayButton />
