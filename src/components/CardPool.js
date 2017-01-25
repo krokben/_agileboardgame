@@ -23,7 +23,7 @@ export default class CardPool extends Component {
 	render() {
 		return (
 			<div className="CardPool_container">
-				<UserStories cards={this.state.cards} drag={() => {this.drag()}} />
+				<UserStories cards={this.state.cards} drag={(id) => {this.drag(id)}} />
 				<MaintenanceCards />
 				<DefectCards />
 			</div>
@@ -52,14 +52,17 @@ export default class CardPool extends Component {
             });
     }
 
-    drag() {
-        console.log(this);
-        // axios({
-        //     method: 'put',
-        //     url: '/user/12345',
-        //     data: {
-        //         id: 
-        //     }
-        // });
+    drag(id) {
+        const idNumber = Number(id) + 1;
+        axios({
+            method: 'put',
+            url: 'http://localhost/_agileboardgame/api/?/card/' + idNumber,
+            data: {
+                hidden: 0
+            }
+        })
+        .catch(function(error) {
+                console.log(error);
+        });
     }
 }

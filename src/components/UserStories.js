@@ -13,7 +13,7 @@ export default class UserStories extends Component {
     	return this.props.cards.map((item) => {
     		if (item.type === 'userstory') {
 				return (
-					<div className="UserStories_userStory" key={item.id} draggable onDragStart={this.props.drag}>
+					<div className="UserStories_userStory" key={item.id} draggable onDragStart={(evt) => this.handleDrag(item.id, evt)}>
 						{item.title}<br />
 						Analysis: {item.analysis}<br />
 						Development: {item.development}<br />
@@ -24,5 +24,10 @@ export default class UserStories extends Component {
     		}
     		return false;
     	});
+    }
+
+	handleDrag(id, evt) {
+		evt.preventDefault();
+		this.props.drag(id);
     }
 }
