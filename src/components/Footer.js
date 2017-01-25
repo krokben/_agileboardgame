@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Actions from './actions';
+import Actions from './Actions';
 import PlayButton from './PlayButton';
 
 export default class Footer extends Component {

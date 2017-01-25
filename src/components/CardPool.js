@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import $ from 'jquery';
+import axios from 'axios';
 import UserStories from './UserStories';
 import MaintenanceCards from './MaintenanceCards';
 import DefectCards from './DefectCards';
@@ -31,49 +31,35 @@ export default class CardPool extends Component {
 	}
 
 	fetchData() {
-        $.ajax({
-        	context: this, // bind this
-        	method: 'GET',
-            url: 'http://localhost/_agileboardgame/php/api.php',
-            data: "",
-            dataType: 'json',
-            success: function(data) {
-            	data.map((item) => this.state.cards.push({
-            		id: item.id,
-            		index: item.index,
-            		type: item.type,
-            		title: item.title,
-            		price: item.price,
-            		analysis: item.analysis,
-            		development: item.development,
-            		test: item.test,
-            		hidden: item.hidden
-            	}));
-            	this.setState({cards: this.state.cards});
-            },
-            error: function (req, status, err) {
-                console.log('Something went wrong', status, err);
-            }
-        }).done(this.loadResults); // bind this
+        const that = this;
+        axios.get('http://localhost/_agileboardgame/api/?/card')
+            .then(function(response) {
+                response.data.cards.map((item) => that.state.cards.push({
+                    id: item.id,
+                    index: item.index,
+                    type: item.type,
+                    title: item.title,
+                    price: item.price,
+                    analysis: item.analysis,
+                    development: item.development,
+                    test: item.test,
+                    hidden: item.hidden
+                }));
+                that.setState({cards: that.state.cards});
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
     }
 
     drag() {
-    	console.log('kör en post som ändrar hidden på nästa kort till 0')
-        $.ajax({
-            context: this, // bind this
-            method: 'POST',
-            url: 'http://localhost/_agileboardgame/php/updatehidden.php',
-            data: {
-                id: this.state.cards[1].id,
-                hidden: 0
-            },
-            dataType: 'json',
-            success: function(data) {
-                console.log(data.hidden);
-            },
-            error: function (req, status, err) {
-                console.log('Something went wrong', status, err);
-            }
-        }).done(this.loadResults); // bind this
+        console.log(this);
+        // axios({
+        //     method: 'put',
+        //     url: '/user/12345',
+        //     data: {
+        //         id: 
+        //     }
+        // });
     }
 }

@@ -1,0 +1,48 @@
+<!--
+	Den här filen användet JS för att koppla upp till vårt API och visa att det fungerar
+-->
+<!doctype html>
+<html>
+<head>
+	<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+	<script>
+		$(function(){
+
+			$("#user_id").on('change', function(e){
+				$.ajax({
+					url: "./?/user/"+e.target.value,
+					data: "",
+					type: "GET",
+					dataType: 'json',
+					success: function(data){
+						console.log(data);
+						$("#user").html(data.username);
+					}
+				});
+			});
+
+			$("#user_delete").on('change', function(e){
+				$.ajax({
+					url: "./?/user/"+e.target.value,
+					data: "",
+					type: "DELETE",
+					dataType: 'json',
+					success: function(data){
+						console.log(data);
+						$("#user").html("Done!");
+					}
+				});
+			});
+
+		});
+	</script>
+</head>
+<body>
+
+<input type='text' id='user_id'>
+<input type='text' id='user_delete'>
+
+<div id='user'></div>
+
+</body>
+</html>
