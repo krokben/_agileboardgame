@@ -5,7 +5,7 @@
 
 class API{
 
-	private	$method, // GET, POSt, PUT, DELETE ...
+	private	$method, // GET, POST, PUT, DELETE ...
 			$input, // Data sent with request
 			$resource, // REST Resource to call
 			$resource_id, // Id of the resource

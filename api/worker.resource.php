@@ -3,7 +3,7 @@
 # Den här klassen ska köras om vi anropat resursen user i vårt API genom /?/user
 # 
 
-class _card extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
+class _worker extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
 
 	# Här deklareras de variabler/members som objektet ska ha
 	public $id, $index, $type, $title, $price, $analysis, $development, $test, $hidden;
@@ -38,35 +38,35 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 					echo "posts!";
 				break;
 			default: // Om det inte är en collection, eller om den inte är definierad ovan
-				$this->getCardData($input, $db);
+				$this->getWorkerData($input, $db);
 		}
 	}
 
 	# Den här funktionen är privat och kan bara köras inom objektet, inte utanför
-	private function getCardData($input, $db){
+	private function getWorkerData($input, $db){
 		if($this->id){ // Om vår URL innehåller ett ID på resursen hämtas bara den usern
 			$query = "
 				SELECT * 
-				FROM cards 
+				FROM workers 
 				WHERE id = $this->id
 			";
 
 			$result = mysqli_query($db, $query);
 			$user = mysqli_fetch_assoc($result);
 
-			$this->title = $card['title'];
-			$this->price = $card['price'];
+			$this->title = $worker['title'];
+			$this->price = $worker['price'];
 		}else{ // om vår URL inte innehåller ett ID hämtas alla users
 			$query = "
 				SELECT * 
-				FROM cards
+				FROM workers
 			";
 			$result = mysqli_query($db, $query);
 			$data = [];
 			while($row = mysqli_fetch_assoc($result)){
 				$data[] = $row;
 			}
-			$this->cards = $data;
+			$this->workers = $data;
 		}
 	}
 
@@ -77,7 +77,7 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 		$price = mysqli_real_escape_string($db, $input['price']);
 
 		$query = "
-			INSERT INTO cards 
+			INSERT INTO workers 
 			(title, price) 
 			VALUES ('$title','$price')
 		";
@@ -93,7 +93,7 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 			$hidden = mysqli_real_escape_string($db, $input['hidden']);
 
 			$query = "
-				UPDATE cards 
+				UPDATE workers 
 				SET hidden = '$hidden'
 				WHERE id = $this->id
 			";
@@ -109,7 +109,7 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 		# I denna funktion tar vi bort en specifik user med det ID vi fått med
 		if($this->id){
 			$query = "
-				DELETE FROM cards 
+				DELETE FROM workers 
 				WHERE id = $this->id
 			";
 
@@ -122,13 +122,13 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 	function RESETGAME($input, $db){
 		# I denna funktion truncatar vi tabellen och laddar en default-tabellen
 		$query = "
-			TRUNCATE TABLE cards
+			TRUNCATE TABLE workers
 		";
 
 		mysqli_query($db, $query);
 		$query2 = "
-			INSERT INTO cards
-			SELECT * FROM default_cards
+			INSERT INTO workers
+			SELECT * FROM default_workers
 		";
 
 		mysqli_query($db, $query2);
