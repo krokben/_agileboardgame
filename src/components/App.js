@@ -19,7 +19,7 @@ export default class App extends Component {
 
 		this.state = {
 			cards,
-            workers
+            workers,
 		};
 	}
 
@@ -33,7 +33,7 @@ export default class App extends Component {
 				<Header workers={this.state.workers} drag={this.drag} />
 				<div className="App_board">
 					<div className="App_mainBoard">
-						<CardPool cards={this.state.cards} drag={this.drag} />
+						<CardPool cards={this.state.cards} drag={this.drag} choose={this.choose.bind(this)} />
 						<Backlog setHidden={(id) => this.setHidden(id)} allowDrop={this.allowDrop} drop={this.drop} />
 						<Analysis />
 						<Development />
@@ -62,7 +62,8 @@ export default class App extends Component {
                     analysis: item.analysis,
                     development: item.development,
                     test: item.test,
-                    hidden: item.hidden
+                    hidden: item.hidden,
+                    location: item.location
                 }));
                 that.setState({cards: that.state.cards});
             })
@@ -103,6 +104,42 @@ export default class App extends Component {
         stateCopy.cards[nextCardId - 1].hidden = 0;
         this.setState(stateCopy);
     }
+
+    choose(el, evt) {
+        const id = evt.target.getAttribute('data-key');
+        const thisLocation = this.state.cards[id - 1].location;
+        let nextLocation;
+        switch(thisLocation) {
+            case 'cardpool':
+                nextLocation = 'backlog';
+                break;
+            case 'backlog':
+                nextLocation = 'analysis';
+                break;
+            case 'analysis':
+                nextLocation = 'development';
+                break;
+            case 'development':
+                nextLocation = 'test';
+                break;
+            case 'test':
+                nextLocation = 'done';
+                break;
+            default:
+                console.log('done');
+        }
+        axios({
+            method: 'put',
+            url: 'http://localhost/_agileboardgame/api/?/card/' + id,
+            data: {
+                location: nextLocation
+            }
+        });
+        const stateCopy = Object.assign({}, this.state);
+        stateCopy.cards[id - 1].location = nextLocation;
+        this.setState(stateCopy);
+    }
+
     drag(id, evt) {
         console.log(evt.target.id);
         evt.dataTransfer.setData('text', evt.target.id);

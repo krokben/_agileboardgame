@@ -11,6 +11,8 @@ header('Content-Type: application/json');
 
 # En vanlig uppkoppling till databasen samt att vi sätter uppkopplingen till uft8
 $db = mysqli_connect("localhost","root","","agileboardgame");
+// $db = mysqli_connect('agile-219508.mysql.binero.se', '219508_zv24208','scrumscrum' , '219508-agile');
+// $db = mysqli_connect('krokben-219508.mysql.binero.se', '219508_aq20643','crookbone' , '219508-krokben');
 mysqli_query($db, "SET NAMES utf8");
 
 # Här inkluderar vi två filer som innehåller två classer som behövs för vårt API

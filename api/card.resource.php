@@ -91,14 +91,25 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 		# Observera att allt uppdaterad varje gång och att denna borde byggas om så att bara det vi skickar med uppdateras
 		if($this->id){
 			$hidden = mysqli_real_escape_string($db, $input['hidden']);
+			$location = mysqli_real_escape_string($db, $input['location']);
 
-			$query = "
-				UPDATE cards 
-				SET hidden = '$hidden'
-				WHERE id = $this->id
-			";
+			if(isset($hidden)) {
+				$query = "
+					UPDATE cards 
+					SET hidden = '$hidden'
+					WHERE id = $this->id
+				";
 
-			mysqli_query($db, $query);
+				mysqli_query($db, $query);
+			} else {
+				$query = "
+					UPDATE cards 
+					SET location = '$location'
+					WHERE id = $this->id
+				";
+
+				mysqli_query($db, $query);
+			}
 		}else{
 			echo "No resource given";
 		}
