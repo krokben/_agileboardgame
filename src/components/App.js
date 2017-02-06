@@ -172,6 +172,9 @@ export default class App extends Component {
             const stateCopy = Object.assign({}, this.state);
             stateCopy.cards[card.id - 1].analysis = result;
             this.setState(stateCopy);
+
+            return false;
+            // add axios here to change score
         });
     }
 }
