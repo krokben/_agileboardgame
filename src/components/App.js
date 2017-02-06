@@ -20,7 +20,12 @@ export default class App extends Component {
 		this.state = {
 			cards,
             workers,
-            chosenWorker: 0
+            diceScore: {
+                analysis: 0,
+                development: 0,
+                test: 0,
+                done: 0
+            }
 		};
 	}
 
@@ -45,7 +50,7 @@ export default class App extends Component {
 						<Status />
 					</div>
 				</div>
-				<Footer />
+				<Footer rollDice={this.rollDice.bind(this)} />
 			</div>
 		);
 	}
@@ -63,7 +68,6 @@ export default class App extends Component {
                     analysis: item.analysis,
                     development: item.development,
                     test: item.test,
-                    hidden: item.hidden,
                     location: item.location
                 }));
                 that.setState({cards: that.state.cards});
@@ -135,7 +139,6 @@ export default class App extends Component {
     }
 
     chooseWorker(worker) {
-        let counter = 0;
         Array.from(worker.parentElement.children).map((child) => { // map through all siblings and untoggle class 'active'
             if (child.id !== worker.id) { // choose only siblings
                 if (child.classList.contains('Workers_active')){
@@ -146,5 +149,29 @@ export default class App extends Component {
         });
 
         worker.classList.toggle('Workers_active'); // toggle class 'active'
+    }
+
+    rollDice() {
+        const result = Math.floor((Math.random() * 6) + 1);
+        console.log('dice roll: ' + result);
+        this.subtractScore(result);
+    }
+
+    subtractScore(score) {
+        const analysisCards = this.state.cards.filter((card) => card.location === 'analysis');
+        let diceScore = score;
+        analysisCards.map((card) => {
+            const initialPoints = card.analysis;
+            const initialScore = diceScore;
+            let result = card.analysis - diceScore;
+            if (result <= 0) {
+                diceScore = initialScore - initialPoints; // turn negative number into positive on score
+                result = 0; // make card.analysis 0
+                console.log('score: ' + diceScore);
+            }
+            const stateCopy = Object.assign({}, this.state);
+            stateCopy.cards[card.id - 1].analysis = result;
+            this.setState(stateCopy);
+        });
     }
 }
