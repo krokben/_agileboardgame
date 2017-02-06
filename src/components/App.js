@@ -36,7 +36,7 @@ export default class App extends Component {
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} />
 						<Backlog cards={this.state.cards} choose={this.choose.bind(this)} />
-						<Analysis />
+						<Analysis cards={this.state.cards} choose={this.choose.bind(this)} />
 						<Development />
 						<Test />
 						<Done />
@@ -90,6 +90,7 @@ export default class App extends Component {
         const id = evt.target.getAttribute('data-key');
         const thisLocation = this.state.cards[id - 1].location;
         let nextLocation;
+        console.log(thisLocation);
         switch(thisLocation) {
             case 'cardpool':
                 nextLocation = 'backlog';
@@ -127,7 +128,9 @@ export default class App extends Component {
 
         const stateCopy = Object.assign({}, this.state);
         stateCopy.cards[id - 1].location = nextLocation; // set this card's location to next location
-        stateCopy.cards[id].location = thisLocation; // set next card's location to current location
+        if (thisLocation === 'cardpool') {
+            stateCopy.cards[id].location = thisLocation; // set next card's location to cardpool
+        }
         this.setState(stateCopy);
     }
 
