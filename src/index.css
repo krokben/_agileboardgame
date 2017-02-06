@@ -31,6 +31,7 @@ body {
 .Analysis_cardHolder {
 	background: #4FC1E9;
 	flex: 6;
+	overflow-y: auto;
 }
 
 .Analysis_diceHolder {
@@ -155,6 +156,10 @@ body {
 /*--------------------------------------*\
 	Workers
 \*--------------------------------------*/
+
+.Workers_active {
+	border: 1px solid red;
+}
 
 .Workers_worker {
 	animation: Workers_pulse 1s ease-out;

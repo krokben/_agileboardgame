@@ -11,9 +11,9 @@ export default class DefectCards extends Component {
 
     renderDefectCards() {
     	return this.props.cards.map((item) => {
-    		if (item.type === 'defect') {
+    		if (item.type === 'defect' && item.location === this.props.location) {
 				return (
-					<div className="UserStories_userStory" key={item.id} data-key={item.id} id={item.title} data-hidden={item.hidden} onClick={(evt) => this.props.choose(this, evt)}>
+					<div className="UserStories_userStory" key={item.id} data-key={item.id} id={item.title} onClick={(evt) => this.props.choose(this, evt)}>
 						{item.title}<br />
 						Analysis: {item.analysis}<br />
 						Development: {item.development}<br />

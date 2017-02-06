@@ -11,9 +11,9 @@ export default class MaintenanceCards extends Component {
 
     renderMaintenanceCards() {
     	return this.props.cards.map((item) => {
-    		if (item.type === 'maintenance') {
+    		if (item.type === 'maintenance' && item.location === this.props.location) {
 				return (
-					<div className="UserStories_userStory" key={item.id} data-key={item.id} id={item.title} draggable onDragStart={(evt) => this.drag(item.id, evt)} data-hidden={item.hidden}>
+					<div className="UserStories_userStory" key={item.id} data-key={item.id} id={item.title} onClick={(evt) => this.props.choose(this, evt)}>
 						{item.title}<br />
 						Analysis: {item.analysis}<br />
 						Development: {item.development}<br />
@@ -23,10 +23,5 @@ export default class MaintenanceCards extends Component {
     		}
     		return false;
     	});
-    }
-
-	drag(id, evt) {
-		evt.dataTransfer.setData('text', evt.target.id);
-		// this.props.drag(id);
     }
 }

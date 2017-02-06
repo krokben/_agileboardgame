@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
+import UserStories from './UserStories';
+import MaintenanceCards from './MaintenanceCards';
+import DefectCards from './DefectCards';
 
 export default class Backlog extends Component {
 	render() {
 		return (
 			<div className="Analysis_boardColumn">
-				<div className="Analysis_diceHolder" onDrop={(evt) => this.props.drop(evt)} onDragOver={(evt) => this.props.allowDrop(evt)}>
+				<div className="Analysis_diceHolder">
 					Dices
 				</div>
-				<div className="Analysis_cardHolder" onDrop={(evt) => this.props.drop(evt)} onDragOver={(evt) => this.props.allowDrop(evt)}>
+				<div className="Analysis_cardHolder">
 					Backlog
+					<UserStories location="backlog" cards={this.props.cards} choose={this.choose} />
+					<MaintenanceCards location="backlog" cards={this.props.cards} choose={this.choose} />
+					<DefectCards location="backlog" cards={this.props.cards} choose={this.choose} />
 				</div>
 			</div>
 		);

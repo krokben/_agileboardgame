@@ -90,18 +90,9 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 		# I denna funktion uppdateras en specifik user med den input vi fått
 		# Observera att allt uppdaterad varje gång och att denna borde byggas om så att bara det vi skickar med uppdateras
 		if($this->id){
-			$hidden = mysqli_real_escape_string($db, $input['hidden']);
 			$location = mysqli_real_escape_string($db, $input['location']);
 
-			if(isset($hidden)) {
-				$query = "
-					UPDATE cards 
-					SET hidden = '$hidden'
-					WHERE id = $this->id
-				";
-
-				mysqli_query($db, $query);
-			} else {
+			if(isset($location)) {
 				$query = "
 					UPDATE cards 
 					SET location = '$location'

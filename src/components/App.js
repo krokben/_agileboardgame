@@ -20,6 +20,7 @@ export default class App extends Component {
 		this.state = {
 			cards,
             workers,
+            chosenWorker: 0
 		};
 	}
 
@@ -30,11 +31,11 @@ export default class App extends Component {
 	render() {
 		return (
 			<div>
-				<Header workers={this.state.workers} drag={this.drag} />
+				<Header workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 				<div className="App_board">
 					<div className="App_mainBoard">
-						<CardPool cards={this.state.cards} drag={this.drag} choose={this.choose.bind(this)} />
-						<Backlog setHidden={(id) => this.setHidden(id)} allowDrop={this.allowDrop} drop={this.drop} />
+						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} />
+						<Backlog cards={this.state.cards} choose={this.choose.bind(this)} />
 						<Analysis />
 						<Development />
 						<Test />
@@ -74,6 +75,7 @@ export default class App extends Component {
             .then(function(response) {
                 response.data.workers.map((item) => that.state.workers.push({
                     id: item.id,
+                    index: item.index,
                     type: item.type,
                     sick: item.sick
                 }));
@@ -82,27 +84,6 @@ export default class App extends Component {
             .catch(function(error) {
                 console.log(error);
             });
-    }
-    setHidden(id) {
-        const nextCardId = Number(id) + 1;
-        console.log(nextCardId);
-        axios({
-            method: 'put',
-            url: 'http://localhost/_agileboardgame/api/?/card/' + nextCardId,
-            data: {
-                hidden: 0
-            }
-        })
-        .then(function(response) {
-            // console.log(response);
-        })
-        .catch(function(error) {
-                console.log(error);
-        });
-
-        const stateCopy = Object.assign({}, this.state);
-        stateCopy.cards[nextCardId - 1].hidden = 0;
-        this.setState(stateCopy);
     }
 
     choose(el, evt) {
@@ -134,26 +115,33 @@ export default class App extends Component {
             data: {
                 location: nextLocation
             }
+        })
+        .then(function(response) {
+            console.log(response); // Doesn't work
+        })
+        .catch(function(error) {
+            console.log(error);
         });
+
+        // add axios here to change next card's location as well
+
         const stateCopy = Object.assign({}, this.state);
-        stateCopy.cards[id - 1].location = nextLocation;
+        stateCopy.cards[id - 1].location = nextLocation; // set this card's location to next location
+        stateCopy.cards[id].location = thisLocation; // set next card's location to current location
         this.setState(stateCopy);
     }
 
-    drag(id, evt) {
-        console.log(evt.target.id);
-        evt.dataTransfer.setData('text', evt.target.id);
-    }
-    allowDrop(evt) {
-        evt.preventDefault();
-    }
+    chooseWorker(worker) {
+        let counter = 0;
+        Array.from(worker.parentElement.children).map((child) => { // map through all siblings and untoggle class 'active'
+            if (child.id !== worker.id) { // choose only siblings
+                if (child.classList.contains('Workers_active')){
+                    child.classList.toggle('Workers_active');
+                }
+            }
+            return false;
+        });
 
-    drop(evt) {
-        evt.preventDefault();
-        const data = evt.dataTransfer.getData('text'); // what to append
-        const droppedElement = document.getElementById(data);
-        const id = droppedElement.getAttribute('data-key'); // get key corresponding to id in database
-        evt.target.appendChild(droppedElement); // append card to column
-        this.setHidden(id); // send id to ajax call
+        worker.classList.toggle('Workers_active'); // toggle class 'active'
     }
 }
