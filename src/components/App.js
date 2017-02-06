@@ -39,10 +39,10 @@ export default class App extends Component {
 				<Header workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 				<div className="App_board">
 					<div className="App_mainBoard">
-						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} />
-						<Backlog cards={this.state.cards} choose={this.choose.bind(this)} />
-						<Analysis cards={this.state.cards} choose={this.choose.bind(this)} />
-						<Development />
+						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Backlog cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Analysis cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Development placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 						<Test />
 						<Done />
 					</div>
@@ -81,6 +81,7 @@ export default class App extends Component {
                     id: item.id,
                     index: item.index,
                     type: item.type,
+                    location: item.location,
                     sick: item.sick
                 }));
                 that.setState({workers: that.state.workers});
@@ -139,16 +140,39 @@ export default class App extends Component {
     }
 
     chooseWorker(worker) {
-        Array.from(worker.parentElement.children).map((child) => { // map through all siblings and untoggle class 'active'
+        if (worker.classList.contains('Workers_active')) {
+            worker.classList.toggle('Workers_active'); // toggle class 'active'
+            const stateCopy = Object.assign({}, this.state);
+            stateCopy.workers[worker.id - 1].active = false;
+            this.setState(stateCopy);
+        } else {
+            Array.from(worker.parentElement.children).map((child) => { // map through all siblings and untoggle class 'active'
             if (child.id !== worker.id) { // choose only siblings
                 if (child.classList.contains('Workers_active')){
                     child.classList.toggle('Workers_active');
+                    const stateCopy = Object.assign({}, this.state);
+                    stateCopy.workers[child.id - 1].active = false;
+                    this.setState(stateCopy);
                 }
             }
             return false;
         });
 
         worker.classList.toggle('Workers_active'); // toggle class 'active'
+        const stateCopy = Object.assign({}, this.state);
+        stateCopy.workers[worker.id - 1].active = true;
+        this.setState(stateCopy);
+        }
+    }
+
+    placeWorker(location) {
+        const activeWorker = this.state.workers.filter((worker) => worker.active)[0].id - 1;
+        const stateCopy = Object.assign({}, this.state);
+        stateCopy.workers[activeWorker].location = location; // change location
+        stateCopy.workers[activeWorker].active = false; // change to inactive
+        this.setState(stateCopy);
+
+        // add axios here to change location of worker (or maybe not, location doesn't have to be in the database)
     }
 
     rollDice() {

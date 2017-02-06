@@ -11,15 +11,18 @@ export default class Workers extends Component {
 
 	renderWorkers() {
 		return this.props.workers.map((item) => {
-			return (
-				<div
-					className="Workers_worker"
-					key={item.id}
-					id={item.id}
-					onClick={() => this.props.chooseWorker(this[item.index])}
-					ref={(worker) => {this[item.index] = worker}}>
-				</div>
-			);
+			if (item.location === this.props.location) {
+				return (
+					<div
+						className="Workers_worker"
+						key={item.id}
+						id={item.id}
+						onClick={() => this.props.chooseWorker(this[item.index])}
+						ref={(worker) => {this[item.index] = worker}}>
+					</div>
+				);
+			}
+			return false;
 		});
 	}
 }
