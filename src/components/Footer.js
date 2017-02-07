@@ -8,7 +8,7 @@ export default class Footer extends Component {
 			<div className="Footer_container">
 				<Actions />
 				<div>Logo</div>
-				<PlayButton />
+				<PlayButton rollDice={this.props.rollDice} />
 			</div>
 		);
 	}

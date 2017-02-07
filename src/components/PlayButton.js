@@ -4,7 +4,7 @@ export default class PlayButton extends Component {
 	render() {
 		return (
 			<div>
-				PlayButton
+				<button onClick={this.props.rollDice}>Play!</button>
 			</div>
 		);
 	}
