@@ -21,8 +21,6 @@ export default class App extends Component {
 		this.state = {
 			cards,
             workers,
-            calendar,
-            chosenWorker: 0,
             calendar: false,
             diceScore: {
                 analysis: 0,
