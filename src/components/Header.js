@@ -11,7 +11,7 @@ export default class Header extends Component {
 				<WorkDay />
 				<button onClick={this.resetGameState}>Reset</button>
 				<Workers location="header" workers={this.props.workers} chooseWorker={this.props.chooseWorker} />
-				<CalendarLink />
+				<CalendarLink showCalendar={this.props.showCalendar} />
 			</div>
 		);
 	}

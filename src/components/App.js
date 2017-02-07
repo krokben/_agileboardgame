@@ -9,6 +9,7 @@ import Test from './Test';
 import Done from './Done';
 import Status from './Status';
 import Footer from './Footer';
+import Calendar from './Calendar';
 
 const cards = [];
 const workers = [];
@@ -20,6 +21,9 @@ export default class App extends Component {
 		this.state = {
 			cards,
             workers,
+            calendar,
+            chosenWorker: 0,
+            calendar: false,
             diceScore: {
                 analysis: 0,
                 development: 0,
@@ -36,7 +40,7 @@ export default class App extends Component {
 	render() {
 		return (
 			<div>
-				<Header workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+				<Header workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)}/>
 				<div className="App_board">
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
@@ -50,8 +54,10 @@ export default class App extends Component {
 						<Status />
 					</div>
 				</div>
+        {this.state.calendar ? <Calendar /> : null}
 				<Footer rollDice={this.rollDice.bind(this)} />
 			</div>
+
 		);
 	}
 
@@ -201,4 +207,8 @@ export default class App extends Component {
             // add axios here to change score
         });
     }
+    showCalendar() {
+        this.setState({calendar: !this.state.calendar});
+    }
 }
+
