@@ -16,9 +16,9 @@ export default class Analysis extends Component {
 				/>
 				<div className="Analysis_cardHolder">
 					Analysis
-					<UserStories location="analysis" cards={this.props.cards} choose={this.props.choose} />
-					<MaintenanceCards location="analysis" cards={this.props.cards} choose={this.props.choose} />
-					<DefectCards location="analysis" cards={this.props.cards} choose={this.props.choose} />
+					<UserStories location="analysis" cards={this.props.cards} />
+					<MaintenanceCards location="analysis" cards={this.props.cards} />
+					<DefectCards location="analysis" cards={this.props.cards} />
 				</div>
 			</div>
 		);
