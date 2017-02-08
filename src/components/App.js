@@ -95,8 +95,8 @@ export default class App extends Component {
             });
     }
 
-    choose(el, evt) {
-        const id = evt.target.getAttribute('data-key');
+    choose(card) {
+        const id = card.getAttribute('data-key');
         const thisLocation = this.state.cards[id - 1].location;
         let nextLocation;
         console.log(thisLocation);
@@ -144,39 +144,51 @@ export default class App extends Component {
     }
 
     chooseWorker(worker) {
-        if (worker.classList.contains('Workers_active')) {
-            worker.classList.toggle('Workers_active'); // toggle class 'active'
-            const stateCopy = Object.assign({}, this.state);
-            stateCopy.workers[worker.id - 1].active = false;
-            this.setState(stateCopy);
-        } else {
-            Array.from(worker.parentElement.children).map((child) => { // map through all siblings and untoggle class 'active'
-            if (child.id !== worker.id) { // choose only siblings
-                if (child.classList.contains('Workers_active')){
-                    child.classList.toggle('Workers_active');
-                    const stateCopy = Object.assign({}, this.state);
-                    stateCopy.workers[child.id - 1].active = false;
-                    this.setState(stateCopy);
+        console.log(worker);
+        let workerState = this.state.workers[worker.id - 1];
+        if (workerState.location === 'header') {
+            if (worker.classList.contains('Workers_active')) {
+                worker.classList.toggle('Workers_active'); // toggle class 'active'
+                const stateCopy = Object.assign({}, this.state);
+                stateCopy.workers[worker.id - 1].active = false;
+                this.setState(stateCopy);
+            } else {
+                Array.from(worker.parentElement.children).map((child) => { // map through all siblings and untoggle class 'active'
+                if (child.id !== worker.id) { // choose only siblings
+                    if (child.classList.contains('Workers_active')){
+                        child.classList.toggle('Workers_active');
+                        const stateCopy = Object.assign({}, this.state);
+                        stateCopy.workers[child.id - 1].active = false;
+                        this.setState(stateCopy);
+                    }
                 }
-            }
-            return false;
-        });
+                return false;
+                });
 
-        worker.classList.toggle('Workers_active'); // toggle class 'active'
-        const stateCopy = Object.assign({}, this.state);
-        stateCopy.workers[worker.id - 1].active = true;
-        this.setState(stateCopy);
+                worker.classList.toggle('Workers_active'); // toggle class 'active'
+                const stateCopy = Object.assign({}, this.state);
+                stateCopy.workers[worker.id - 1].active = true;
+                this.setState(stateCopy);
+            }
+        } else {
+            workerState.location = 'header';
+            const stateCopy = Object.assign({}, this.state);
+            stateCopy.workers[worker.id - 1].location = 'header'; // change location
+            this.setState(stateCopy);
         }
     }
 
     placeWorker(location) {
-        const activeWorker = this.state.workers.filter((worker) => worker.active)[0].id - 1;
-        const stateCopy = Object.assign({}, this.state);
-        stateCopy.workers[activeWorker].location = location; // change location
-        stateCopy.workers[activeWorker].active = false; // change to inactive
-        this.setState(stateCopy);
+        const activeWorker = this.state.workers.filter((worker) => worker.active)[0]
+        if (activeWorker !== undefined) {
+            const id = activeWorker.id - 1;
+            const stateCopy = Object.assign({}, this.state);
+            stateCopy.workers[id].location = location; // change location
+            stateCopy.workers[id].active = false; // change to inactive
+            this.setState(stateCopy);
 
-        // add axios here to change location of worker (or maybe not, location doesn't have to be in the database)
+            // add axios here to change location of worker (or maybe not, location doesn't have to be in the database)
+        }
     }
 
     rollDice() {

@@ -18,7 +18,9 @@ export default class Workers extends Component {
 						key={item.id}
 						id={item.id}
 						onClick={() => this.props.chooseWorker(this[item.index])}
-						ref={(worker) => {this[item.index] = worker}}>
+						ref={(worker) => {this[item.index] = worker}}
+					>
+						{item.id}
 					</div>
 				);
 			}
