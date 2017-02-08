@@ -5,7 +5,7 @@ export default class Done extends Component {
 		return (
 			<div className="Analysis_boardColumn">
 				<div className="Analysis_diceHolder">
-					Dices
+					Empty
 				</div>
 				<div className="Analysis_cardHolder">
 					Done

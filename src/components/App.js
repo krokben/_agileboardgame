@@ -43,10 +43,10 @@ export default class App extends Component {
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 						<Backlog cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Analysis cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Analysis cards={this.state.cards} choose={this.choose.bind(this)} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 						<Development placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Test />
-						<Done />
+						<Test placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Done placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 					</div>
 					<div className="App_status">
 						<Status />
@@ -99,7 +99,6 @@ export default class App extends Component {
         const id = card.getAttribute('data-key');
         const thisLocation = this.state.cards[id - 1].location;
         let nextLocation;
-        console.log(thisLocation);
         switch(thisLocation) {
             case 'cardpool':
                 nextLocation = 'backlog';
@@ -144,7 +143,6 @@ export default class App extends Component {
     }
 
     chooseWorker(worker) {
-        console.log(worker);
         let workerState = this.state.workers[worker.id - 1];
         if (workerState.location === 'header') {
             if (worker.classList.contains('Workers_active')) {
