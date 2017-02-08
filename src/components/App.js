@@ -13,21 +13,21 @@ import Calendar from './Calendar';
 
 const cards = [];
 const workers = [];
-
 export default class App extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			cards,
-            workers,
-            calendar: false,
-            diceScore: {
-                analysis: 0,
-                development: 0,
-                test: 0,
-                done: 0
-            }
+      workers,
+      calendar: false,
+      diceScore: {
+        analysis: 0,
+        development: 0,
+        test: 0,
+        done: 0
+      },
+			days: 1
 		};
 	}
 
@@ -53,7 +53,7 @@ export default class App extends Component {
 					</div>
 				</div>
         {this.state.calendar ? <Calendar /> : null}
-				<Footer rollDice={this.rollDice.bind(this)} />
+				<Footer countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} />
 			</div>
 
 		);
@@ -195,6 +195,14 @@ export default class App extends Component {
         this.subtractScore(result);
     }
 
+		countDays(){
+			const stateCopy = Object.assign({}, this.state);
+			stateCopy.days += 1;
+			this.setState(stateCopy);
+			console.log(this.state.days);
+
+		}
+
     subtractScore(score) {
         const analysisCards = this.state.cards.filter((card) => card.location === 'analysis');
         let diceScore = score;
@@ -219,4 +227,3 @@ export default class App extends Component {
         this.setState({calendar: !this.state.calendar});
     }
 }
-
