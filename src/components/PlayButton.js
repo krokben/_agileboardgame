@@ -4,8 +4,12 @@ export default class PlayButton extends Component {
 	render() {
 		return (
 			<div>
-				<button onClick={this.props.rollDice}>Play!</button>
+				<button onClick={this.countAndThrow.bind(this)}>Play!</button>
 			</div>
 		);
+	}
+	countAndThrow(){
+		this.props.rollDice();
+		this.props.countDays();
 	}
 }
