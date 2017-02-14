@@ -19,14 +19,14 @@ export default class App extends Component {
 
 		this.state = {
 			cards,
-      workers,
-      calendar: false,
-      diceScore: {
-        analysis: 0,
-        development: 0,
-        test: 0,
-        done: 0
-      },
+            workers,
+            calendar: false,
+            diceScore: {
+                analysis: 0,
+                development: 0,
+                test: 0,
+                done: 0
+            },
 			days: 1
 		};
 	}
@@ -44,9 +44,9 @@ export default class App extends Component {
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 						<Backlog cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 						<Analysis cards={this.state.cards} choose={this.choose.bind(this)} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Development placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Test placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Done placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Development cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Test cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Done cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 					</div>
 					<div className="App_status">
 						<Status />
@@ -123,7 +123,8 @@ export default class App extends Component {
             url: 'http://localhost/_agileboardgame/api/?/card/' + id,
             data: {
                 location: nextLocation
-            }
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
         .then(function(response) {
             console.log(response); // Doesn't work
@@ -189,34 +190,50 @@ export default class App extends Component {
         }
     }
 
-    rollDice() {
-        const result = Math.floor((Math.random() * 6) + 1);
-        console.log('dice roll: ' + result);
-        this.subtractScore(result);
+    countDays(){
+        const stateCopy = Object.assign({}, this.state);
+        stateCopy.days += 1;
+        this.setState(stateCopy);
+        console.log(this.state.days);
+
     }
 
-		countDays(){
-			const stateCopy = Object.assign({}, this.state);
-			stateCopy.days += 1;
-			this.setState(stateCopy);
-			console.log(this.state.days);
+    rollDice() {
+        let analysis = 0;
+        let development = 0;
+        let test = 0;
+        this.state.workers.filter((worker) => worker.location === 'analysis').forEach((x) => {
+            analysis += Math.floor((Math.random() * 6) + 1);
+        });
+        this.state.workers.filter((worker) => worker.location === 'development').forEach((x) => {
+            development += Math.floor((Math.random() * 6) + 1);
+        });
+        this.state.workers.filter((worker) => worker.location === 'test').forEach((x) => {
+            test += Math.floor((Math.random() * 6) + 1);
+        });
+        console.log('analysis result: ' + analysis);
+        console.log('development result: ' + development);
+        console.log('test result: ' + test);
+        this.subtractScore(analysis, 'analysis');
+        this.subtractScore(development, 'development');
+        this.subtractScore(test, 'test');
+        // this.subtractScore(result);
+    }
 
-		}
-
-    subtractScore(score) {
-        const analysisCards = this.state.cards.filter((card) => card.location === 'analysis');
+    subtractScore(score, loc) {
+        const cards = this.state.cards.filter((card) => card.location === loc);
         let diceScore = score;
-        analysisCards.map((card) => {
-            const initialPoints = card.analysis;
+        cards.map((card) => {
+            const initialPoints = card[loc];
             const initialScore = diceScore;
-            let result = card.analysis - diceScore;
+            let result = card[loc] - diceScore;
             if (result <= 0) {
                 diceScore = initialScore - initialPoints; // turn negative number into positive on score
                 result = 0; // make card.analysis 0
                 console.log('score: ' + diceScore);
             }
             const stateCopy = Object.assign({}, this.state);
-            stateCopy.cards[card.id - 1].analysis = result;
+            stateCopy.cards[card.id - 1][loc] = result;
             this.setState(stateCopy);
 
             return false;

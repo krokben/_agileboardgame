@@ -90,7 +90,19 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 		# I denna funktion uppdateras en specifik user med den input vi fått
 		# Observera att allt uppdaterad varje gång och att denna borde byggas om så att bara det vi skickar med uppdateras
 		if($this->id){
-			$location = mysqli_real_escape_string($db, $input['location']);
+
+
+			$input = array_keys($input);
+			$input = json_decode($input[0]);
+
+			$location = mysqli_real_escape_string($db, $input->location);
+
+			// foreach($input as $k => $v){
+			// 	$sqlparts[] = "`$k` = '$v'"; 
+			// }
+
+			// $sql_params = implode($sqlparts, ",")
+
 
 			if(isset($location)) {
 				$query = "
