@@ -9,7 +9,8 @@ export default class PlayButton extends Component {
 		);
 	}
 	countAndThrow(){
+		const day = this.props.days.filter((item) => item.current === 'yes')[0].id;
 		this.props.rollDice();
-		this.props.countDays();
+		this.props.countDays(day);
 	}
 }

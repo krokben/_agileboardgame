@@ -11,6 +11,7 @@ import Status from './Status';
 import Footer from './Footer';
 import Calendar from './Calendar';
 
+const days = [];
 const cards = [];
 const workers = [];
 export default class App extends Component {
@@ -19,15 +20,15 @@ export default class App extends Component {
 
 		this.state = {
 			cards,
-            workers,
-            calendar: false,
-            diceScore: {
-                analysis: 0,
-                development: 0,
-                test: 0,
-                done: 0
-            },
-			days: 1
+      workers,
+      calendar: false,
+      diceScore: {
+          analysis: 0,
+          development: 0,
+          test: 0,
+          done: 0
+      },
+			days
 		};
 	}
 
@@ -38,7 +39,7 @@ export default class App extends Component {
 	render() {
 		return (
 			<div>
-				<Header workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)}/>
+				<Header days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)}/>
 				<div className="App_board">
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
@@ -53,7 +54,7 @@ export default class App extends Component {
 					</div>
 				</div>
         {this.state.calendar ? <Calendar /> : null}
-				<Footer countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} />
+				<Footer days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} />
 			</div>
 
 		);
@@ -93,6 +94,19 @@ export default class App extends Component {
             .catch(function(error) {
                 console.log(error);
             });
+				axios.get('http://localhost/_agileboardgame/api/?/day')
+	          .then(function(response) {
+	              response.data.days.map((item) => that.state.days.push({
+	                  id: item.id,
+	                  title: item.title,
+										current: item.current,
+										sprint: item.sprint
+	              }));
+	              that.setState({days: that.state.days});
+	          })
+	          .catch(function(error) {
+	              console.log(error);
+	          });
     }
 
     choose(card) {
@@ -190,11 +204,14 @@ export default class App extends Component {
         }
     }
 
-    countDays(){
-        const stateCopy = Object.assign({}, this.state);
-        stateCopy.days += 1;
-        this.setState(stateCopy);
-        console.log(this.state.days);
+    countDays(day){
+				this.state.days[day - 1].current = 'no';
+				this.state.days[day].current = 'yes';
+				this.setState({days: this.state.days});
+        // const stateCopy = Object.assign({}, this.state);
+        // stateCopy.days += 1;
+        // this.setState(stateCopy);
+        // console.log(this.state.days);
 
     }
 

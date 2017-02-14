@@ -8,7 +8,7 @@ export default class Footer extends Component {
 			<div className="Footer_container">
 				<Actions />
 				<div>Logo</div>
-				<PlayButton countDays={this.props.countDays} rollDice={this.props.rollDice} />
+				<PlayButton days={this.props.days} countDays={this.props.countDays} rollDice={this.props.rollDice} />
 			</div>
 		);
 	}
