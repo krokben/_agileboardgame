@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 export default class PlayButton extends Component {
 	render() {
 		return (
-			<div>
-				<button onClick={this.countAndThrow.bind(this)}>Play!</button>
+			<div className="myButton">
+				<div onClick={this.countAndThrow.bind(this)}>PLAY!</div>
 			</div>
 		);
 	}
@@ -14,3 +14,4 @@ export default class PlayButton extends Component {
 		this.props.countDays(day);
 	}
 }
+	
