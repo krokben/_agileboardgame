@@ -137,13 +137,13 @@ class _day extends Resource{ // Klassen ärver egenskaper från den generella kl
 	function RESETGAME($input, $db){
 		# I denna funktion truncatar vi tabellen och laddar en default-tabellen
 		$query = "
-			TRUNCATE TABLE cards
+			TRUNCATE TABLE days
 		";
 
 		mysqli_query($db, $query);
 		$query2 = "
-			INSERT INTO cards
-			SELECT * FROM default_cards
+			INSERT INTO days
+			SELECT * FROM default_days
 		";
 
 		mysqli_query($db, $query2);

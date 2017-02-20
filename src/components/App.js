@@ -149,7 +149,7 @@ export default class App extends Component {
 
         // add axios here to change next card's location as well
 
-        const stateCopy = Object.assign({}, this.state);
+        const stateCopy = {...this.state};
         stateCopy.cards[id - 1].location = nextLocation; // set this card's location to next location
         if (thisLocation === 'cardpool') {
             stateCopy.cards[id].location = thisLocation; // set next card's location to cardpool
@@ -162,7 +162,7 @@ export default class App extends Component {
         if (workerState.location === 'header') {
             if (worker.classList.contains('Workers_active')) {
                 worker.classList.toggle('Workers_active'); // toggle class 'active'
-                const stateCopy = Object.assign({}, this.state);
+                const stateCopy = {...this.state};
                 stateCopy.workers[worker.id - 1].active = false;
                 this.setState(stateCopy);
             } else {
@@ -170,7 +170,7 @@ export default class App extends Component {
                 if (child.id !== worker.id) { // choose only siblings
                     if (child.classList.contains('Workers_active')){
                         child.classList.toggle('Workers_active');
-                        const stateCopy = Object.assign({}, this.state);
+                        const stateCopy = {...this.state};
                         stateCopy.workers[child.id - 1].active = false;
                         this.setState(stateCopy);
                     }
@@ -179,13 +179,13 @@ export default class App extends Component {
                 });
 
                 worker.classList.toggle('Workers_active'); // toggle class 'active'
-                const stateCopy = Object.assign({}, this.state);
+                const stateCopy = {...this.state};
                 stateCopy.workers[worker.id - 1].active = true;
                 this.setState(stateCopy);
             }
         } else {
             workerState.location = 'header';
-            const stateCopy = Object.assign({}, this.state);
+            const stateCopy = {...this.state};
             stateCopy.workers[worker.id - 1].location = 'header'; // change location
             this.setState(stateCopy);
         }
@@ -195,7 +195,7 @@ export default class App extends Component {
         const activeWorker = this.state.workers.filter((worker) => worker.active)[0]
         if (activeWorker !== undefined) {
             const id = activeWorker.id - 1;
-            const stateCopy = Object.assign({}, this.state);
+            const stateCopy = {...this.state};
             stateCopy.workers[id].location = location; // change location
             stateCopy.workers[id].active = false; // change to inactive
             this.setState(stateCopy);
@@ -205,10 +205,11 @@ export default class App extends Component {
     }
 
     countDays(day){
-				this.state.days[day - 1].current = 'no';
-				this.state.days[day].current = 'yes';
-				this.setState({days: this.state.days});
-        // const stateCopy = Object.assign({}, this.state);
+        const stateCopy = {...this.state};
+		stateCopy.days[day - 1].current = 'no';
+		stateCopy.days[day].current = 'yes';
+		this.setState({stateCopy});
+        // const stateCopy = {...this.state};
         // stateCopy.days += 1;
         // this.setState(stateCopy);
         // console.log(this.state.days);
@@ -249,7 +250,7 @@ export default class App extends Component {
                 result = 0; // make card.analysis 0
                 console.log('score: ' + diceScore);
             }
-            const stateCopy = Object.assign({}, this.state);
+            const stateCopy = {...this.state};
             stateCopy.cards[card.id - 1][loc] = result;
             this.setState(stateCopy);
 

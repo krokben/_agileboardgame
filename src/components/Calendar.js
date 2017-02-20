@@ -23,7 +23,7 @@ export default class Calendar extends Component {
                             </tr>
                             <tr>
                                 <td>Sprint 1</td>
-                                <td><img src="./src/img/yoshi.jpg" width="35" height="45" /></td>
+                                <td></td>
                                 <td>1</td>
                                 <td>2</td>
                                 <td>3</td>
