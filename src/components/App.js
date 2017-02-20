@@ -11,25 +11,24 @@ import Status from './Status';
 import Footer from './Footer';
 import Calendar from './Calendar';
 
+const days = [];
 const cards = [];
 const workers = [];
-
 export default class App extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			cards,
-            workers,
-            calendar,
-            chosenWorker: 0,
-            calendar: false,
-            diceScore: {
-                analysis: 0,
-                development: 0,
-                test: 0,
-                done: 0
-            }
+      workers,
+      calendar: false,
+      diceScore: {
+          analysis: 0,
+          development: 0,
+          test: 0,
+          done: 0
+      },
+			days
 		};
 	}
 
@@ -40,22 +39,22 @@ export default class App extends Component {
 	render() {
 		return (
 			<div>
-				<Header workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)}/>
+				<Header days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)}/>
 				<div className="App_board">
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 						<Backlog cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Analysis cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Development placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Test />
-						<Done />
+						<Analysis cards={this.state.cards} choose={this.choose.bind(this)} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Development cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Test cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Done cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 					</div>
 					<div className="App_status">
 						<Status />
 					</div>
 				</div>
         {this.state.calendar ? <Calendar /> : null}
-				<Footer rollDice={this.rollDice.bind(this)} />
+				<Footer days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} />
 			</div>
 
 		);
@@ -95,13 +94,25 @@ export default class App extends Component {
             .catch(function(error) {
                 console.log(error);
             });
+				axios.get('http://localhost/_agileboardgame/api/?/day')
+	          .then(function(response) {
+	              response.data.days.map((item) => that.state.days.push({
+	                  id: item.id,
+	                  title: item.title,
+										current: item.current,
+										sprint: item.sprint
+	              }));
+	              that.setState({days: that.state.days});
+	          })
+	          .catch(function(error) {
+	              console.log(error);
+	          });
     }
 
-    choose(el, evt) {
-        const id = evt.target.getAttribute('data-key');
+    choose(card) {
+        const id = card.getAttribute('data-key');
         const thisLocation = this.state.cards[id - 1].location;
         let nextLocation;
-        console.log(thisLocation);
         switch(thisLocation) {
             case 'cardpool':
                 nextLocation = 'backlog';
@@ -126,7 +137,8 @@ export default class App extends Component {
             url: 'http://localhost/_agileboardgame/api/?/card/' + id,
             data: {
                 location: nextLocation
-            }
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
         .then(function(response) {
             console.log(response); // Doesn't work
@@ -137,7 +149,7 @@ export default class App extends Component {
 
         // add axios here to change next card's location as well
 
-        const stateCopy = Object.assign({}, this.state);
+        const stateCopy = {...this.state};
         stateCopy.cards[id - 1].location = nextLocation; // set this card's location to next location
         if (thisLocation === 'cardpool') {
             stateCopy.cards[id].location = thisLocation; // set next card's location to cardpool
@@ -146,61 +158,100 @@ export default class App extends Component {
     }
 
     chooseWorker(worker) {
-        if (worker.classList.contains('Workers_active')) {
-            worker.classList.toggle('Workers_active'); // toggle class 'active'
-            const stateCopy = Object.assign({}, this.state);
-            stateCopy.workers[worker.id - 1].active = false;
-            this.setState(stateCopy);
-        } else {
-            Array.from(worker.parentElement.children).map((child) => { // map through all siblings and untoggle class 'active'
-            if (child.id !== worker.id) { // choose only siblings
-                if (child.classList.contains('Workers_active')){
-                    child.classList.toggle('Workers_active');
-                    const stateCopy = Object.assign({}, this.state);
-                    stateCopy.workers[child.id - 1].active = false;
-                    this.setState(stateCopy);
+        let workerState = this.state.workers[worker.id - 1];
+        if (workerState.location === 'header') {
+            if (worker.classList.contains('Workers_active')) {
+                worker.classList.toggle('Workers_active'); // toggle class 'active'
+                const stateCopy = {...this.state};
+                stateCopy.workers[worker.id - 1].active = false;
+                this.setState(stateCopy);
+            } else {
+                Array.from(worker.parentElement.children).map((child) => { // map through all siblings and untoggle class 'active'
+                if (child.id !== worker.id) { // choose only siblings
+                    if (child.classList.contains('Workers_active')){
+                        child.classList.toggle('Workers_active');
+                        const stateCopy = {...this.state};
+                        stateCopy.workers[child.id - 1].active = false;
+                        this.setState(stateCopy);
+                    }
                 }
-            }
-            return false;
-        });
+                return false;
+                });
 
-        worker.classList.toggle('Workers_active'); // toggle class 'active'
-        const stateCopy = Object.assign({}, this.state);
-        stateCopy.workers[worker.id - 1].active = true;
-        this.setState(stateCopy);
+                worker.classList.toggle('Workers_active'); // toggle class 'active'
+                const stateCopy = {...this.state};
+                stateCopy.workers[worker.id - 1].active = true;
+                this.setState(stateCopy);
+            }
+        } else {
+            workerState.location = 'header';
+            const stateCopy = {...this.state};
+            stateCopy.workers[worker.id - 1].location = 'header'; // change location
+            this.setState(stateCopy);
         }
     }
 
     placeWorker(location) {
-        const activeWorker = this.state.workers.filter((worker) => worker.active)[0].id - 1;
-        const stateCopy = Object.assign({}, this.state);
-        stateCopy.workers[activeWorker].location = location; // change location
-        stateCopy.workers[activeWorker].active = false; // change to inactive
-        this.setState(stateCopy);
+        const activeWorker = this.state.workers.filter((worker) => worker.active)[0]
+        if (activeWorker !== undefined) {
+            const id = activeWorker.id - 1;
+            const stateCopy = {...this.state};
+            stateCopy.workers[id].location = location; // change location
+            stateCopy.workers[id].active = false; // change to inactive
+            this.setState(stateCopy);
 
-        // add axios here to change location of worker (or maybe not, location doesn't have to be in the database)
+            // add axios here to change location of worker (or maybe not, location doesn't have to be in the database)
+        }
+    }
+
+    countDays(day){
+        const stateCopy = {...this.state};
+		stateCopy.days[day - 1].current = 'no';
+		stateCopy.days[day].current = 'yes';
+		this.setState({stateCopy});
+        // const stateCopy = {...this.state};
+        // stateCopy.days += 1;
+        // this.setState(stateCopy);
+        // console.log(this.state.days);
+
     }
 
     rollDice() {
-        const result = Math.floor((Math.random() * 6) + 1);
-        console.log('dice roll: ' + result);
-        this.subtractScore(result);
+        let analysis = 0;
+        let development = 0;
+        let test = 0;
+        this.state.workers.filter((worker) => worker.location === 'analysis').forEach((x) => {
+            analysis += Math.floor((Math.random() * 6) + 1);
+        });
+        this.state.workers.filter((worker) => worker.location === 'development').forEach((x) => {
+            development += Math.floor((Math.random() * 6) + 1);
+        });
+        this.state.workers.filter((worker) => worker.location === 'test').forEach((x) => {
+            test += Math.floor((Math.random() * 6) + 1);
+        });
+        console.log('analysis result: ' + analysis);
+        console.log('development result: ' + development);
+        console.log('test result: ' + test);
+        this.subtractScore(analysis, 'analysis');
+        this.subtractScore(development, 'development');
+        this.subtractScore(test, 'test');
+        // this.subtractScore(result);
     }
 
-    subtractScore(score) {
-        const analysisCards = this.state.cards.filter((card) => card.location === 'analysis');
+    subtractScore(score, loc) {
+        const cards = this.state.cards.filter((card) => card.location === loc);
         let diceScore = score;
-        analysisCards.map((card) => {
-            const initialPoints = card.analysis;
+        cards.map((card) => {
+            const initialPoints = card[loc];
             const initialScore = diceScore;
-            let result = card.analysis - diceScore;
+            let result = card[loc] - diceScore;
             if (result <= 0) {
                 diceScore = initialScore - initialPoints; // turn negative number into positive on score
                 result = 0; // make card.analysis 0
                 console.log('score: ' + diceScore);
             }
-            const stateCopy = Object.assign({}, this.state);
-            stateCopy.cards[card.id - 1].analysis = result;
+            const stateCopy = {...this.state};
+            stateCopy.cards[card.id - 1][loc] = result;
             this.setState(stateCopy);
 
             return false;
@@ -211,4 +262,3 @@ export default class App extends Component {
         this.setState({calendar: !this.state.calendar});
     }
 }
-

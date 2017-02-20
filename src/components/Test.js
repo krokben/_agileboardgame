@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
+import DiceHolder from './DiceHolder';
 
 export default class Test extends Component {
 	render() {
 		return (
 			<div className="Analysis_boardColumn">
-				<div className="Analysis_diceHolder">
-					Dices
-				</div>
+				<DiceHolder
+					location='test'
+					workers={this.props.workers}
+					chooseWorker={this.props.chooseWorker}
+					placeWorker={this.props.placeWorker}
+				/>
 				<div className="Analysis_cardHolder">
 					Test
 				</div>
