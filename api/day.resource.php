@@ -105,13 +105,21 @@ class _day extends Resource{ // Klassen ärver egenskaper från den generella kl
 			// $sql_params = implode($sqlparts, ",")
 
 
-			if(isset($location)) {
+			if(isset($current)) {
 				$query = "
 					UPDATE days
 					SET current = '$current'
 					WHERE id = $this->id
 				";
 
+				mysqli_query($db, $query);
+
+				$query = "
+					UPDATE days
+					SET current = 'no'
+					WHERE id != $this->id
+				";
+				
 				mysqli_query($db, $query);
 			}
 		}else{

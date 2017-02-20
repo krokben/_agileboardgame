@@ -56,7 +56,7 @@ export default class App extends Component {
 					</div>
 				</div>
                 {this.state.calendar ? <Calendar /> : null}
-                {this.state.actionCard ? <ActionCard days={this.state.days} /> : null}
+                {this.state.actionCard ? <ActionCard days={this.state.days} isSick={this.isSick.bind(this)} /> : null}
 				<Footer days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} />
 			</div>
 
@@ -215,7 +215,7 @@ export default class App extends Component {
         
         axios({
             method: 'put',
-            url: 'http://localhost/_agileboardgame/api/?/day/' + day,
+            url: 'http://localhost/_agileboardgame/api/?/day/' + (Number(day) + 1),
             data: {
                 current: 'yes'
             },
@@ -289,5 +289,12 @@ export default class App extends Component {
     }
     showCalendar() {
         this.setState({calendar: !this.state.calendar});
+    }
+
+    isSick(days) {
+        const stateCopy = {...this.state};
+        stateCopy.workers[2].sick = 1; // First developer worker
+        this.setState(stateCopy);
+        // insert axios here
     }
 }
