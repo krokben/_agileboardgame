@@ -10,6 +10,7 @@ import Done from './Done';
 import Status from './Status';
 import Footer from './Footer';
 import Calendar from './Calendar';
+import ActionCard from './ActionCard';
 
 const days = [];
 const cards = [];
@@ -20,15 +21,16 @@ export default class App extends Component {
 
 		this.state = {
 			cards,
-      workers,
-      calendar: false,
-      diceScore: {
-          analysis: 0,
-          development: 0,
-          test: 0,
-          done: 0
-      },
-			days
+            workers,
+            calendar: false,
+            actionCard: false,
+            diceScore: {
+                analysis: 0,
+                development: 0,
+                test: 0,
+                done: 0
+            },
+			days,
 		};
 	}
 
@@ -53,7 +55,8 @@ export default class App extends Component {
 						<Status />
 					</div>
 				</div>
-        {this.state.calendar ? <Calendar /> : null}
+                {this.state.calendar ? <Calendar /> : null}
+                {this.state.actionCard ? <ActionCard days={this.state.days} /> : null}
 				<Footer days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} />
 			</div>
 
@@ -94,19 +97,19 @@ export default class App extends Component {
             .catch(function(error) {
                 console.log(error);
             });
-				axios.get('http://localhost/_agileboardgame/api/?/day')
-	          .then(function(response) {
-	              response.data.days.map((item) => that.state.days.push({
-	                  id: item.id,
-	                  title: item.title,
-										current: item.current,
-										sprint: item.sprint
-	              }));
-	              that.setState({days: that.state.days});
-	          })
-	          .catch(function(error) {
-	              console.log(error);
-	          });
+		axios.get('http://localhost/_agileboardgame/api/?/day')
+            .then(function(response) {
+                response.data.days.map((item) => that.state.days.push({
+                    id: item.id,
+                    title: item.title,
+                    current: item.current,
+                    sprint: item.sprint
+                }));
+                that.setState({days: that.state.days});
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
     }
 
     choose(card) {
@@ -141,7 +144,7 @@ export default class App extends Component {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
         .then(function(response) {
-            console.log(response); // Doesn't work
+            console.log(response);
         })
         .catch(function(error) {
             console.log(error);
@@ -208,12 +211,38 @@ export default class App extends Component {
         const stateCopy = {...this.state};
 		stateCopy.days[day - 1].current = 'no';
 		stateCopy.days[day].current = 'yes';
-		this.setState({stateCopy});
-        // const stateCopy = {...this.state};
-        // stateCopy.days += 1;
-        // this.setState(stateCopy);
-        // console.log(this.state.days);
+		this.setState(stateCopy);
+        
+        axios({
+            method: 'put',
+            url: 'http://localhost/_agileboardgame/api/?/day/' + day,
+            data: {
+                current: 'yes'
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+        .then(function(response) {
+            // console.log(response);
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
 
+        this.hasActionCard(); // Check for action card
+    }
+
+    hasActionCard() {
+        if (this.state.days[2].current === 'yes') {
+            const stateCopy = {...this.state};
+            stateCopy.actionCard = true;
+            this.setState(stateCopy);
+        } else {
+            if (this.state.actionCard) {
+                const stateCopy = {...this.state};
+                stateCopy.actionCard = false;
+                this.setState(stateCopy);
+            }
+        }
     }
 
     rollDice() {

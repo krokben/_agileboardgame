@@ -96,7 +96,7 @@ class _day extends Resource{ // Klassen ärver egenskaper från den generella kl
 			$input = array_keys($input);
 			$input = json_decode($input[0]);
 
-			$location = mysqli_real_escape_string($db, $input->location);
+			$current = mysqli_real_escape_string($db, $input->current);
 
 			// foreach($input as $k => $v){
 			// 	$sqlparts[] = "`$k` = '$v'";
@@ -107,8 +107,8 @@ class _day extends Resource{ // Klassen ärver egenskaper från den generella kl
 
 			if(isset($location)) {
 				$query = "
-					UPDATE cards
-					SET location = '$location'
+					UPDATE days
+					SET current = '$current'
 					WHERE id = $this->id
 				";
 

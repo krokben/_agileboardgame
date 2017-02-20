@@ -27,6 +27,30 @@ button {
 \*--------------------------------------*/
 
 /*--------------------------------------*\
+	ActionCard
+\*--------------------------------------*/
+
+.ActionCard_container {
+	background: #fff;
+	border: 10px solid #000;
+	border-radius: 10px;
+	bottom: 25%;
+	left: 40%;
+	padding: 10px;
+	position: fixed;
+	right: 40%;
+	top: 25%;
+}
+
+.ActionCard_container h2 {
+	text-align: center;
+}
+
+.ActionCard_dice {
+	font-size: 200px;
+}
+
+/*--------------------------------------*\
 	Analysis
 \*--------------------------------------*/
 
