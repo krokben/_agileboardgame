@@ -5,10 +5,10 @@ export default class Calendar extends Component {
         return (
             <div>
                 <div className="Calendar_container"> 
-                    <div>
+                    <div className="popup">
                         <table>
                             <tr>
-                                <td><h1>Agile Board Game</h1></td>
+                                <td colSpan={9}><h1>Agile Board Game</h1></td>
                             </tr>
                             <tr>
                                 <th></th>

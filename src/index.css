@@ -1,8 +1,13 @@
 body {
   margin: 0;
-  padding: 0;
   font-family: sans-serif;
   overflow: hidden;
+
+}
+button {
+	border-radius: 7px;
+	width: 5em;
+	height: 3em;
 }
 
 [data-hidden='0'] {
@@ -38,8 +43,8 @@ body {
 	font-family: 'Slackey', cursive;
 	flex: 6;
 	overflow-y: auto;
+	padding: 10px;
 	text-align: center;
-
 }
 
 .Analysis_diceHolder {
@@ -77,10 +82,67 @@ body {
 \*--------------------------------------*/
 
 .Calendar_container {
-	left: 0;
-	position: absolute;
+	border: 30px solid red;
+	font-family: 'Roboto Slab', serif;
+	font-size: 1vw;
+	left: 14.78%;
+	position: fixed;
 	top: 0;
+	width: 70.45%;
+	box-sizing: border-box;
+	margin-top: 130px;
+	
 }
+
+.popup {
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+table {
+	width: 100%;
+	align-self: center;
+	height: 100%;
+}
+
+table tr td {
+	background-color: #fff;
+	font-size: 90%;
+}
+
+table, th, td {
+
+    border-collapse: collapse;
+    opacity: 0.95;
+
+}
+
+th, td {
+
+    padding: 10px;
+    text-align: center;
+
+}
+
+th {
+
+    background-color: #000;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+
+    background-color: #e8e8e8;
+}
+
+tr:nth-child(odd) {
+
+    background-color: #fff;
+}
+
 
 /*--------------------------------------*\
 	CalendarLink
@@ -212,6 +274,7 @@ body {
 	background: #5D9CEC;
 	color: #fff;
 	margin-bottom: 15px;
+	padding: 5px;
 }
 
 /*--------------------------------------*\
