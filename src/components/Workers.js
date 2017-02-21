@@ -11,7 +11,7 @@ export default class Workers extends Component {
 
 	renderWorkers() {
 		return this.props.workers.map((item) => {
-			if (item.location === this.props.location) {
+			if (item.location === this.props.location && Number(item.sick) === 0) {
 				return (
 					<div
 						className="Workers_worker"

@@ -58,9 +58,9 @@ export default class App extends Component {
 						<Status />
 					</div>
 				</div>
-                {this.state.calendar ? <Calendar /> : null}
-                {this.state.actionCard ? <ActionCard days={this.state.days} isSick={this.isSick.bind(this)} /> : null}
-				<Footer days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} />
+                {this.state.calendar ? <Calendar days={this.state.days} workers={this.state.workers} /> : null}
+                {this.state.actionCard ? <ActionCard days={this.state.days} isSick={this.isSick.bind(this)} playBtn={this.footer.playButton.playBtn} /> : null}
+				<Footer days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
 		);
@@ -232,6 +232,15 @@ export default class App extends Component {
         });
 
         this.hasActionCard(); // Check for action card
+        this.returnSickWorker(); // Check if sick worker should return today
+    }
+
+    returnSickWorker() {
+        const sickWorkers = this.state.workers.filter((x) => Number(x.sick) !== 0);
+        const today = this.state.days.filter((x) => x.current === 'yes')[0];
+        if (sickWorkers.length > 0 && sickWorkers[0].sick === today.id) {
+            console.log('idag');
+        }
     }
 
     hasActionCard() {
@@ -295,8 +304,9 @@ export default class App extends Component {
     }
 
     isSick(days) {
+        const returnDate = Number(this.state.days.filter((day) => day.current === 'yes')[0].id) + days;
         const stateCopy = {...this.state};
-        stateCopy.workers[2].sick = 1; // First developer worker
+        stateCopy.workers[2].sick = returnDate; // First developer worker
         this.setState(stateCopy);
         // insert axios here
     }

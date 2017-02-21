@@ -4,7 +4,7 @@ export default class PlayButton extends Component {
 	render() {
 		return (
 			<div className="myButton">
-				<div onClick={this.countAndThrow.bind(this)}>PLAY!</div>
+				<button onClick={this.countAndThrow.bind(this)} ref={(playBtn) => this.playBtn = playBtn}>PLAY!</button>
 			</div>
 		);
 	}

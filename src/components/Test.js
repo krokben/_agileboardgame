@@ -12,7 +12,7 @@ export default class Test extends Component {
 					placeWorker={this.props.placeWorker}
 				/>
 				<div className="Analysis_cardHolder">
-					Test
+					<h4>Test</h4>
 				</div>
 			</div>
 		);

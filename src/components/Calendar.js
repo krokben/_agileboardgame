@@ -3,116 +3,61 @@ import React, {Component} from 'react';
 export default class Calendar extends Component {
     render() {
         return (
-            <div>
-                <div className="Calendar_container"> 
-                    <div className="Calendar_popup">
-                        <table>
-                            <tr>
-                                <td colSpan={9}><h1>Agile Board Game</h1></td>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th>Monday</th>
-                                <th>Tuesday</th>
-                                <th>Wednesday</th>
-                                <th>Thursday</th>
-                                <th>Friday</th>
-                                <th>Saturday</th>
-                                <th>Sunday</th>
-                            </tr>
-                            <tr>
-                                <td>Sprint 1</td>
-                                <td></td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                            </tr>
-                            <tr>
-                                 <td>Sprint 2</td>
-                                 <td></td>
-                                 <td>1</td>
-                                 <td>2</td>
-                                 <td>3</td>
-                                 <td>4</td>
-                                 <td>5</td>
-                                 <td>6</td>
-                                 <td>7</td>
-                            </tr>
-                            <tr>
-                                 <td>Sprint 3</td>
-                                 <td></td>
-                                 <td>1</td>
-                                 <td>2</td>
-                                 <td>3</td>
-                                 <td>4</td>
-                                 <td>5</td>
-                                 <td>6</td>
-                                 <td>7</td>
-                            </tr>
-                            <tr>
-                                 <td>Sprint 4</td>
-                                 <td></td>
-                                 <td>1</td>
-                                 <td>2</td>
-                                 <td>3</td>
-                                 <td>4</td>
-                                 <td>5</td>
-                                 <td>6</td>
-                                 <td>7</td>
-                             </tr>
-                             <tr>
-                                <td>Sprint 5</td>
-                                <td></td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                            </tr>
-                            <tr>
-                                <td>Sprint 6</td>
-                                <td></td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                            </tr>
-                            <tr>
-                                <td>Sprint 7</td>
-                                <td></td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                            </tr>
-                            <tr>
-                                <td>Sprint 8</td> 
-                                <td></td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                            </tr>
-                        </table>
-                    </div>
+            <div className="Calendar_container">
+                <div className="Calendar_column">
+                    <div className="Calendar_header">Sprint</div>
+                    <div>1st</div>
+                    <div>2nd</div>
+                    <div>3rd</div>
+                    <div>4th</div>
+                    <div>5th</div>
+                    <div>6th</div>
+                    <div>7th</div>
+                    <div>8th</div>
+                </div>
+                <div className="Calendar_column">
+                    <div className="Calendar_header">Monday</div>
+                    {this.renderCalendar('1')}
+                </div>
+                <div className="Calendar_column">
+                    <div className="Calendar_header">Tuesday</div>
+                    {this.renderCalendar('2')}
+                </div>
+                <div className="Calendar_column">
+                    <div className="Calendar_header">Wednesday</div>
+                    {this.renderCalendar('3')}
+                </div>
+                <div className="Calendar_column">
+                    <div className="Calendar_header">Thursday</div>
+                    {this.renderCalendar('4')}
+                </div>
+                <div className="Calendar_column">
+                    <div className="Calendar_header">Friday</div>
+                    {this.renderCalendar('5')}
+                </div>
+                <div className="Calendar_column">
+                    <div className="Calendar_header">Saturday</div>
+                </div>
+                <div className="Calendar_column">
+                    <div className="Calendar_header">Sunday</div>
                 </div>
             </div>
         );
+    }
+
+    renderCalendar(weekday) {
+        return this.props.days.filter((x) => x.title === weekday).map((day) => {
+            const sickWorkers = this.props.workers.filter((x) => x.sick !== '0');
+            const today = this.props.days.filter((x) => x.current === 'yes')[0];
+            let sickClassName = null;
+
+            if (sickWorkers.length > 0 && Number(day.id) === sickWorkers[0].sick) {
+                sickClassName = 'Calendar_sick';
+            } else if (day.id === today.id) {
+                sickClassName = 'Calendar_today';
+            }
+
+            return <div key={day.id} id={day.id} className={sickClassName}>{day.title}</div>
+        });
     }
 }

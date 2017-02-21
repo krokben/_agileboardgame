@@ -15,7 +15,7 @@ export default class Analysis extends Component {
 					placeWorker={this.props.placeWorker}
 				/>
 				<div className="Analysis_cardHolder">
-					Analysis
+					<h4>Analysis</h4>
 					<UserStories location="analysis" cards={this.props.cards} />
 					<MaintenanceCards location="analysis" cards={this.props.cards} />
 					<DefectCards location="analysis" cards={this.props.cards} />

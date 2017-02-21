@@ -8,7 +8,7 @@ export default class Done extends Component {
 					Empty
 				</div>
 				<div className="Analysis_cardHolder">
-					Done
+					<h4>Done</h4>
 				</div>
 			</div>
 		);
