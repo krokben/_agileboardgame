@@ -122,19 +122,17 @@ body {
 
 .Calendar_container {
 	border: 30px solid red;
+	box-sizing: border-box;
 	font-family: 'Roboto Slab', serif;
 	font-size: 1vw;
 	left: 14.78%;
+	margin-top: 130px;
 	position: fixed;
 	top: 0;
 	width: 70.45%;
-	box-sizing: border-box;
-	margin-top: 130px;
-	
 }
 
-.popup {
-
+.Calendar_popup {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -142,9 +140,9 @@ body {
 }
 
 table {
-	width: 100%;
 	align-self: center;
 	height: 100%;
+	width: 100%;
 }
 
 table tr td {
@@ -153,32 +151,25 @@ table tr td {
 }
 
 table, th, td {
-
     border-collapse: collapse;
     opacity: 0.95;
-
 }
 
 th, td {
-
     padding: 10px;
     text-align: center;
-
 }
 
 th {
-
     background-color: #000;
     color: #fff;
 }
 
 tr:nth-child(even) {
-
     background-color: #e8e8e8;
 }
 
 tr:nth-child(odd) {
-
     background-color: #fff;
 }
 

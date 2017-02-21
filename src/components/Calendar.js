@@ -5,7 +5,7 @@ export default class Calendar extends Component {
         return (
             <div>
                 <div className="Calendar_container"> 
-                    <div className="popup">
+                    <div className="Calendar_popup">
                         <table>
                             <tr>
                                 <td colSpan={9}><h1>Agile Board Game</h1></td>
