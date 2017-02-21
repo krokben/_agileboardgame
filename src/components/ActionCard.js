@@ -34,7 +34,8 @@ export default class ActionCard extends Component {
 				<div>
 					<h2>Action card 1</h2>
 					<p>One of the developers gets a fever and will be away for one dice throw of days.</p>
-					<div onClick={this.stopDice.bind(this)} ref={(dice) => this.dice = dice}><img src={this.state.dice} role="presentation" /></div>
+					<div className="ActionCard_dice" onClick={this.stopDice.bind(this)} ref={(dice) => this.dice = dice}><img src={this.state.dice} role="presentation" /></div>
+					{this.state.dice !== dice ? <button className="ActionCard_button">OK!</button> : null}
 				</div>
 			);
 		}

@@ -4,11 +4,11 @@ body {
   overflow: hidden;
 
 }
-button {
+/* button {
 	border-radius: 7px;
 	width: 5em;
 	height: 3em;
-}
+} */
 
 [data-hidden='0'] {
 	display: block;
@@ -30,6 +30,21 @@ button {
 	ActionCard
 \*--------------------------------------*/
 
+.ActionCard_button {
+	background: #fff;
+	border: 2px solid #000;
+	bottom: 15px;
+	cursor: pointer;
+	height: 40px;
+	position: absolute;
+	right: 15px;
+	width: 50%;
+}
+
+.ActionCard_button:hover {
+	background: #48CFAD;
+}
+
 .ActionCard_container {
 	background: #fff;
 	border: 10px solid #000;
@@ -47,7 +62,7 @@ button {
 }
 
 .ActionCard_dice {
-	font-size: 200px;
+	text-align: center;
 }
 
 /*--------------------------------------*\

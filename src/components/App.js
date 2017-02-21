@@ -31,6 +31,9 @@ export default class App extends Component {
                 done: 0
             },
 			days,
+            calendarActions: {
+                putWorker: 0
+            }
 		};
 	}
 
