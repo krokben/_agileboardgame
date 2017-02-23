@@ -9,7 +9,7 @@ export default class Footer extends Component {
 			<div className="Footer_container">
 				<Actions />
 				<div className="Logo">The Agile Board Game!</div>
-				<PlayButton days={this.props.days} countDays={this.props.countDays} rollDice={this.props.rollDice} ref={(playButton) => this.playButton = playButton} />
+				<PlayButton days={this.props.days} countDays={this.props.countDays} rollDice={this.props.rollDice} changeLocations={this.props.changeLocations} ref={(playButton) => this.playButton = playButton} />
 			</div>
 		);
 	}

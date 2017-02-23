@@ -58,9 +58,9 @@ export default class App extends Component {
 						<Status />
 					</div>
 				</div>
-                {this.state.calendar ? <Calendar days={this.state.days} workers={this.state.workers} /> : null}
+                {this.state.calendar ? <Calendar days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
                 {this.state.actionCard ? <ActionCard days={this.state.days} isSick={this.isSick.bind(this)} playBtn={this.footer.playButton.playBtn} /> : null}
-				<Footer days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} ref={(footer) => this.footer = footer} />
+				<Footer days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
 		);
@@ -106,7 +106,8 @@ export default class App extends Component {
                     id: item.id,
                     title: item.title,
                     current: item.current,
-                    sprint: item.sprint
+                    sprint: item.sprint,
+                    message: ''
                 }));
                 that.setState({days: that.state.days});
             })
@@ -235,11 +236,43 @@ export default class App extends Component {
         this.returnSickWorker(); // Check if sick worker should return today
     }
 
+    changeLocations() {
+        this.state.cards.filter((card) => card.analysis === 0).map((x) => {
+            const stateCopy = {...this.state};
+            stateCopy.cards[x.id - 1].location = 'development';
+            this.setState(stateCopy);
+            return false;
+        });
+        // const stateCopy = {...this.state};
+        // stateCopy.workers.forEach((x) => x.location = 'header');
+        // this.setState(stateCopy);
+    }
+
     returnSickWorker() {
         const sickWorkers = this.state.workers.filter((x) => Number(x.sick) !== 0);
-        const today = this.state.days.filter((x) => x.current === 'yes')[0];
-        if (sickWorkers.length > 0 && sickWorkers[0].sick === today.id) {
-            console.log('idag');
+        const today = Number(this.state.days.filter((x) => x.current === 'yes')[0].id);
+        if (sickWorkers.length > 0 && sickWorkers[0].sick === today) {
+            const stateCopy = {...this.state};
+            stateCopy.workers[sickWorkers[0].id - 1].sick = 0;
+            this.setState(stateCopy);
+        }
+    }
+
+    clickDay(day) {
+        if (this.state.days[day -1].message === '') {
+            console.log(typeof(this.state.workers.filter((x) => x.sick !== '0')[0].sick));
+            console.log(this.state.workers.filter((x) => x.sick !== '0')[0].sick);
+            console.log(typeof(day));
+            console.log(day);
+            if (this.state.workers.filter((x) => x.sick !== '0')[0].sick === Number(day)) { // Sick worker
+                const stateCopy = {...this.state};
+                stateCopy.days[day - 1].message = <span>sick dev returns</span>;
+                this.setState(stateCopy);
+            }
+        } else {
+            const stateCopy = {...this.state};
+            stateCopy.days[day - 1].message = '';
+            this.setState(stateCopy);
         }
     }
 

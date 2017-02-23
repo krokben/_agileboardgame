@@ -51,13 +51,21 @@ export default class Calendar extends Component {
             const today = this.props.days.filter((x) => x.current === 'yes')[0];
             let sickClassName = null;
 
+            // Highlights
             if (sickWorkers.length > 0 && Number(day.id) === sickWorkers[0].sick) {
                 sickClassName = 'Calendar_sick';
             } else if (day.id === today.id) {
                 sickClassName = 'Calendar_today';
             }
 
-            return <div key={day.id} id={day.id} className={sickClassName}>{day.title}</div>
+            return <div
+                key={day.id}
+                id={day.id}
+                className={sickClassName}
+                onClick={() => this.props.clickDay(day.id)}
+            >
+                {this.props.days[day.id - 1].message !== '' ? day.message : day.id}
+            </div>
         });
     }
 }

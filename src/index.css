@@ -159,47 +159,16 @@ body {
 }
 
 .Calendar_sick {
-	background: #333;
+	background: lightgreen;
+}
+
+.Calendar_sick span {
+	font-size: 1vw;
 }
 
 .Calendar_today {
 	background: #ccc;
 }
-
-table {
-	align-self: center;
-	height: 100%;
-	width: 100%;
-}
-
-table tr td {
-	background-color: #fff;
-	font-size: 90%;
-}
-
-table, th, td {
-    border-collapse: collapse;
-    opacity: 0.95;
-}
-
-th, td {
-    padding: 10px;
-    text-align: center;
-}
-
-th {
-    background-color: #000;
-    color: #fff;
-}
-
-tr:nth-child(even) {
-    background-color: #e8e8e8;
-}
-
-tr:nth-child(odd) {
-    background-color: #fff;
-}
-
 
 /*--------------------------------------*\
 	CalendarLink

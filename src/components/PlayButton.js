@@ -12,6 +12,7 @@ export default class PlayButton extends Component {
 		const day = this.props.days.filter((item) => item.current === 'yes')[0].id;
 		this.props.rollDice();
 		this.props.countDays(day);
+		this.props.changeLocations();
 	}
 }
 	
