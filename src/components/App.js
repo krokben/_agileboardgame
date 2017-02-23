@@ -33,7 +33,8 @@ export default class App extends Component {
 			days,
             calendarActions: {
                 putWorker: 0
-            }
+            },
+            score: 0
 		};
 	}
 
@@ -201,11 +202,19 @@ export default class App extends Component {
     placeWorker(location) {
         const activeWorker = this.state.workers.filter((worker) => worker.active)[0]
         if (activeWorker !== undefined) {
-            const id = activeWorker.id - 1;
-            const stateCopy = {...this.state};
-            stateCopy.workers[id].location = location; // change location
-            stateCopy.workers[id].active = false; // change to inactive
-            this.setState(stateCopy);
+            if (location === 'analysis' || location === 'test') {
+                const id = activeWorker.id - 1;
+                const stateCopy = {...this.state};
+                stateCopy.workers[id].location = location; // change location
+                stateCopy.workers[id].active = false; // change to inactive
+                this.setState(stateCopy);
+            } else if (location === 'development' && activeWorker.type === 'developer') {
+                    const id = activeWorker.id - 1;
+                    const stateCopy = {...this.state};
+                    stateCopy.workers[id].location = location; // change location
+                    stateCopy.workers[id].active = false; // change to inactive
+                    this.setState(stateCopy);
+            }
 
             // add axios here to change location of worker (or maybe not, location doesn't have to be in the database)
         }
@@ -234,6 +243,7 @@ export default class App extends Component {
 
         this.hasActionCard(); // Check for action card
         this.returnSickWorker(); // Check if sick worker should return today
+        this.returnWorkers();
     }
 
     changeLocations() {
@@ -243,9 +253,33 @@ export default class App extends Component {
             this.setState(stateCopy);
             return false;
         });
-        // const stateCopy = {...this.state};
-        // stateCopy.workers.forEach((x) => x.location = 'header');
-        // this.setState(stateCopy);
+        this.state.cards.filter((card) => card.development === 0).map((x) => {
+            const stateCopy = {...this.state};
+            stateCopy.cards[x.id - 1].location = 'test';
+            this.setState(stateCopy);
+            return false;
+        });
+        this.state.cards.filter((card) => card.test === 0).map((x) => {
+            const stateCopy = {...this.state};
+            stateCopy.cards[x.id - 1].location = 'done';
+            this.setState(stateCopy);
+            return false;
+        });
+        this.countScore();
+    }
+
+    countScore() {
+        let score = this.state.score;
+        this.state.cards.filter((card) => card.location === 'done').map((x) => {
+            score += Number(x.price);
+            this.setState({score});
+        });
+    }
+
+    returnWorkers() {
+        const workers = this.state.workers;
+        workers.forEach((x) => x.location = 'header');
+        this.setState({workers});
     }
 
     returnSickWorker() {
@@ -260,10 +294,6 @@ export default class App extends Component {
 
     clickDay(day) {
         if (this.state.days[day -1].message === '') {
-            console.log(typeof(this.state.workers.filter((x) => x.sick !== '0')[0].sick));
-            console.log(this.state.workers.filter((x) => x.sick !== '0')[0].sick);
-            console.log(typeof(day));
-            console.log(day);
             if (this.state.workers.filter((x) => x.sick !== '0')[0].sick === Number(day)) { // Sick worker
                 const stateCopy = {...this.state};
                 stateCopy.days[day - 1].message = <span>sick dev returns</span>;

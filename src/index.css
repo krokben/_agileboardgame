@@ -321,9 +321,20 @@ body {
 	background: lightblue;
 	border-radius: 50%;
 	float: left;
+	font-family: 'Slackey', cursive;
+	font-size: 25px;
 	height: 3vw;
 	margin-left: 0.7vw;
+	text-align: center;
 	width: 3vw;
+}
+
+.Workers_worker p {
+	margin-top: 12%;
+}
+
+.Workers_worker.analyst, .Workers_worker.tester {
+	background: #ed5565;
 }
 
 .Workers_workers {

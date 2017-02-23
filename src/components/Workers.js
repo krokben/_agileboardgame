@@ -14,13 +14,13 @@ export default class Workers extends Component {
 			if (item.location === this.props.location && Number(item.sick) === 0) {
 				return (
 					<div
-						className="Workers_worker"
+						className={'Workers_worker ' + item.type}
 						key={item.id}
 						id={item.id}
 						onClick={() => this.props.chooseWorker(this[item.index])}
 						ref={(worker) => {this[item.index] = worker}}
 					>
-						{item.id}
+						<p>{item.type.slice(0, 1).toUpperCase()}</p>
 					</div>
 				);
 			}
