@@ -265,6 +265,7 @@ body {
 	font-family:Arial;
 	font-size:20px;
 	font-weight:bold;
+	margin-right: 15px;
 	padding:13px 32px;
 	text-decoration:none;
 	text-shadow:0px 1px 0px #3d768a;
@@ -287,6 +288,11 @@ body {
 /*--------------------------------------*\
 	Status
 \*--------------------------------------*/
+
+.Status_score {
+	font-size: 200px;
+	margin-top: 200px;
+}
 
 /*--------------------------------------*\
 	Test
@@ -339,6 +345,7 @@ body {
 
 .Workers_workers {
 	margin-right: 100px;
+	margin-top: 5px;
 }
 
 @keyframes Workers_pulse {

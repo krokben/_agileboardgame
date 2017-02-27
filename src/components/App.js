@@ -56,7 +56,7 @@ export default class App extends Component {
 						<Done cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 					</div>
 					<div className="App_status">
-						<Status />
+						<Status score={this.state.score} />
 					</div>
 				</div>
                 {this.state.calendar ? <Calendar days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}

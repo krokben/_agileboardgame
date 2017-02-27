@@ -93,6 +93,57 @@ INSERT INTO `cards` (`id`, `index`, `type`, `title`, `price`, `analysis`, `devel
 (71,	4,	'maintenance',	'm4',	0,	2,	5,	4,	'none'),
 (72,	5,	'maintenance',	'm5',	0,	5,	7,	3,	'none');
 
+DROP TABLE IF EXISTS `days`;
+CREATE TABLE `days` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` int(1) unsigned NOT NULL,
+  `current` varchar(20) COLLATE utf8_bin NOT NULL,
+  `sprint` int(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `days` (`id`, `title`, `current`, `sprint`) VALUES
+(1,	1,	'yes',	1),
+(2,	2,	'no',	1),
+(3,	3,	'no',	1),
+(4,	4,	'no',	1),
+(5,	5,	'no',	1),
+(6,	1,	'no',	2),
+(7,	2,	'no',	2),
+(8,	3,	'no',	2),
+(9,	4,	'no',	2),
+(10,	5,	'no',	2),
+(11,	1,	'no',	3),
+(12,	2,	'no',	3),
+(13,	3,	'no',	3),
+(14,	4,	'no',	3),
+(15,	5,	'no',	3),
+(16,	1,	'no',	4),
+(17,	2,	'no',	4),
+(18,	3,	'no',	4),
+(19,	4,	'no',	4),
+(20,	5,	'no',	4),
+(21,	1,	'no',	5),
+(22,	2,	'no',	5),
+(23,	3,	'no',	5),
+(24,	4,	'no',	5),
+(25,	5,	'no',	5),
+(26,	1,	'no',	6),
+(27,	2,	'no',	6),
+(28,	3,	'no',	6),
+(29,	4,	'no',	6),
+(30,	5,	'no',	6),
+(31,	1,	'no',	7),
+(32,	2,	'no',	7),
+(33,	3,	'no',	7),
+(34,	4,	'no',	7),
+(35,	5,	'no',	7),
+(36,	1,	'no',	8),
+(37,	2,	'no',	8),
+(38,	3,	'no',	8),
+(39,	4,	'no',	8),
+(40,	5,	'no',	8);
+
 DROP TABLE IF EXISTS `default_cards`;
 CREATE TABLE `default_cards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -181,38 +232,91 @@ INSERT INTO `default_cards` (`id`, `index`, `type`, `title`, `price`, `analysis`
 (71,	4,	'maintenance',	'm4',	0,	2,	5,	4,	'none'),
 (72,	5,	'maintenance',	'm5',	0,	5,	7,	3,	'none');
 
+DROP TABLE IF EXISTS `default_days`;
+CREATE TABLE `default_days` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` int(1) unsigned NOT NULL,
+  `current` varchar(20) COLLATE utf8_bin NOT NULL,
+  `sprint` int(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `default_days` (`id`, `title`, `current`, `sprint`) VALUES
+(1,	1,	'yes',	1),
+(2,	2,	'no',	1),
+(3,	3,	'no',	1),
+(4,	4,	'no',	1),
+(5,	5,	'no',	1),
+(6,	1,	'no',	2),
+(7,	2,	'no',	2),
+(8,	3,	'no',	2),
+(9,	4,	'no',	2),
+(10,	5,	'no',	2),
+(11,	1,	'no',	3),
+(12,	2,	'no',	3),
+(13,	3,	'no',	3),
+(14,	4,	'no',	3),
+(15,	5,	'no',	3),
+(16,	1,	'no',	4),
+(17,	2,	'no',	4),
+(18,	3,	'no',	4),
+(19,	4,	'no',	4),
+(20,	5,	'no',	4),
+(21,	1,	'no',	5),
+(22,	2,	'no',	5),
+(23,	3,	'no',	5),
+(24,	4,	'no',	5),
+(25,	5,	'no',	5),
+(26,	1,	'no',	6),
+(27,	2,	'no',	6),
+(28,	3,	'no',	6),
+(29,	4,	'no',	6),
+(30,	5,	'no',	6),
+(31,	1,	'no',	7),
+(32,	2,	'no',	7),
+(33,	3,	'no',	7),
+(34,	4,	'no',	7),
+(35,	5,	'no',	7),
+(36,	1,	'no',	8),
+(37,	2,	'no',	8),
+(38,	3,	'no',	8),
+(39,	4,	'no',	8),
+(40,	5,	'no',	8);
+
 DROP TABLE IF EXISTS `default_workers`;
 CREATE TABLE `default_workers` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `index` varchar(50) COLLATE utf8_bin NOT NULL,
   `type` varchar(50) COLLATE utf8_bin NOT NULL,
+  `location` varchar(50) COLLATE utf8_bin NOT NULL,
   `sick` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO `default_workers` (`id`, `index`, `type`, `sick`) VALUES
-(1,	'worker1',	'analyst',	0),
-(2,	'worker2',	'developer',	0),
-(3,	'worker3',	'developer',	0),
-(4,	'worker4',	'developer',	0),
-(5,	'worker5',	'developer',	0),
-(6,	'worker6',	'tester',	0);
+INSERT INTO `default_workers` (`id`, `index`, `type`, `location`, `sick`) VALUES
+(1,	'worker1',	'analyst',	'header',	0),
+(2,	'worker2',	'developer',	'header',	0),
+(3,	'worker3',	'developer',	'header',	0),
+(4,	'worker4',	'developer',	'header',	0),
+(5,	'worker5',	'developer',	'header',	0),
+(6,	'worker6',	'tester',	'header',	0);
 
 DROP TABLE IF EXISTS `workers`;
 CREATE TABLE `workers` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `index` varchar(50) COLLATE utf8_bin NOT NULL,
   `type` varchar(50) COLLATE utf8_bin NOT NULL,
-  `sick` int(1) NOT NULL,
+  `location` varchar(50) COLLATE utf8_bin NOT NULL,
+  `sick` int(2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO `workers` (`id`, `index`, `type`, `sick`) VALUES
-(1,	'worker1',	'analyst',	0),
-(2,	'worker2',	'developer',	0),
-(3,	'worker3',	'developer',	0),
-(4,	'worker4',	'developer',	0),
-(5,	'worker5',	'developer',	0),
-(6,	'worker6',	'tester',	0);
+INSERT INTO `workers` (`id`, `index`, `type`, `location`, `sick`) VALUES
+(1,	'worker1',	'analyst',	'header',	0),
+(2,	'worker2',	'developer',	'header',	0),
+(3,	'worker3',	'developer',	'header',	0),
+(4,	'worker4',	'developer',	'header',	0),
+(5,	'worker5',	'developer',	'header',	0),
+(6,	'worker6',	'tester',	'header',	0);
 
--- 2017-02-06 08:58:45
+-- 2017-02-27 09:03:26
