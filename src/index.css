@@ -286,6 +286,62 @@ body {
 }
 
 /*--------------------------------------*\
+	Retrospective
+\*--------------------------------------*/
+
+.Retrospective {
+  background-color: lightgreen;
+  bottom: 25%;
+  left: 25%;
+  position: absolute;
+  right: 25%;
+  text-align: center;
+  top: 25%;
+}
+
+.Retrospective button {
+  background-color: yellow;
+  border: none;
+  float: right;
+  height: 30px;
+  width: 100px;
+}
+
+.Retrospective h2 {
+  margin-bottom: 0;
+}
+
+.Retrospective p {
+  margin-top: 0;
+}
+
+.Retrospective textarea {
+  height: 70%;
+  width: 100%;
+}
+
+.Retrospective_container {
+  height: 80%;
+  margin: auto;
+  width: 70%;
+}
+
+/*--------------------------------------*\
+	Retrospectives
+\*--------------------------------------*/
+
+.Retrospectives {
+  background-color: lightgreen;
+  bottom: 25%;
+  left: 25%;
+  position: absolute;
+  right: 25%;
+  text-align: center;
+  top: 25%;
+  z-index: 100;
+}
+
+/*--------------------------------------*\
 	Status
 \*--------------------------------------*/
 

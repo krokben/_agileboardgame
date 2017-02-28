@@ -11,7 +11,10 @@ import Status from './Status';
 import Footer from './Footer';
 import Calendar from './Calendar';
 import ActionCard from './ActionCard';
+import Retrospective from './Retrospective';
+import Retrospectives from './Retrospectives';
 
+const retrospectives = [];
 const days = [];
 const cards = [];
 const workers = [];
@@ -21,20 +24,24 @@ export default class App extends Component {
 
 		this.state = {
 			cards,
-            workers,
-            calendar: false,
-            actionCard: false,
-            diceScore: {
-                analysis: 0,
-                development: 0,
-                test: 0,
-                done: 0
-            },
+      workers,
+      calendar: false,
+      actionCard: false,
+      diceScore: {
+          analysis: 0,
+          development: 0,
+          test: 0,
+          done: 0
+      },
 			days,
-            calendarActions: {
-                putWorker: 0
-            },
-            score: 0
+      calendarActions: {
+          putWorker: 0
+      },
+			showRetrospective: false,
+			retrospectives,
+			retrospectiveDiv: false,
+			retrospectiveIndex: 0,
+      score: 0
 		};
 	}
 
@@ -59,9 +66,11 @@ export default class App extends Component {
 						<Status score={this.state.score} />
 					</div>
 				</div>
-                {this.state.calendar ? <Calendar days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
+								{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
+                {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
                 {this.state.actionCard ? <ActionCard days={this.state.days} isSick={this.isSick.bind(this)} playBtn={this.footer.playButton.playBtn} /> : null}
-				<Footer days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
+								{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
+				<Footer hasRetrospective={this.hasRetrospective.bind(this)} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
 		);
@@ -115,6 +124,17 @@ export default class App extends Component {
             .catch(function(error) {
               console.log(error);
             });
+		// axios.get('http://localhost/_agileboardgame/api/?/retrospective')
+    //     .then(function(response) {
+    //         response.data.retrospectives.map((item) => that.state.retrospectives.push({
+    //             id: item.id,
+    //             text: item.text
+    //         }));
+    //         that.setState({retrospectives: that.state.retrospectives});
+    //     })
+    //     .catch(function(error) {
+    //         console.log(error);
+    //     });
     }
 
     choose(card) {
@@ -222,10 +242,10 @@ export default class App extends Component {
 
     countDays(day){
         const stateCopy = {...this.state};
-		stateCopy.days[day - 1].current = 'no';
-		stateCopy.days[day].current = 'yes';
-		this.setState(stateCopy);
-        
+				stateCopy.days[day - 1].current = 'no';
+				stateCopy.days[day].current = 'yes';
+				this.setState(stateCopy);
+
         axios({
             method: 'put',
             url: 'http://localhost/_agileboardgame/api/?/day/' + (Number(day) + 1),
@@ -268,6 +288,12 @@ export default class App extends Component {
         this.countScore();
     }
 
+		closeRetrospective() {
+			let retrospectiveDiv = this.state.retrospectiveDiv;
+			retrospectiveDiv = !retrospectiveDiv;
+			this.setState({retrospectiveDiv});
+		}
+
     countScore() {
         let score = this.state.score;
         this.state.cards.filter((card) => card.location === 'done').map((x) => {
@@ -275,6 +301,15 @@ export default class App extends Component {
             this.setState({score});
         });
     }
+
+		displayRetrospective(idx) {
+			let retrospectiveDiv = this.state.retrospectiveDiv;
+			retrospectiveDiv = !retrospectiveDiv;
+			this.setState({retrospectiveDiv});
+			let retrospectiveIndex = this.state.retrospectiveIndex;
+			retrospectiveIndex = idx;
+			this.setState({retrospectiveIndex});
+		}
 
     returnWorkers() {
         const workers = this.state.workers;
@@ -320,6 +355,14 @@ export default class App extends Component {
         }
     }
 
+		hasRetrospective() {
+			let showRetrospective = this.state.showRetrospective;
+			if (this.state.days.filter((day) => day.current === 'yes' && day.title === '1' && day.sprint !== '1').length !== 0) {
+				showRetrospective = !showRetrospective;
+				this.setState({showRetrospective});
+			}
+		}
+
     rollDice() {
         let analysis = 0;
         let development = 0;
@@ -341,6 +384,32 @@ export default class App extends Component {
         this.subtractScore(test, 'test');
         // this.subtractScore(result);
     }
+
+		saveRetrospective(val) {
+			const sprint = this.state.days.filter((x) => x.current === 'yes')[0].sprint
+			const stateCopy = {...this.state};
+			stateCopy.retrospectives.push({id:sprint, text: val});
+			this.setState(stateCopy);
+			console.log(val);
+			axios({
+					method: 'post',
+					url: 'http://localhost/_agileboardgame/api/?/retrospective',
+					data: {
+							text: val
+					},
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+			})
+			.then(function(response) {
+					console.log(response);
+			})
+			.catch(function(error) {
+					console.log(error);
+			});
+			// Close window
+			let showRetrospective = this.state.showRetrospective;
+			showRetrospective = !showRetrospective;
+			this.setState({showRetrospective});
+		}
 
     subtractScore(score, loc) {
         const cards = this.state.cards.filter((card) => card.location === loc);

@@ -11,6 +11,6 @@ export default class PlayButton extends Component {
 		this.props.rollDice();
 		this.props.countDays(day);
 		this.props.changeLocations();
+		this.props.hasRetrospective();
 	}
 }
-	
