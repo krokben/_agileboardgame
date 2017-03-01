@@ -374,7 +374,8 @@ body {
 \*--------------------------------------*/
 
 .Workers_active {
-	border: 1px solid red;
+	/*border: 1px solid red;*/
+	filter: saturate(800%);
 }
 
 .Workers_worker {

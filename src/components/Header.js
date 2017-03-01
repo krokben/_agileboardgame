@@ -29,6 +29,10 @@ export default class Header extends Component {
             method: 'RESETGAME',
             url: 'http://localhost/_agileboardgame/api/?/day'
         });
+        axios({
+            method: 'RESETGAME',
+            url: 'http://localhost/_agileboardgame/api/?/retrospective'
+        });
         location.reload();
 	}
 }

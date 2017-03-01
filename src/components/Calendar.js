@@ -37,16 +37,18 @@ export default class Calendar extends Component {
                 </div>
                 <div className="Calendar_column">
                     <div className="Calendar_header">Saturday</div>
-                    <div>a</div>
-                    <div>{this.props.retrospectives.length > 0 ? <button onClick={() => this.props.displayRetrospective(1)}>Retro</button> : 'a'}</div>
-                    <div>{this.props.retrospectives.length > 1 ? <button onClick={() => this.props.displayRetrospective(2)}>Retro</button> : 'a'}</div>
-                    <div>{this.props.retrospectives.length > 2 ? <button onClick={() => this.props.displayRetrospective(3)}>Retro</button> : 'a'}</div>
-                    <div>{this.props.retrospectives.length > 3 ? <button onClick={() => this.props.displayRetrospective(4)}>Retro</button> : 'a'}</div>
-                    <div>{this.props.retrospectives.length > 4 ? <button onClick={() => this.props.displayRetrospective(5)}>Retro</button> : 'a'}</div>
-                    <div>{this.props.retrospectives.length > 5 ? <button onClick={() => this.props.displayRetrospective(6)}>Retro</button> : 'a'}</div>
+                    <div>-</div>
+                    <div>{this.props.retrospectives.length > 0 ? <button onClick={() => this.props.displayRetrospective(1)}>Retro</button> : '-'}</div>
+                    <div>{this.props.retrospectives.length > 1 ? <button onClick={() => this.props.displayRetrospective(2)}>Retro</button> : '-'}</div>
+                    <div>{this.props.retrospectives.length > 2 ? <button onClick={() => this.props.displayRetrospective(3)}>Retro</button> : '-'}</div>
+                    <div>{this.props.retrospectives.length > 3 ? <button onClick={() => this.props.displayRetrospective(4)}>Retro</button> : '-'}</div>
+                    <div>{this.props.retrospectives.length > 4 ? <button onClick={() => this.props.displayRetrospective(5)}>Retro</button> : '-'}</div>
+                    <div>{this.props.retrospectives.length > 5 ? <button onClick={() => this.props.displayRetrospective(6)}>Retro</button> : '-'}</div>
+                    <div>-</div>
                 </div>
                 <div className="Calendar_column">
                     <div className="Calendar_header">Sunday</div>
+                    <div>-</div><div>-</div><div>-</div><div>-</div><div>-</div><div>-</div><div>-</div><div>-</div>
                 </div>
             </div>
         );

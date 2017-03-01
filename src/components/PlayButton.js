@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class PlayButton extends Component {
 	render() {
 		return (
-			<button className="myButton" onClick={this.countAndThrow.bind(this)} ref={(playBtn) => this.playBtn = playBtn}>PLAY!</button>
+			<button className="myButton" onClick={this.countAndThrow.bind(this)} disabled={this.props.showRetrospective || this.props.actionCard ? true : false} ref={(playBtn) => this.playBtn = playBtn}>PLAY!</button>
 		);
 	}
 	countAndThrow(){

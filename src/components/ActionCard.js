@@ -14,12 +14,9 @@ export default class ActionCard extends Component {
 			rolled: false,
 			stopped: true,
 			dice: dice,
-			result: Math.floor((Math.random() * 6) + 1)
+			result: Math.floor((Math.random() * 6) + 1),
+			doubleCard: 'ac3'
 		}
-	}
-
-	componentDidMount() {
-		this.props.playBtn.disabled = true; // Disable play button
 	}
 
 	render() {
@@ -45,6 +42,32 @@ export default class ActionCard extends Component {
 					{this.state.dice !== dice ? <button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button> : null}
 				</div>
 			);
+		} else if (this.props.days[5].current === 'yes') { // Action card 2
+			return (
+				<div>
+					<h2>Action card 2</h2>
+					<p>The customer hires a new test manager who decides that all functionality needs to be regression tested. All stories now require double testing effort.</p>
+					<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+				</div>
+			);
+		} else if (this.props.days[10].current === 'yes') { // Action card 3
+			if (this.state.doubleCard === 'ac3') {
+				return (
+					<div>
+						<h2>Action card 3</h2>
+						<p>The customer fires the new test manager. Testing effort is back to normal.</p>
+						<button className="ActionCard_button" onClick={this.actionCard3.bind(this)}>OK!</button>
+					</div>
+				);
+			} else {
+				return (
+					<div>
+						<h2>Action card 11</h2>
+						<p>Oh no! The competition went public with the same thing we are developing, so business decided to pull the plug on all current development and start fresh with something new. Remove all user stories in test, development and analysis.</p>
+						<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+					</div>
+				);
+			}
 		}
 	}
 
@@ -88,6 +111,12 @@ export default class ActionCard extends Component {
 		stateCopy.rolled = true;
 		this.setState(stateCopy);
 
-		this.props.playBtn.disabled = false; // Make play button enabled again
+		this.props.closeActionCard();
+	}
+
+	actionCard3() {
+		let doubleCard = this.state.doubleCard;
+		doubleCard = 'ac11';
+		this.setState({doubleCard});
 	}
 }

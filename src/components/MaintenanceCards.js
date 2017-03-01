@@ -18,7 +18,7 @@ export default class MaintenanceCards extends Component {
 						key={item.id} data-key={item.id}
 						id={item.title}
 						ref={(card) => this[item.id] = card}
-						onClick={() => this.props.choose(this[item.id])}
+						onClick={this.props.choose !== undefined ? () => this.props.choose(this[item.id]) : null}
 					>
 						{item.title}<br />
 						Analysis: {item.analysis}<br />

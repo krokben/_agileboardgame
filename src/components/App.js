@@ -24,24 +24,24 @@ export default class App extends Component {
 
 		this.state = {
 			cards,
-      workers,
-      calendar: false,
-      actionCard: false,
-      diceScore: {
-          analysis: 0,
-          development: 0,
-          test: 0,
-          done: 0
-      },
+            workers,
+            calendar: false,
+            actionCard: false,
+            diceScore: {
+              analysis: 0,
+              development: 0,
+              test: 0,
+              done: 0
+            },
 			days,
-      calendarActions: {
-          putWorker: 0
-      },
+            calendarActions: {
+              putWorker: 0
+            },
 			showRetrospective: false,
 			retrospectives,
 			retrospectiveDiv: false,
 			retrospectiveIndex: 0,
-      score: 0
+            score: 0
 		};
 	}
 
@@ -66,11 +66,11 @@ export default class App extends Component {
 						<Status score={this.state.score} />
 					</div>
 				</div>
-								{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
+				{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
-                {this.state.actionCard ? <ActionCard days={this.state.days} isSick={this.isSick.bind(this)} playBtn={this.footer.playButton.playBtn} /> : null}
-								{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
-				<Footer hasRetrospective={this.hasRetrospective.bind(this)} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
+                {this.state.actionCard ? <ActionCard days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
+				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
+				<Footer hasRetrospective={this.hasRetrospective.bind(this)} showRetrospective={this.state.showRetrospective} actionCard={this.state.actionCard} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
 		);
@@ -117,6 +117,7 @@ export default class App extends Component {
                     title: item.title,
                     current: item.current,
                     sprint: item.sprint,
+                    actioncard: item.actioncard,
                     message: ''
                 }));
                 that.setState({days: that.state.days});
@@ -124,17 +125,17 @@ export default class App extends Component {
             .catch(function(error) {
               console.log(error);
             });
-		// axios.get('http://localhost/_agileboardgame/api/?/retrospective')
-    //     .then(function(response) {
-    //         response.data.retrospectives.map((item) => that.state.retrospectives.push({
-    //             id: item.id,
-    //             text: item.text
-    //         }));
-    //         that.setState({retrospectives: that.state.retrospectives});
-    //     })
-    //     .catch(function(error) {
-    //         console.log(error);
-    //     });
+		axios.get('http://localhost/_agileboardgame/api/?/retrospective')
+        .then(function(response) {
+            response.data.retrospectives.map((item) => that.state.retrospectives.push({
+                id: item.id,
+                text: item.text
+            }));
+            that.setState({retrospectives: that.state.retrospectives});
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
     }
 
     choose(card) {
@@ -240,6 +241,19 @@ export default class App extends Component {
         }
     }
 
+    closeActionCard() {
+        let actionCard = this.state.actionCard;
+        actionCard = false;
+        this.setState({actionCard});
+
+        if (this.state.days[5].current === 'yes') { // Action card 2
+            this.doubleTestTime();
+        } else if (this.state.days[10].current === 'yes') { // Action card 3 & 11
+            this.halfTestTime();
+            this.killCardsInPlay();
+        }
+    }
+
     countDays(day){
         const stateCopy = {...this.state};
 				stateCopy.days[day - 1].current = 'no';
@@ -261,28 +275,28 @@ export default class App extends Component {
             console.log(error);
         });
 
-        this.hasActionCard(); // Check for action card
+        this.hasActionCard(day); // Check for action card
         this.returnSickWorker(); // Check if sick worker should return today
         this.returnWorkers();
     }
 
     changeLocations() {
         this.state.cards.filter((card) => card.analysis === 0).map((x) => {
-            const stateCopy = {...this.state};
-            stateCopy.cards[x.id - 1].location = 'development';
-            this.setState(stateCopy);
+            const cards = this.state.cards;
+            cards[x.id - 1].location = 'development';
+            this.setState({cards});
             return false;
         });
         this.state.cards.filter((card) => card.development === 0).map((x) => {
-            const stateCopy = {...this.state};
-            stateCopy.cards[x.id - 1].location = 'test';
-            this.setState(stateCopy);
+            const cards = this.state.cards;
+            cards[x.id - 1].location = 'test';
+            this.setState({cards});
             return false;
         });
         this.state.cards.filter((card) => card.test === 0).map((x) => {
-            const stateCopy = {...this.state};
-            stateCopy.cards[x.id - 1].location = 'done';
-            this.setState(stateCopy);
+            const cards = this.state.cards;
+            cards[x.id - 1].location = 'done';
+            this.setState({cards});
             return false;
         });
         this.countScore();
@@ -296,7 +310,7 @@ export default class App extends Component {
 
     countScore() {
         let score = this.state.score;
-        this.state.cards.filter((card) => card.location === 'done').map((x) => {
+        this.state.cards.filter((card) => card.location === 'done').forEach((x) => {
             score += Number(x.price);
             this.setState({score});
         });
@@ -310,6 +324,27 @@ export default class App extends Component {
 			retrospectiveIndex = idx;
 			this.setState({retrospectiveIndex});
 		}
+
+    doubleTestTime() {
+        const cards = this.state.cards;
+        cards.map((x) => x.test *= 2);
+        this.setState({cards});
+    }
+
+    halfTestTime() {
+        const cards = this.state.cards;
+        cards.map((x) => x.test /= 2);
+        this.setState({cards});
+    }
+
+    killCardsInPlay() {
+        const cards = this.state.cards;
+        cards.filter((x) => x.location === 'analysis' || x.location === 'development' || x.location === 'test')
+            .map((x) => x.location = 'dead');
+        this.setState({cards});
+
+        // add axios here to move cards' locations to 'dead'
+    }
 
     returnWorkers() {
         const workers = this.state.workers;
@@ -341,16 +376,16 @@ export default class App extends Component {
         }
     }
 
-    hasActionCard() {
-        if (this.state.days[2].current === 'yes') {
-            const stateCopy = {...this.state};
-            stateCopy.actionCard = true;
-            this.setState(stateCopy);
+    hasActionCard(day) {
+        if (this.state.days[day].current === 'yes' && this.state.days[day].actioncard === 'yes') {
+            let actionCard = this.state.actionCard;
+            actionCard = true;
+            this.setState({actionCard});
         } else {
             if (this.state.actionCard) {
-                const stateCopy = {...this.state};
-                stateCopy.actionCard = false;
-                this.setState(stateCopy);
+                let actionCard = this.state.actionCard;
+                actionCard = false;
+                this.setState({actionCard});
             }
         }
     }
