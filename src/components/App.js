@@ -13,6 +13,7 @@ import Calendar from './Calendar';
 import ActionCard from './ActionCard';
 import Retrospective from './Retrospective';
 import Retrospectives from './Retrospectives';
+import Admin from './Admin';
 
 const retrospectives = [];
 const days = [];
@@ -23,6 +24,7 @@ export default class App extends Component {
 		super(props);
 
 		this.state = {
+            admin: true,
 			cards,
             workers,
             calendar: false,
@@ -70,11 +72,16 @@ export default class App extends Component {
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
                 {this.state.actionCard ? <ActionCard days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
 				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
+                {this.state.admin ? <Admin cards={this.state.cards} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} /> : null}
 				<Footer hasRetrospective={this.hasRetrospective.bind(this)} showRetrospective={this.state.showRetrospective} actionCard={this.state.actionCard} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
 		);
 	}
+
+    adminEdit(id) {
+        console.log(this.admin.title);
+    }
 
 	fetchData() {
         const that = this;

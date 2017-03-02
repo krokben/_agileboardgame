@@ -27,6 +27,79 @@ body {
 \*--------------------------------------*/
 
 /*--------------------------------------*\
+	Admin
+\*--------------------------------------*/
+
+.Admin {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+	background: #2c3e50;
+	color: #fff;
+	font-size: 24px;
+	overflow-y: scroll;
+	position: absolute;
+	text-align: center;
+}
+
+.Admin_table {
+	margin: 0 auto;
+	text-align: center;
+	width: 60%
+}
+
+.Admin_table tr:nth-child(even) {
+	background: #34495e;
+}
+
+.Admin_table tr:hover {
+	background: #5E84AA;
+}
+
+.Admin_table td {
+	border: 1px solid #000;
+}
+
+.Admin_edit {
+	background: #6D98C4;
+}
+
+.Admin_save {
+	background: #27ae60;
+}
+
+.Admin_delete {
+	background: #733477;
+}
+
+.Admin_edit:hover {
+	background: #7FFBF8;
+	color: #000;
+	cursor: pointer;
+}
+
+.Admin_save:hover {
+	background: #38FA8A;
+	color: #000;
+	cursor: pointer;
+}
+
+.Admin_delete:hover {
+	background: #EE6CF7;
+	color: #000;
+	cursor: pointer;
+}
+
+.Admin input {
+	background: none;
+	border: none;
+	color: #fff;
+	font-size: 24px;
+	width: 100%;
+}
+
+/*--------------------------------------*\
 	ActionCard
 \*--------------------------------------*/
 
