@@ -33,15 +33,15 @@ export default class Admin extends Component {
 
 	renderCards() {
 		return this.props.cards.filter((x) => x.type === 'userstory').map(x => {
-			if (this.state.editing === x.title.match(/\d+/)[0]) {
+			if (this.state.editing === x.id) {
 				return (
-					<tr key={x.title.match(/\d+/)[0]}>
-						<td><input type="text" defaultValue={x.title} ref={(title) => this.title = title} /></td>
+					<tr key={x.id}>
+						<td ref={(title) => this.title = title}>{x.title}</td>
 						<td><input type="text" defaultValue={x.price} ref={(price) => this.price = price} /></td>
 						<td><input type="text" defaultValue={x.analysis} ref={(analysis) => this.analysis = analysis} /></td>
 						<td><input type="text" defaultValue={x.development} ref={(development) => this.development = development} /></td>
 						<td><input type="text" defaultValue={x.test} ref={(test) => this.test = test} /></td>
-						{this.state.saving === x.title.match(/\d+/)[0] ? <td className="Admin_save" onClick={() => this.handleSave(x.title.match(/\d+/)[0])}>Save</td> : <td className="Admin_edit" onClick={() => this.handleEdit (x.title.match(/\d+/)[0])}>Edit</td>}
+						{this.state.saving === x.id ? <td className="Admin_save" onClick={() => this.handleSave(x.title.match(/\d+/)[0])}>Save</td> : <td className="Admin_edit" onClick={() => this.handleEdit (x.title.match(/\d+/)[0])}>Edit</td>}
 						<td className="Admin_delete">Delete</td>
 					</tr>
 				);
@@ -53,7 +53,7 @@ export default class Admin extends Component {
 						<td>{x.analysis}</td>
 						<td>{x.development}</td>
 						<td>{x.test}</td>
-						{this.state.saving === x.title.match(/\d+/)[0] ? <td className="Admin_save" onClick={() => this.handleSave(x.title.match(/\d+/)[0])}>Save</td> : <td className="Admin_edit" onClick={() => this.handleEdit (x.title.match(/\d+/)[0])}>Edit</td>}
+						{this.state.saving === x.id ? <td className="Admin_save" onClick={() => this.handleSave(x.title.match(/\d+/)[0])}>Save</td> : <td className="Admin_edit" onClick={() => this.handleEdit (x.title.match(/\d+/)[0])}>Edit</td>}
 						<td className="Admin_delete">Delete</td>
 					</tr>
 				);
@@ -61,16 +61,22 @@ export default class Admin extends Component {
 		});
 	}
 
-	handleEdit(idx) {
+	handleEdit(id) {
 		let editing = this.state.editing;
-		editing = idx;
+		editing = id;
 		this.setState({editing});
 		let saving = this.state.saving;
-		saving = idx;
+		saving = id;
 		this.setState({saving});
 	}
 
-	handleSave(idx) {
-		
+	handleSave(id) {
+		let editing = this.state.editing;
+		editing = '0';
+		this.setState({editing});
+		let saving = this.state.saving;
+		saving = '0';
+		this.setState({saving});
+		this.props.adminEdit(id);
 	}
 }

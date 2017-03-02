@@ -80,7 +80,13 @@ export default class App extends Component {
 	}
 
     adminEdit(id) {
-        console.log(this.admin.title);
+        const cards = this.state.cards;
+        cards[id].title = this.admin.title.innerHTML;
+        cards[id].price = this.admin.price.value;
+        cards[id].analysis = this.admin.analysis.value;
+        cards[id].development = this.admin.development.value;
+        cards[id].test = this.admin.test.value;
+        this.setState({cards});
     }
 
 	fetchData() {
