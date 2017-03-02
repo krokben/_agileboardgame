@@ -95,6 +95,12 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 			$input = array_keys($input);
 			$input = json_decode($input[0]);
 
+			$title = mysqli_real_escape_string($db, $input->title);
+			$price = mysqli_real_escape_string($db, $input->price);
+			$analysis = mysqli_real_escape_string($db, $input->analysis);
+			$development = mysqli_real_escape_string($db, $input->development);
+			$test = mysqli_real_escape_string($db, $input->test);
+			$type = mysqli_real_escape_string($db, $input->type);
 			$location = mysqli_real_escape_string($db, $input->location);
 
 			// foreach($input as $k => $v){
@@ -103,8 +109,19 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 
 			// $sql_params = implode($sqlparts, ",")
 
+			if(isset($title)) {
+				$query = "
+					UPDATE cards 
+					SET title = '$title', price = '$price',
+					analysis = '$analysis', development = '$development',
+					test = '$test', type = '$type',
+					location = '$location'
+					WHERE id = $this->id
+				";
 
-			if(isset($location)) {
+				mysqli_query($db, $query);
+			}
+			else if(isset($location)) {
 				$query = "
 					UPDATE cards 
 					SET location = '$location'

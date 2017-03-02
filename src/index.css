@@ -73,6 +73,10 @@ body {
 	background: #733477;
 }
 
+.Admin_sure {
+	background: #c0392b;
+}
+
 .Admin_edit:hover {
 	background: #7FFBF8;
 	color: #000;
@@ -87,6 +91,12 @@ body {
 
 .Admin_delete:hover {
 	background: #EE6CF7;
+	color: #000;
+	cursor: pointer;
+}
+
+.Admin_sure:hover {
+	background: #e74c3c;
 	color: #000;
 	cursor: pointer;
 }

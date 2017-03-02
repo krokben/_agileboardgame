@@ -80,42 +80,82 @@ export default class App extends Component {
 	}
 
     adminDelete(id) {
-        // console.log(id);
-        // const cards = this.state.cards;
-        // cards.splice(id - 1, 1);
-        // this.setState({cards});
+        const that = this;
+        axios({
+            method: 'delete',
+            url: 'http://localhost/_agileboardgame/api/?/card/' + id,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+        .then(function(response) {
+            axios.get('http://localhost/_agileboardgame/api/?/card')
+            .then(function(response) {
+                let cards = that.state.cards;
+                cards = [];
+                response.data.cards.map((item) => cards.push({
+                    id: item.id,
+                    index: item.index,
+                    type: item.type,
+                    title: item.title,
+                    price: item.price,
+                    analysis: item.analysis,
+                    development: item.development,
+                    test: item.test,
+                    location: item.location
+                }));
+                that.setState({cards});
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+            that.setState({cards});
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
     }
 
     adminEdit(id) {
-        // const cards = this.state.cards;
-        // cards[id - 1].title = this.admin.title.innerHTML;
-        // cards[id - 1].price = this.admin.price.value;
-        // cards[id - 1].analysis = this.admin.analysis.value;
-        // cards[id - 1].development = this.admin.development.value;
-        // cards[id - 1].test = this.admin.test.value;
-        // this.setState({cards});
-
-        // add axios here
-        // axios({
-        //     method: 'put',
-        //     url: 'http://localhost/_agileboardgame/api/?/card/' + id,
-        //     data: {
-        //         title: this.admin.title.innerHTML,
-        //         price: this.admin.price.value,
-        //         analysis: this.admin.analysis.value,
-        //         development: this.admin.development.value,
-        //         test: this.admin.test.value,
-        //         type: 'userstory',
-        //         location: 'cardpool'
-        //     },
-        //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        // })
-        // .then(function(response) {
-        //     console.log(response);
-        // })
-        // .catch(function(error) {
-        //     console.log(error);
-        // });
+        const that = this;
+        axios({
+            method: 'put',
+            url: 'http://localhost/_agileboardgame/api/?/card/' + id,
+            data: {
+                title: that.admin.title.innerHTML,
+                price: that.admin.price.value,
+                analysis: that.admin.analysis.value,
+                development: that.admin.development.value,
+                test: that.admin.test.value,
+                type: 'userstory',
+                location: 'cardpool'
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+        .then(function(response) {
+            axios.get('http://localhost/_agileboardgame/api/?/card')
+            .then(function(response) {
+                let cards = that.state.cards;
+                cards = [];
+                response.data.cards.map((item) => cards.push({
+                    id: item.id,
+                    index: item.index,
+                    type: item.type,
+                    title: item.title,
+                    price: item.price,
+                    analysis: item.analysis,
+                    development: item.development,
+                    test: item.test,
+                    location: item.location
+                }));
+                that.setState({cards});
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+            that.setState({cards});
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
     }
 
 	fetchData() {
