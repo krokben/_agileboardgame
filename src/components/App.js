@@ -427,6 +427,7 @@ export default class App extends Component {
         // this.subtractScore(result);
     }
 
+
 		saveRetrospective(val) {
 			const sprint = this.state.days.filter((x) => x.current === 'yes')[0].sprint
 			const stateCopy = {...this.state};
@@ -455,16 +456,21 @@ export default class App extends Component {
 
     subtractScore(score, loc) {
         const cards = this.state.cards.filter((card) => card.location === loc);
-        let diceScore = score;
+				var diceScore = score;
         cards.map((card) => {
             const initialPoints = card[loc];
             const initialScore = diceScore;
             let result = card[loc] - diceScore;
             if (result <= 0) {
                 diceScore = initialScore - initialPoints; // turn negative number into positive on score
-                result = 0; // make card.analysis 0
+								result = 0; // make card.analysis 0
                 console.log('score: ' + diceScore);
             }
+						else if (result > 0) {
+								diceScore = 0;
+						}
+
+						console.log(card);
             const stateCopy = {...this.state};
             stateCopy.cards[card.id - 1][loc] = result;
             this.setState(stateCopy);
