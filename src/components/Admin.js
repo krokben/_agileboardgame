@@ -13,6 +13,7 @@ export default class Admin extends Component {
 		return (
 			<div className="Admin">
 				<h1>Agile Board Game - Admin</h1>
+				<button onClick={this.props.showAdmin}>Close</button>
 				<table className="Admin_table">
 					<thead>
 						<tr>
@@ -47,7 +48,7 @@ export default class Admin extends Component {
 				);
 			} else {
 				return (
-					<tr key={x.title.match(/\d+/)[0]}>
+					<tr key={x.id}>
 						<td>{x.title}</td>
 						<td>{x.price}</td>
 						<td>{x.analysis}</td>

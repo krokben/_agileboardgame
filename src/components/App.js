@@ -24,7 +24,7 @@ export default class App extends Component {
 		super(props);
 
 		this.state = {
-            admin: true,
+            admin: false,
 			cards,
             workers,
             calendar: false,
@@ -54,7 +54,7 @@ export default class App extends Component {
 	render() {
 		return (
 			<div>
-				<Header days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)}/>
+				<Header days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)} showAdmin={this.showAdmin.bind(this)} />
 				<div className="App_board">
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
@@ -72,7 +72,7 @@ export default class App extends Component {
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
                 {this.state.actionCard ? <ActionCard days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
 				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
-                {this.state.admin ? <Admin cards={this.state.cards} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} /> : null}
+                {this.state.admin ? <Admin cards={this.state.cards} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
 				<Footer hasRetrospective={this.hasRetrospective.bind(this)} showRetrospective={this.state.showRetrospective} actionCard={this.state.actionCard} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
@@ -81,11 +81,11 @@ export default class App extends Component {
 
     adminEdit(id) {
         const cards = this.state.cards;
-        cards[id].title = this.admin.title.innerHTML;
-        cards[id].price = this.admin.price.value;
-        cards[id].analysis = this.admin.analysis.value;
-        cards[id].development = this.admin.development.value;
-        cards[id].test = this.admin.test.value;
+        cards[id - 1].title = this.admin.title.innerHTML;
+        cards[id - 1].price = this.admin.price.value;
+        cards[id - 1].analysis = this.admin.analysis.value;
+        cards[id - 1].development = this.admin.development.value;
+        cards[id - 1].test = this.admin.test.value;
         this.setState({cards});
     }
 
@@ -434,31 +434,37 @@ export default class App extends Component {
     }
 
 
-		saveRetrospective(val) {
-			const sprint = this.state.days.filter((x) => x.current === 'yes')[0].sprint
-			const stateCopy = {...this.state};
-			stateCopy.retrospectives.push({id:sprint, text: val});
-			this.setState(stateCopy);
-			console.log(val);
-			axios({
-					method: 'post',
-					url: 'http://localhost/_agileboardgame/api/?/retrospective',
-					data: {
-							text: val
-					},
-					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-			})
-			.then(function(response) {
-					console.log(response);
-			})
-			.catch(function(error) {
-					console.log(error);
-			});
-			// Close window
-			let showRetrospective = this.state.showRetrospective;
-			showRetrospective = !showRetrospective;
-			this.setState({showRetrospective});
-		}
+	saveRetrospective(val) {
+		const sprint = this.state.days.filter((x) => x.current === 'yes')[0].sprint
+		const stateCopy = {...this.state};
+		stateCopy.retrospectives.push({id:sprint, text: val});
+		this.setState(stateCopy);
+		console.log(val);
+		axios({
+				method: 'post',
+				url: 'http://localhost/_agileboardgame/api/?/retrospective',
+				data: {
+						text: val
+				},
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		})
+		.then(function(response) {
+				console.log(response);
+		})
+		.catch(function(error) {
+				console.log(error);
+		});
+		// Close window
+		let showRetrospective = this.state.showRetrospective;
+		showRetrospective = !showRetrospective;
+		this.setState({showRetrospective});
+	}
+
+    showAdmin() {
+        let admin = this.state.admin;
+        admin = !admin;
+        this.setState({admin});
+    }
 
     subtractScore(score, loc) {
         const cards = this.state.cards.filter((card) => card.location === loc);
