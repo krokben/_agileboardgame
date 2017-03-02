@@ -72,21 +72,50 @@ export default class App extends Component {
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
                 {this.state.actionCard ? <ActionCard days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
 				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
-                {this.state.admin ? <Admin cards={this.state.cards} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
+                {this.state.admin ? <Admin cards={this.state.cards} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
 				<Footer hasRetrospective={this.hasRetrospective.bind(this)} showRetrospective={this.state.showRetrospective} actionCard={this.state.actionCard} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
 		);
 	}
 
+    adminDelete(id) {
+        // console.log(id);
+        // const cards = this.state.cards;
+        // cards.splice(id - 1, 1);
+        // this.setState({cards});
+    }
+
     adminEdit(id) {
-        const cards = this.state.cards;
-        cards[id - 1].title = this.admin.title.innerHTML;
-        cards[id - 1].price = this.admin.price.value;
-        cards[id - 1].analysis = this.admin.analysis.value;
-        cards[id - 1].development = this.admin.development.value;
-        cards[id - 1].test = this.admin.test.value;
-        this.setState({cards});
+        // const cards = this.state.cards;
+        // cards[id - 1].title = this.admin.title.innerHTML;
+        // cards[id - 1].price = this.admin.price.value;
+        // cards[id - 1].analysis = this.admin.analysis.value;
+        // cards[id - 1].development = this.admin.development.value;
+        // cards[id - 1].test = this.admin.test.value;
+        // this.setState({cards});
+
+        // add axios here
+        // axios({
+        //     method: 'put',
+        //     url: 'http://localhost/_agileboardgame/api/?/card/' + id,
+        //     data: {
+        //         title: this.admin.title.innerHTML,
+        //         price: this.admin.price.value,
+        //         analysis: this.admin.analysis.value,
+        //         development: this.admin.development.value,
+        //         test: this.admin.test.value,
+        //         type: 'userstory',
+        //         location: 'cardpool'
+        //     },
+        //     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        // })
+        // .then(function(response) {
+        //     console.log(response);
+        // })
+        // .catch(function(error) {
+        //     console.log(error);
+        // });
     }
 
 	fetchData() {

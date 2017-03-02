@@ -99,50 +99,51 @@ CREATE TABLE `days` (
   `title` int(1) unsigned NOT NULL,
   `current` varchar(20) COLLATE utf8_bin NOT NULL,
   `sprint` int(1) unsigned NOT NULL,
+  `actioncard` varchar(20) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO `days` (`id`, `title`, `current`, `sprint`) VALUES
-(1,	1,	'yes',	1),
-(2,	2,	'no',	1),
-(3,	3,	'no',	1),
-(4,	4,	'no',	1),
-(5,	5,	'no',	1),
-(6,	1,	'no',	2),
-(7,	2,	'no',	2),
-(8,	3,	'no',	2),
-(9,	4,	'no',	2),
-(10,	5,	'no',	2),
-(11,	1,	'no',	3),
-(12,	2,	'no',	3),
-(13,	3,	'no',	3),
-(14,	4,	'no',	3),
-(15,	5,	'no',	3),
-(16,	1,	'no',	4),
-(17,	2,	'no',	4),
-(18,	3,	'no',	4),
-(19,	4,	'no',	4),
-(20,	5,	'no',	4),
-(21,	1,	'no',	5),
-(22,	2,	'no',	5),
-(23,	3,	'no',	5),
-(24,	4,	'no',	5),
-(25,	5,	'no',	5),
-(26,	1,	'no',	6),
-(27,	2,	'no',	6),
-(28,	3,	'no',	6),
-(29,	4,	'no',	6),
-(30,	5,	'no',	6),
-(31,	1,	'no',	7),
-(32,	2,	'no',	7),
-(33,	3,	'no',	7),
-(34,	4,	'no',	7),
-(35,	5,	'no',	7),
-(36,	1,	'no',	8),
-(37,	2,	'no',	8),
-(38,	3,	'no',	8),
-(39,	4,	'no',	8),
-(40,	5,	'no',	8);
+INSERT INTO `days` (`id`, `title`, `current`, `sprint`, `actioncard`) VALUES
+(1,	1,	'yes',	1,	'no'),
+(2,	2,	'no',	1,	'no'),
+(3,	3,	'no',	1,	'yes'),
+(4,	4,	'no',	1,	'no'),
+(5,	5,	'no',	1,	'no'),
+(6,	1,	'no',	2,	'yes'),
+(7,	2,	'no',	2,	'no'),
+(8,	3,	'no',	2,	'no'),
+(9,	4,	'no',	2,	'no'),
+(10,	5,	'no',	2,	'no'),
+(11,	1,	'no',	3,	'yes'),
+(12,	2,	'no',	3,	'no'),
+(13,	3,	'no',	3,	'no'),
+(14,	4,	'no',	3,	'no'),
+(15,	5,	'no',	3,	'no'),
+(16,	1,	'no',	4,	'no'),
+(17,	2,	'no',	4,	'no'),
+(18,	3,	'no',	4,	'no'),
+(19,	4,	'no',	4,	'no'),
+(20,	5,	'no',	4,	'no'),
+(21,	1,	'no',	5,	'no'),
+(22,	2,	'no',	5,	'no'),
+(23,	3,	'no',	5,	'no'),
+(24,	4,	'no',	5,	'no'),
+(25,	5,	'no',	5,	'no'),
+(26,	1,	'no',	6,	'no'),
+(27,	2,	'no',	6,	'no'),
+(28,	3,	'no',	6,	'no'),
+(29,	4,	'no',	6,	'no'),
+(30,	5,	'no',	6,	'no'),
+(31,	1,	'no',	7,	'no'),
+(32,	2,	'no',	7,	'no'),
+(33,	3,	'no',	7,	'no'),
+(34,	4,	'no',	7,	'no'),
+(35,	5,	'no',	7,	'no'),
+(36,	1,	'no',	8,	'no'),
+(37,	2,	'no',	8,	'no'),
+(38,	3,	'no',	8,	'no'),
+(39,	4,	'no',	8,	'no'),
+(40,	5,	'no',	8,	'no');
 
 DROP TABLE IF EXISTS `default_cards`;
 CREATE TABLE `default_cards` (
@@ -238,50 +239,59 @@ CREATE TABLE `default_days` (
   `title` int(1) unsigned NOT NULL,
   `current` varchar(20) COLLATE utf8_bin NOT NULL,
   `sprint` int(1) unsigned NOT NULL,
+  `actioncard` varchar(20) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO `default_days` (`id`, `title`, `current`, `sprint`) VALUES
-(1,	1,	'yes',	1),
-(2,	2,	'no',	1),
-(3,	3,	'no',	1),
-(4,	4,	'no',	1),
-(5,	5,	'no',	1),
-(6,	1,	'no',	2),
-(7,	2,	'no',	2),
-(8,	3,	'no',	2),
-(9,	4,	'no',	2),
-(10,	5,	'no',	2),
-(11,	1,	'no',	3),
-(12,	2,	'no',	3),
-(13,	3,	'no',	3),
-(14,	4,	'no',	3),
-(15,	5,	'no',	3),
-(16,	1,	'no',	4),
-(17,	2,	'no',	4),
-(18,	3,	'no',	4),
-(19,	4,	'no',	4),
-(20,	5,	'no',	4),
-(21,	1,	'no',	5),
-(22,	2,	'no',	5),
-(23,	3,	'no',	5),
-(24,	4,	'no',	5),
-(25,	5,	'no',	5),
-(26,	1,	'no',	6),
-(27,	2,	'no',	6),
-(28,	3,	'no',	6),
-(29,	4,	'no',	6),
-(30,	5,	'no',	6),
-(31,	1,	'no',	7),
-(32,	2,	'no',	7),
-(33,	3,	'no',	7),
-(34,	4,	'no',	7),
-(35,	5,	'no',	7),
-(36,	1,	'no',	8),
-(37,	2,	'no',	8),
-(38,	3,	'no',	8),
-(39,	4,	'no',	8),
-(40,	5,	'no',	8);
+INSERT INTO `default_days` (`id`, `title`, `current`, `sprint`, `actioncard`) VALUES
+(1,	1,	'yes',	1,	'no'),
+(2,	2,	'no',	1,	'no'),
+(3,	3,	'no',	1,	'yes'),
+(4,	4,	'no',	1,	'no'),
+(5,	5,	'no',	1,	'no'),
+(6,	1,	'no',	2,	'yes'),
+(7,	2,	'no',	2,	'no'),
+(8,	3,	'no',	2,	'no'),
+(9,	4,	'no',	2,	'no'),
+(10,	5,	'no',	2,	'no'),
+(11,	1,	'no',	3,	'yes'),
+(12,	2,	'no',	3,	'no'),
+(13,	3,	'no',	3,	'no'),
+(14,	4,	'no',	3,	'no'),
+(15,	5,	'no',	3,	'no'),
+(16,	1,	'no',	4,	'no'),
+(17,	2,	'no',	4,	'no'),
+(18,	3,	'no',	4,	'no'),
+(19,	4,	'no',	4,	'no'),
+(20,	5,	'no',	4,	'no'),
+(21,	1,	'no',	5,	'no'),
+(22,	2,	'no',	5,	'no'),
+(23,	3,	'no',	5,	'no'),
+(24,	4,	'no',	5,	'no'),
+(25,	5,	'no',	5,	'no'),
+(26,	1,	'no',	6,	'no'),
+(27,	2,	'no',	6,	'no'),
+(28,	3,	'no',	6,	'no'),
+(29,	4,	'no',	6,	'no'),
+(30,	5,	'no',	6,	'no'),
+(31,	1,	'no',	7,	'no'),
+(32,	2,	'no',	7,	'no'),
+(33,	3,	'no',	7,	'no'),
+(34,	4,	'no',	7,	'no'),
+(35,	5,	'no',	7,	'no'),
+(36,	1,	'no',	8,	'no'),
+(37,	2,	'no',	8,	'no'),
+(38,	3,	'no',	8,	'no'),
+(39,	4,	'no',	8,	'no'),
+(40,	5,	'no',	8,	'no');
+
+DROP TABLE IF EXISTS `default_retrospectives`;
+CREATE TABLE `default_retrospectives` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `text` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 
 DROP TABLE IF EXISTS `default_workers`;
 CREATE TABLE `default_workers` (
@@ -301,6 +311,14 @@ INSERT INTO `default_workers` (`id`, `index`, `type`, `location`, `sick`) VALUES
 (5,	'worker5',	'developer',	'header',	0),
 (6,	'worker6',	'tester',	'header',	0);
 
+DROP TABLE IF EXISTS `retrospectives`;
+CREATE TABLE `retrospectives` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `text` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
 DROP TABLE IF EXISTS `workers`;
 CREATE TABLE `workers` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -319,4 +337,4 @@ INSERT INTO `workers` (`id`, `index`, `type`, `location`, `sick`) VALUES
 (5,	'worker5',	'developer',	'header',	0),
 (6,	'worker6',	'tester',	'header',	0);
 
--- 2017-02-27 09:03:26
+-- 2017-03-02 14:55:48
