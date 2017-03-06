@@ -321,6 +321,25 @@ body {
 \*--------------------------------------*/
 
 /*--------------------------------------*\
+	Login
+\*--------------------------------------*/
+
+.Login {
+	background: #95a5a6;
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 0;
+	z-index: 300;
+}
+
+.Login h1 {
+	font-family: 'Slackey', cursive;
+}
+
+/*--------------------------------------*\
 	MaintenanceCards
 \*--------------------------------------*/
 

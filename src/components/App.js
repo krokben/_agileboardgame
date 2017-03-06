@@ -14,7 +14,9 @@ import ActionCard from './ActionCard';
 import Retrospective from './Retrospective';
 import Retrospectives from './Retrospectives';
 import Admin from './Admin';
+import Login from './Login';
 
+const gamestate = [];
 const retrospectives = [];
 const days = [];
 const cards = [];
@@ -24,6 +26,9 @@ export default class App extends Component {
 		super(props);
 
 		this.state = {
+            login: true,
+            game: '0',
+            gamestate,
             admin: false,
 			cards,
             workers,
@@ -48,13 +53,14 @@ export default class App extends Component {
 	}
 
 	componentDidMount() {
-		this.fetchData();
+		this.fetchData(); // this also runs this.checkGameStatus()
 	}
 
 	render() {
 		return (
 			<div>
-				<Header days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)} showAdmin={this.showAdmin.bind(this)} />
+                {this.state.login ? <Login login={this.login.bind(this)} ref={(loginPage) => this.loginPage = loginPage} /> : null}
+				<Header game={this.state.game} days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)} showAdmin={this.showAdmin.bind(this)} />
 				<div className="App_board">
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
@@ -72,7 +78,7 @@ export default class App extends Component {
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
                 {this.state.actionCard ? <ActionCard days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
 				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
-                {this.state.admin ? <Admin cards={this.state.cards} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
+                {this.state.admin && this.state.game === '1' ? <Admin cards={this.state.cards} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
 				<Footer hasRetrospective={this.hasRetrospective.bind(this)} showRetrospective={this.state.showRetrospective} actionCard={this.state.actionCard} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
@@ -218,9 +224,116 @@ export default class App extends Component {
         .catch(function(error) {
             console.log(error);
         });
+        axios.get('http://localhost/_agileboardgame/api/?/gamestate')
+            .then(function(response) {
+                response.data.gamestate.map((item) => that.state.gamestate.push({
+                    id: item.id,
+                    game_id: item.game_id,
+                    type: item.type,
+                    type_id: item.type_id,
+                    prop: item.prop,
+                    val: item.val
+                }));
+                that.setState({gamestate: that.state.gamestate});
+                setTimeout(() => {
+                    that.checkGameStatus();
+                }, 100); // check gamestate for changes to state
+            })
+            .catch(function(error) {
+                console.log(error);
+        });
+    }
+
+    checkGameStatus() {
+        // current day
+        this.state.gamestate.filter((x) => {
+            return (
+                x.game_id === this.state.game &&
+                x.type === 'day' &&
+                x.prop === 'current'
+            )
+        }).forEach((x) => {
+            const days = this.state.days;
+            days[0].current = 'no'; // set first day to not be current
+            days[x.type_id - 1].current = x.val;
+            this.setState({days});
+        });
+        // card locations
+        this.state.gamestate.filter((x) => {
+            return (
+                x.game_id === this.state.game &&
+                x.type === 'card' &&
+                x.prop === 'location'
+            )
+        }).forEach((x) => {
+            const cards = this.state.cards;
+            cards[x.type_id - 1].location = x.val;
+            this.setState({cards});
+        });
+        // card analysis scores
+        this.state.gamestate.filter((x) => {
+            return (
+                x.game_id === this.state.game &&
+                x.type === 'card' &&
+                x.prop === 'analysis'
+            )
+        }).forEach((x) => {
+            const cards = this.state.cards;
+            cards[x.type_id - 1].analysis = x.val;
+            this.setState({cards});
+        });
+        // card development scores
+        this.state.gamestate.filter((x) => {
+            return (
+                x.game_id === this.state.game &&
+                x.type === 'card' &&
+                x.prop === 'development'
+            )
+        }).forEach((x) => {
+            const cards = this.state.cards;
+            cards[x.type_id - 1].development = x.val;
+            this.setState({cards});
+        });
+        // card test scores
+        this.state.gamestate.filter((x) => {
+            return (
+                x.game_id === this.state.game &&
+                x.type === 'card' &&
+                x.prop === 'test'
+            )
+        }).forEach((x) => {
+            const cards = this.state.cards;
+            cards[x.type_id - 1].test = x.val;
+            this.setState({cards});
+        });
+        // worker sick status
+        this.state.gamestate.filter((x) => {
+            return (
+                x.game_id === this.state.game &&
+                x.type === 'worker' &&
+                x.prop === 'sick'
+            )
+        }).forEach((x) => {
+            const workers = this.state.workers;
+            workers[x.type_id - 1].sick = x.val;
+            this.setState({workers});
+        });
+        // retrospectives
+        this.state.gamestate.filter((x) => {
+            return (
+                x.game_id === this.state.game &&
+                x.type === 'retrospective' &&
+                x.prop === 'text'
+            )
+        }).forEach((x) => {
+            const retrospectives = this.state.retrospectives;
+            retrospectives[x.type_id - 1].text = x.val;
+            this.setState({retrospectives});
+        });
     }
 
     choose(card) {
+        const that = this;
         const id = card.getAttribute('data-key');
         const thisLocation = this.state.cards[id - 1].location;
         let nextLocation;
@@ -243,11 +356,16 @@ export default class App extends Component {
             default:
                 console.log('done');
         }
+        // change clicked card's location to next location
         axios({
-            method: 'put',
-            url: 'http://localhost/_agileboardgame/api/?/card/' + id,
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
             data: {
-                location: nextLocation
+                game_id: that.state.game,
+                type: 'card',
+                type_id: id,
+                prop: 'location',
+                val: nextLocation
             },
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
@@ -258,15 +376,33 @@ export default class App extends Component {
             console.log(error);
         });
 
-        // add axios here to change next card's location as well
-
+        // change next card after clicked card's location to this location
         const stateCopy = {...this.state};
         stateCopy.cards[id - 1].location = nextLocation; // set this card's location to next location
         if (thisLocation === 'cardpool') {
             stateCopy.cards[id].location = thisLocation; // set next card's location to cardpool
+
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: Number(id) + 1,
+                prop: 'location',
+                val: thisLocation
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response) {
+                console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
         }
         this.setState(stateCopy);
-    }
+        }
 
     chooseWorker(worker) {
         let workerState = this.state.workers[worker.id - 1];
@@ -318,8 +454,6 @@ export default class App extends Component {
                     stateCopy.workers[id].active = false; // change to inactive
                     this.setState(stateCopy);
             }
-
-            // add axios here to change location of worker (or maybe not, location doesn't have to be in the database)
         }
     }
 
@@ -336,17 +470,41 @@ export default class App extends Component {
         }
     }
 
-    countDays(day){
+    countDays(day) {
+        const that = this;
         const stateCopy = {...this.state};
 				stateCopy.days[day - 1].current = 'no';
 				stateCopy.days[day].current = 'yes';
 				this.setState(stateCopy);
-
+        // change current day to not be current
         axios({
-            method: 'put',
-            url: 'http://localhost/_agileboardgame/api/?/day/' + (Number(day) + 1),
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
             data: {
-                current: 'yes'
+                game_id: that.state.game,
+                type: 'day',
+                type_id: Number(day),
+                prop: 'current',
+                val: 'no'
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+        .then(function(response) {
+            // console.log(response);
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+        // change next day to be current
+        axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'day',
+                type_id: Number(day) + 1,
+                prop: 'current',
+                val: 'yes'
             },
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
@@ -363,22 +521,83 @@ export default class App extends Component {
     }
 
     changeLocations() {
+        const that = this;
         this.state.cards.filter((card) => card.analysis === 0).map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'development';
             this.setState({cards});
+
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: x.id,
+                prop: 'location',
+                val: 'development'
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response) {
+                // console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
             return false;
         });
         this.state.cards.filter((card) => card.development === 0).map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'test';
             this.setState({cards});
+
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: x.id,
+                prop: 'location',
+                val: 'test'
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response) {
+                // console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
             return false;
         });
         this.state.cards.filter((card) => card.test === 0).map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'done';
             this.setState({cards});
+
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: x.id,
+                prop: 'location',
+                val: 'done'
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response) {
+                // console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
             return false;
         });
         this.countScore();
@@ -426,6 +645,39 @@ export default class App extends Component {
         this.setState({cards});
 
         // add axios here to move cards' locations to 'dead'
+    }
+
+    login(name, password) {
+        const that = this;
+
+        axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/game',
+            data: {
+                name: name,
+                password: password
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response) {
+                console.log(response.data.games[0]);
+                if (response.data.games[0] !== undefined) {
+                    let game = that.state.game;
+                    game = response.data.games[0].id;
+                    that.setState({game});
+
+                    let login = that.state.login;
+                    login = false;
+                    that.setState({login});
+                } else {
+                    let error = that.loginPage.state.error;
+                    error = true;
+                    that.loginPage.setState({error});
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+        });
     }
 
     returnWorkers() {
@@ -536,8 +788,10 @@ export default class App extends Component {
     }
 
     subtractScore(score, loc) {
+        const that = this;
         const cards = this.state.cards.filter((card) => card.location === loc);
-				var diceScore = score;
+		var diceScore = score;
+
         cards.map((card) => {
             const initialPoints = card[loc];
             const initialScore = diceScore;
@@ -546,18 +800,33 @@ export default class App extends Component {
                 diceScore = initialScore - initialPoints; // turn negative number into positive on score
 								result = 0; // make card.analysis 0
                 console.log('score: ' + diceScore);
-            }
-						else if (result > 0) {
-								diceScore = 0;
-						}
+            } else if (result > 0) {
+					diceScore = 0;
+			}
 
-						console.log(card);
             const stateCopy = {...this.state};
             stateCopy.cards[card.id - 1][loc] = result;
             this.setState(stateCopy);
 
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: card.id,
+                prop: loc,
+                val: result
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response) {
+                // console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
             return false;
-            // add axios here to change score
         });
     }
     showCalendar() {

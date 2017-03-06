@@ -311,6 +311,107 @@ INSERT INTO `default_workers` (`id`, `index`, `type`, `location`, `sick`) VALUES
 (5,	'worker5',	'developer',	'header',	0),
 (6,	'worker6',	'tester',	'header',	0);
 
+DROP TABLE IF EXISTS `games`;
+CREATE TABLE `games` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_bin NOT NULL,
+  `password` varchar(50) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `games` (`id`, `name`, `password`) VALUES
+(1,	'admin',	'admin'),
+(2,	'laban',	'ghost');
+
+DROP TABLE IF EXISTS `gamestate`;
+CREATE TABLE `gamestate` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `game_id` int(11) NOT NULL,
+  `type` varchar(200) COLLATE utf8_bin NOT NULL,
+  `type_id` int(10) unsigned NOT NULL,
+  `prop` varchar(200) COLLATE utf8_bin NOT NULL,
+  `val` varchar(200) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `gamestate` (`id`, `game_id`, `type`, `type_id`, `prop`, `val`) VALUES
+(142,	1,	'card',	1,	'location',	'backlog'),
+(143,	1,	'card',	2,	'location',	'cardpool'),
+(144,	1,	'card',	2,	'location',	'backlog'),
+(145,	1,	'card',	3,	'location',	'cardpool'),
+(146,	1,	'card',	68,	'location',	'backlog'),
+(147,	1,	'card',	69,	'location',	'cardpool'),
+(148,	1,	'card',	69,	'location',	'backlog'),
+(149,	1,	'card',	70,	'location',	'cardpool'),
+(150,	1,	'card',	61,	'location',	'backlog'),
+(151,	1,	'card',	62,	'location',	'cardpool'),
+(152,	1,	'card',	62,	'location',	'backlog'),
+(153,	1,	'card',	63,	'location',	'cardpool'),
+(154,	1,	'card',	1,	'location',	'analysis'),
+(155,	1,	'card',	2,	'location',	'analysis'),
+(156,	1,	'day',	2,	'current',	'yes'),
+(157,	1,	'card',	1,	'analysis',	'0'),
+(158,	1,	'card',	2,	'analysis',	'0'),
+(159,	1,	'card',	2,	'location',	'development'),
+(160,	1,	'day',	1,	'current',	'no'),
+(161,	1,	'card',	1,	'location',	'development'),
+(162,	1,	'card',	68,	'location',	'analysis'),
+(163,	1,	'card',	1,	'development',	'7'),
+(164,	1,	'card',	68,	'analysis',	'1'),
+(165,	1,	'card',	2,	'development',	'4'),
+(166,	1,	'day',	2,	'current',	'no'),
+(167,	1,	'card',	1,	'location',	'development'),
+(168,	1,	'day',	3,	'current',	'yes'),
+(169,	1,	'card',	2,	'location',	'development'),
+(170,	1,	'card',	68,	'analysis',	'1'),
+(171,	1,	'card',	1,	'development',	'0'),
+(172,	1,	'card',	2,	'development',	'2'),
+(173,	1,	'card',	1,	'location',	'development'),
+(174,	1,	'day',	4,	'current',	'yes'),
+(175,	1,	'day',	3,	'current',	'no'),
+(176,	1,	'card',	1,	'location',	'test'),
+(177,	1,	'card',	2,	'location',	'development'),
+(178,	1,	'card',	68,	'analysis',	'1'),
+(179,	1,	'card',	2,	'development',	'2'),
+(180,	1,	'card',	1,	'test',	'0'),
+(181,	1,	'day',	4,	'current',	'no'),
+(182,	1,	'day',	5,	'current',	'yes'),
+(183,	1,	'card',	1,	'location',	'development'),
+(184,	1,	'card',	2,	'location',	'development'),
+(185,	1,	'card',	1,	'location',	'test'),
+(186,	1,	'card',	1,	'location',	'done'),
+(187,	1,	'card',	68,	'analysis',	'1'),
+(188,	1,	'card',	2,	'development',	'1'),
+(189,	1,	'day',	5,	'current',	'no'),
+(190,	1,	'card',	2,	'location',	'development'),
+(191,	1,	'card',	1,	'location',	'development'),
+(192,	1,	'day',	6,	'current',	'yes'),
+(193,	1,	'card',	1,	'location',	'test'),
+(194,	1,	'card',	1,	'location',	'done'),
+(195,	1,	'card',	2,	'development',	'0'),
+(196,	1,	'card',	68,	'analysis',	'1'),
+(197,	1,	'day',	6,	'current',	'no'),
+(198,	1,	'day',	7,	'current',	'yes'),
+(199,	1,	'card',	1,	'location',	'development'),
+(200,	1,	'card',	2,	'location',	'development'),
+(201,	1,	'card',	1,	'location',	'test'),
+(202,	1,	'card',	2,	'location',	'test'),
+(203,	1,	'card',	1,	'location',	'done'),
+(204,	1,	'card',	68,	'analysis',	'0'),
+(205,	1,	'card',	2,	'test',	'14'),
+(206,	1,	'day',	7,	'current',	'no'),
+(207,	1,	'day',	8,	'current',	'yes'),
+(208,	1,	'card',	1,	'location',	'development'),
+(209,	1,	'card',	2,	'location',	'development'),
+(210,	1,	'card',	68,	'location',	'development'),
+(211,	1,	'card',	1,	'location',	'test'),
+(212,	1,	'card',	1,	'location',	'done'),
+(213,	1,	'card',	2,	'location',	'test'),
+(214,	1,	'card',	69,	'location',	'analysis'),
+(215,	1,	'card',	3,	'location',	'backlog'),
+(216,	1,	'card',	4,	'location',	'cardpool'),
+(217,	1,	'card',	3,	'location',	'analysis');
+
 DROP TABLE IF EXISTS `retrospectives`;
 CREATE TABLE `retrospectives` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -318,6 +419,8 @@ CREATE TABLE `retrospectives` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+INSERT INTO `retrospectives` (`id`, `text`) VALUES
+(1,	'afasf');
 
 DROP TABLE IF EXISTS `workers`;
 CREATE TABLE `workers` (
@@ -337,4 +440,4 @@ INSERT INTO `workers` (`id`, `index`, `type`, `location`, `sick`) VALUES
 (5,	'worker5',	'developer',	'header',	0),
 (6,	'worker6',	'tester',	'header',	0);
 
--- 2017-03-02 14:55:48
+-- 2017-03-06 15:03:09
