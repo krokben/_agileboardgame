@@ -4,7 +4,7 @@ export default class Status extends Component {
 	render() {
 		return (
 			<div>
-				Status
+				<div className="Status_score">{this.props.score}</div>
 			</div>
 		);
 	}

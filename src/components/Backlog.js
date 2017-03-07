@@ -8,10 +8,10 @@ export default class Backlog extends Component {
 		return (
 			<div className="Analysis_boardColumn">
 				<div className="Analysis_diceHolder">
-					Dices
+					Empty
 				</div>
 				<div className="Analysis_cardHolder">
-					Backlog
+					<h4>Backlog</h4>
 					<UserStories location="backlog" cards={this.props.cards} choose={this.props.choose} />
 					<MaintenanceCards location="backlog" cards={this.props.cards} choose={this.props.choose} />
 					<DefectCards location="backlog" cards={this.props.cards} choose={this.props.choose} />

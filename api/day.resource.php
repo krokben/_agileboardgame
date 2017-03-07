@@ -1,16 +1,16 @@
 <?php
-# 
+#
 # Den här klassen ska köras om vi anropat resursen user i vårt API genom /?/user
-# 
+#
 
-class _card extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
+class _day extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
 
 	# Här deklareras de variabler/members som objektet ska ha
-	public $id, $index, $type, $title, $price, $analysis, $development, $test, $hidden;
+	public $id, $title;
 
 	# Här skapas konstruktorn som körs när objektet skapas
 	function __construct($resource_id, $request){
-		
+
 		# Om vi fått med ett id på resurser (Ex /?/user/15) och det är ett nummer sparar vi det i objektet genom $this->id
 		if(is_numeric($resource_id))
 			$this->id = $resource_id;
@@ -38,35 +38,36 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 					echo "posts!";
 				break;
 			default: // Om det inte är en collection, eller om den inte är definierad ovan
-				$this->getCardData($input, $db);
+				$this->getDayData($input, $db);
 		}
 	}
 
 	# Den här funktionen är privat och kan bara köras inom objektet, inte utanför
-	private function getCardData($input, $db){
+	private function getDayData($input, $db){
 		if($this->id){ // Om vår URL innehåller ett ID på resursen hämtas bara den usern
 			$query = "
-				SELECT * 
-				FROM cards 
+				SELECT *
+				FROM days
 				WHERE id = $this->id
 			";
 
 			$result = mysqli_query($db, $query);
 			$user = mysqli_fetch_assoc($result);
 
-			$this->title = $card['title'];
-			$this->price = $card['price'];
+			$this->title = $day['title'];
+			$this->current = $day['current'];
+			$this->sprint = $day['sprint'];
 		}else{ // om vår URL inte innehåller ett ID hämtas alla users
 			$query = "
-				SELECT * 
-				FROM cards
+				SELECT *
+				FROM days
 			";
 			$result = mysqli_query($db, $query);
 			$data = [];
 			while($row = mysqli_fetch_assoc($result)){
 				$data[] = $row;
 			}
-			$this->cards = $data;
+			$this->days = $data;
 		}
 	}
 
@@ -77,8 +78,8 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 		$price = mysqli_real_escape_string($db, $input['price']);
 
 		$query = "
-			INSERT INTO cards 
-			(title, price) 
+			INSERT INTO cards
+			(title, price)
 			VALUES ('$title','$price')
 		";
 
@@ -95,39 +96,30 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 			$input = array_keys($input);
 			$input = json_decode($input[0]);
 
-			$title = mysqli_real_escape_string($db, $input->title);
-			$price = mysqli_real_escape_string($db, $input->price);
-			$analysis = mysqli_real_escape_string($db, $input->analysis);
-			$development = mysqli_real_escape_string($db, $input->development);
-			$test = mysqli_real_escape_string($db, $input->test);
-			$type = mysqli_real_escape_string($db, $input->type);
-			$location = mysqli_real_escape_string($db, $input->location);
+			$current = mysqli_real_escape_string($db, $input->current);
 
 			// foreach($input as $k => $v){
-			// 	$sqlparts[] = "`$k` = '$v'"; 
+			// 	$sqlparts[] = "`$k` = '$v'";
 			// }
 
 			// $sql_params = implode($sqlparts, ",")
 
-			if(isset($title)) {
+
+			if(isset($current)) {
 				$query = "
-					UPDATE cards 
-					SET title = '$title', price = '$price',
-					analysis = '$analysis', development = '$development',
-					test = '$test', type = '$type',
-					location = '$location'
+					UPDATE days
+					SET current = '$current'
 					WHERE id = $this->id
 				";
 
 				mysqli_query($db, $query);
-			}
-			else if(isset($location)) {
-				$query = "
-					UPDATE cards 
-					SET location = '$location'
-					WHERE id = $this->id
-				";
 
+				$query = "
+					UPDATE days
+					SET current = 'no'
+					WHERE id != $this->id
+				";
+				
 				mysqli_query($db, $query);
 			}
 		}else{
@@ -140,7 +132,7 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 		# I denna funktion tar vi bort en specifik user med det ID vi fått med
 		if($this->id){
 			$query = "
-				DELETE FROM cards 
+				DELETE FROM cards
 				WHERE id = $this->id
 			";
 
@@ -153,13 +145,13 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 	function RESETGAME($input, $db){
 		# I denna funktion truncatar vi tabellen och laddar en default-tabellen
 		$query = "
-			TRUNCATE TABLE cards
+			TRUNCATE TABLE days
 		";
 
 		mysqli_query($db, $query);
 		$query2 = "
-			INSERT INTO cards
-			SELECT * FROM default_cards
+			INSERT INTO days
+			SELECT * FROM default_days
 		";
 
 		mysqli_query($db, $query2);

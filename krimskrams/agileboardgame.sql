@@ -93,6 +93,58 @@ INSERT INTO `cards` (`id`, `index`, `type`, `title`, `price`, `analysis`, `devel
 (71,	4,	'maintenance',	'm4',	0,	2,	5,	4,	'none'),
 (72,	5,	'maintenance',	'm5',	0,	5,	7,	3,	'none');
 
+DROP TABLE IF EXISTS `days`;
+CREATE TABLE `days` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` int(1) unsigned NOT NULL,
+  `current` varchar(20) COLLATE utf8_bin NOT NULL,
+  `sprint` int(1) unsigned NOT NULL,
+  `actioncard` varchar(20) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `days` (`id`, `title`, `current`, `sprint`, `actioncard`) VALUES
+(1,	1,	'yes',	1,	'no'),
+(2,	2,	'no',	1,	'no'),
+(3,	3,	'no',	1,	'yes'),
+(4,	4,	'no',	1,	'no'),
+(5,	5,	'no',	1,	'no'),
+(6,	1,	'no',	2,	'yes'),
+(7,	2,	'no',	2,	'no'),
+(8,	3,	'no',	2,	'no'),
+(9,	4,	'no',	2,	'no'),
+(10,	5,	'no',	2,	'no'),
+(11,	1,	'no',	3,	'yes'),
+(12,	2,	'no',	3,	'no'),
+(13,	3,	'no',	3,	'no'),
+(14,	4,	'no',	3,	'no'),
+(15,	5,	'no',	3,	'no'),
+(16,	1,	'no',	4,	'no'),
+(17,	2,	'no',	4,	'no'),
+(18,	3,	'no',	4,	'no'),
+(19,	4,	'no',	4,	'no'),
+(20,	5,	'no',	4,	'no'),
+(21,	1,	'no',	5,	'no'),
+(22,	2,	'no',	5,	'no'),
+(23,	3,	'no',	5,	'no'),
+(24,	4,	'no',	5,	'no'),
+(25,	5,	'no',	5,	'no'),
+(26,	1,	'no',	6,	'no'),
+(27,	2,	'no',	6,	'no'),
+(28,	3,	'no',	6,	'no'),
+(29,	4,	'no',	6,	'no'),
+(30,	5,	'no',	6,	'no'),
+(31,	1,	'no',	7,	'no'),
+(32,	2,	'no',	7,	'no'),
+(33,	3,	'no',	7,	'no'),
+(34,	4,	'no',	7,	'no'),
+(35,	5,	'no',	7,	'no'),
+(36,	1,	'no',	8,	'no'),
+(37,	2,	'no',	8,	'no'),
+(38,	3,	'no',	8,	'no'),
+(39,	4,	'no',	8,	'no'),
+(40,	5,	'no',	8,	'no');
+
 DROP TABLE IF EXISTS `default_cards`;
 CREATE TABLE `default_cards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -181,38 +233,211 @@ INSERT INTO `default_cards` (`id`, `index`, `type`, `title`, `price`, `analysis`
 (71,	4,	'maintenance',	'm4',	0,	2,	5,	4,	'none'),
 (72,	5,	'maintenance',	'm5',	0,	5,	7,	3,	'none');
 
+DROP TABLE IF EXISTS `default_days`;
+CREATE TABLE `default_days` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` int(1) unsigned NOT NULL,
+  `current` varchar(20) COLLATE utf8_bin NOT NULL,
+  `sprint` int(1) unsigned NOT NULL,
+  `actioncard` varchar(20) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `default_days` (`id`, `title`, `current`, `sprint`, `actioncard`) VALUES
+(1,	1,	'yes',	1,	'no'),
+(2,	2,	'no',	1,	'no'),
+(3,	3,	'no',	1,	'yes'),
+(4,	4,	'no',	1,	'no'),
+(5,	5,	'no',	1,	'no'),
+(6,	1,	'no',	2,	'yes'),
+(7,	2,	'no',	2,	'no'),
+(8,	3,	'no',	2,	'no'),
+(9,	4,	'no',	2,	'no'),
+(10,	5,	'no',	2,	'no'),
+(11,	1,	'no',	3,	'yes'),
+(12,	2,	'no',	3,	'no'),
+(13,	3,	'no',	3,	'no'),
+(14,	4,	'no',	3,	'no'),
+(15,	5,	'no',	3,	'no'),
+(16,	1,	'no',	4,	'no'),
+(17,	2,	'no',	4,	'no'),
+(18,	3,	'no',	4,	'no'),
+(19,	4,	'no',	4,	'no'),
+(20,	5,	'no',	4,	'no'),
+(21,	1,	'no',	5,	'no'),
+(22,	2,	'no',	5,	'no'),
+(23,	3,	'no',	5,	'no'),
+(24,	4,	'no',	5,	'no'),
+(25,	5,	'no',	5,	'no'),
+(26,	1,	'no',	6,	'no'),
+(27,	2,	'no',	6,	'no'),
+(28,	3,	'no',	6,	'no'),
+(29,	4,	'no',	6,	'no'),
+(30,	5,	'no',	6,	'no'),
+(31,	1,	'no',	7,	'no'),
+(32,	2,	'no',	7,	'no'),
+(33,	3,	'no',	7,	'no'),
+(34,	4,	'no',	7,	'no'),
+(35,	5,	'no',	7,	'no'),
+(36,	1,	'no',	8,	'no'),
+(37,	2,	'no',	8,	'no'),
+(38,	3,	'no',	8,	'no'),
+(39,	4,	'no',	8,	'no'),
+(40,	5,	'no',	8,	'no');
+
+DROP TABLE IF EXISTS `default_retrospectives`;
+CREATE TABLE `default_retrospectives` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `text` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
 DROP TABLE IF EXISTS `default_workers`;
 CREATE TABLE `default_workers` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `index` varchar(50) COLLATE utf8_bin NOT NULL,
   `type` varchar(50) COLLATE utf8_bin NOT NULL,
+  `location` varchar(50) COLLATE utf8_bin NOT NULL,
   `sick` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO `default_workers` (`id`, `index`, `type`, `sick`) VALUES
-(1,	'worker1',	'analyst',	0),
-(2,	'worker2',	'developer',	0),
-(3,	'worker3',	'developer',	0),
-(4,	'worker4',	'developer',	0),
-(5,	'worker5',	'developer',	0),
-(6,	'worker6',	'tester',	0);
+INSERT INTO `default_workers` (`id`, `index`, `type`, `location`, `sick`) VALUES
+(1,	'worker1',	'analyst',	'header',	0),
+(2,	'worker2',	'developer',	'header',	0),
+(3,	'worker3',	'developer',	'header',	0),
+(4,	'worker4',	'developer',	'header',	0),
+(5,	'worker5',	'developer',	'header',	0),
+(6,	'worker6',	'tester',	'header',	0);
+
+DROP TABLE IF EXISTS `games`;
+CREATE TABLE `games` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_bin NOT NULL,
+  `password` varchar(50) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `games` (`id`, `name`, `password`) VALUES
+(1,	'admin',	'admin'),
+(2,	'laban',	'ghost');
+
+DROP TABLE IF EXISTS `gamestate`;
+CREATE TABLE `gamestate` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `game_id` int(11) NOT NULL,
+  `type` varchar(200) COLLATE utf8_bin NOT NULL,
+  `type_id` int(10) unsigned NOT NULL,
+  `prop` varchar(200) COLLATE utf8_bin NOT NULL,
+  `val` varchar(200) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `gamestate` (`id`, `game_id`, `type`, `type_id`, `prop`, `val`) VALUES
+(142,	1,	'card',	1,	'location',	'backlog'),
+(143,	1,	'card',	2,	'location',	'cardpool'),
+(144,	1,	'card',	2,	'location',	'backlog'),
+(145,	1,	'card',	3,	'location',	'cardpool'),
+(146,	1,	'card',	68,	'location',	'backlog'),
+(147,	1,	'card',	69,	'location',	'cardpool'),
+(148,	1,	'card',	69,	'location',	'backlog'),
+(149,	1,	'card',	70,	'location',	'cardpool'),
+(150,	1,	'card',	61,	'location',	'backlog'),
+(151,	1,	'card',	62,	'location',	'cardpool'),
+(152,	1,	'card',	62,	'location',	'backlog'),
+(153,	1,	'card',	63,	'location',	'cardpool'),
+(154,	1,	'card',	1,	'location',	'analysis'),
+(155,	1,	'card',	2,	'location',	'analysis'),
+(156,	1,	'day',	2,	'current',	'yes'),
+(157,	1,	'card',	1,	'analysis',	'0'),
+(158,	1,	'card',	2,	'analysis',	'0'),
+(159,	1,	'card',	2,	'location',	'development'),
+(160,	1,	'day',	1,	'current',	'no'),
+(161,	1,	'card',	1,	'location',	'development'),
+(162,	1,	'card',	68,	'location',	'analysis'),
+(163,	1,	'card',	1,	'development',	'7'),
+(164,	1,	'card',	68,	'analysis',	'1'),
+(165,	1,	'card',	2,	'development',	'4'),
+(166,	1,	'day',	2,	'current',	'no'),
+(167,	1,	'card',	1,	'location',	'development'),
+(168,	1,	'day',	3,	'current',	'yes'),
+(169,	1,	'card',	2,	'location',	'development'),
+(170,	1,	'card',	68,	'analysis',	'1'),
+(171,	1,	'card',	1,	'development',	'0'),
+(172,	1,	'card',	2,	'development',	'2'),
+(173,	1,	'card',	1,	'location',	'development'),
+(174,	1,	'day',	4,	'current',	'yes'),
+(175,	1,	'day',	3,	'current',	'no'),
+(176,	1,	'card',	1,	'location',	'test'),
+(177,	1,	'card',	2,	'location',	'development'),
+(178,	1,	'card',	68,	'analysis',	'1'),
+(179,	1,	'card',	2,	'development',	'2'),
+(180,	1,	'card',	1,	'test',	'0'),
+(181,	1,	'day',	4,	'current',	'no'),
+(182,	1,	'day',	5,	'current',	'yes'),
+(183,	1,	'card',	1,	'location',	'development'),
+(184,	1,	'card',	2,	'location',	'development'),
+(185,	1,	'card',	1,	'location',	'test'),
+(186,	1,	'card',	1,	'location',	'done'),
+(187,	1,	'card',	68,	'analysis',	'1'),
+(188,	1,	'card',	2,	'development',	'1'),
+(189,	1,	'day',	5,	'current',	'no'),
+(190,	1,	'card',	2,	'location',	'development'),
+(191,	1,	'card',	1,	'location',	'development'),
+(192,	1,	'day',	6,	'current',	'yes'),
+(193,	1,	'card',	1,	'location',	'test'),
+(194,	1,	'card',	1,	'location',	'done'),
+(195,	1,	'card',	2,	'development',	'0'),
+(196,	1,	'card',	68,	'analysis',	'1'),
+(197,	1,	'day',	6,	'current',	'no'),
+(198,	1,	'day',	7,	'current',	'yes'),
+(199,	1,	'card',	1,	'location',	'development'),
+(200,	1,	'card',	2,	'location',	'development'),
+(201,	1,	'card',	1,	'location',	'test'),
+(202,	1,	'card',	2,	'location',	'test'),
+(203,	1,	'card',	1,	'location',	'done'),
+(204,	1,	'card',	68,	'analysis',	'0'),
+(205,	1,	'card',	2,	'test',	'14'),
+(206,	1,	'day',	7,	'current',	'no'),
+(207,	1,	'day',	8,	'current',	'yes'),
+(208,	1,	'card',	1,	'location',	'development'),
+(209,	1,	'card',	2,	'location',	'development'),
+(210,	1,	'card',	68,	'location',	'development'),
+(211,	1,	'card',	1,	'location',	'test'),
+(212,	1,	'card',	1,	'location',	'done'),
+(213,	1,	'card',	2,	'location',	'test'),
+(214,	1,	'card',	69,	'location',	'analysis'),
+(215,	1,	'card',	3,	'location',	'backlog'),
+(216,	1,	'card',	4,	'location',	'cardpool'),
+(217,	1,	'card',	3,	'location',	'analysis');
+
+DROP TABLE IF EXISTS `retrospectives`;
+CREATE TABLE `retrospectives` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `text` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `retrospectives` (`id`, `text`) VALUES
+(1,	'afasf');
 
 DROP TABLE IF EXISTS `workers`;
 CREATE TABLE `workers` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `index` varchar(50) COLLATE utf8_bin NOT NULL,
   `type` varchar(50) COLLATE utf8_bin NOT NULL,
-  `sick` int(1) NOT NULL,
+  `location` varchar(50) COLLATE utf8_bin NOT NULL,
+  `sick` int(2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO `workers` (`id`, `index`, `type`, `sick`) VALUES
-(1,	'worker1',	'analyst',	0),
-(2,	'worker2',	'developer',	0),
-(3,	'worker3',	'developer',	0),
-(4,	'worker4',	'developer',	0),
-(5,	'worker5',	'developer',	0),
-(6,	'worker6',	'tester',	0);
+INSERT INTO `workers` (`id`, `index`, `type`, `location`, `sick`) VALUES
+(1,	'worker1',	'analyst',	'header',	0),
+(2,	'worker2',	'developer',	'header',	0),
+(3,	'worker3',	'developer',	'header',	0),
+(4,	'worker4',	'developer',	'header',	0),
+(5,	'worker5',	'developer',	'header',	0),
+(6,	'worker6',	'tester',	'header',	0);
 
--- 2017-02-06 08:58:45
+-- 2017-03-06 15:03:09

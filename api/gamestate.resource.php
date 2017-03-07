@@ -3,10 +3,10 @@
 # Den här klassen ska köras om vi anropat resursen user i vårt API genom /?/user
 # 
 
-class _card extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
+class _gamestate extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
 
 	# Här deklareras de variabler/members som objektet ska ha
-	public $id, $index, $type, $title, $price, $analysis, $development, $test, $hidden;
+	public $id, $game_id, $type, $type_id, $prop, $val;
 
 	# Här skapas konstruktorn som körs när objektet skapas
 	function __construct($resource_id, $request){
@@ -38,48 +38,54 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 					echo "posts!";
 				break;
 			default: // Om det inte är en collection, eller om den inte är definierad ovan
-				$this->getCardData($input, $db);
+				$this->getGamestateData($input, $db);
 		}
 	}
 
 	# Den här funktionen är privat och kan bara köras inom objektet, inte utanför
-	private function getCardData($input, $db){
+	private function getGamestateData($input, $db){
 		if($this->id){ // Om vår URL innehåller ett ID på resursen hämtas bara den usern
 			$query = "
 				SELECT * 
-				FROM cards 
+				FROM gamestate
 				WHERE id = $this->id
 			";
 
 			$result = mysqli_query($db, $query);
 			$user = mysqli_fetch_assoc($result);
 
-			$this->title = $card['title'];
-			$this->price = $card['price'];
+			$this->title = $gamestate['title'];
+			$this->price = $gamestate['price'];
 		}else{ // om vår URL inte innehåller ett ID hämtas alla users
 			$query = "
 				SELECT * 
-				FROM cards
+				FROM gamestate
 			";
 			$result = mysqli_query($db, $query);
 			$data = [];
 			while($row = mysqli_fetch_assoc($result)){
 				$data[] = $row;
 			}
-			$this->cards = $data;
+			$this->gamestate = $data;
 		}
 	}
 
 	# Denna funktion körs om vi anropat resursen genom HTTP-metoden POST
 	function POST($input, $db){
 		# I denna funktion skapar vi en ny user med den input vi fått
-		$title = mysqli_real_escape_string($db, $input['title']);
-		$price = mysqli_real_escape_string($db, $input['price']);
+		$input = array_keys($input);
+		$input = json_decode($input[0]);
+
+		$game_id = mysqli_real_escape_string($db, $input->game_id);
+		$type = mysqli_real_escape_string($db, $input->type);
+		$type_id = mysqli_real_escape_string($db, $input->type_id);
+		$prop = mysqli_real_escape_string($db, $input->prop);
+		$val = mysqli_real_escape_string($db, $input->val);
 
 		$query = "
-			INSERT INTO cards 
-			(title, price) 
-			VALUES ('$title','$price')
+			INSERT INTO gamestate 
+			(game_id, type, type_id, prop, val) 
+			VALUES ('$game_id', '$type', '$type_id', '$prop', '$val')
 		";
 
 		mysqli_query($db, $query);
@@ -111,7 +117,7 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 
 			if(isset($title)) {
 				$query = "
-					UPDATE cards 
+					UPDATE gamestate 
 					SET title = '$title', price = '$price',
 					analysis = '$analysis', development = '$development',
 					test = '$test', type = '$type',
@@ -123,7 +129,7 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 			}
 			else if(isset($location)) {
 				$query = "
-					UPDATE cards 
+					UPDATE gamestate 
 					SET location = '$location'
 					WHERE id = $this->id
 				";
@@ -140,7 +146,7 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 		# I denna funktion tar vi bort en specifik user med det ID vi fått med
 		if($this->id){
 			$query = "
-				DELETE FROM cards 
+				DELETE FROM gamestate 
 				WHERE id = $this->id
 			";
 
@@ -153,13 +159,13 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 	function RESETGAME($input, $db){
 		# I denna funktion truncatar vi tabellen och laddar en default-tabellen
 		$query = "
-			TRUNCATE TABLE cards
+			TRUNCATE TABLE gamestate
 		";
 
 		mysqli_query($db, $query);
 		$query2 = "
-			INSERT INTO cards
-			SELECT * FROM default_cards
+			INSERT INTO gamestate
+			SELECT * FROM default_gamestate
 		";
 
 		mysqli_query($db, $query2);

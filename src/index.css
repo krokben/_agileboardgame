@@ -1,9 +1,14 @@
 body {
   margin: 0;
-  padding: 0;
   font-family: sans-serif;
   overflow: hidden;
+
 }
+/* button {
+	border-radius: 7px;
+	width: 5em;
+	height: 3em;
+} */
 
 [data-hidden='0'] {
 	display: block;
@@ -13,13 +18,136 @@ body {
 	display: none;
 }
 
-display-none {
+.display-none {
 	display: none;
 }
 
 /*--------------------------------------*\
 	Actions
 \*--------------------------------------*/
+
+/*--------------------------------------*\
+	Admin
+\*--------------------------------------*/
+
+.Admin {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	top: 0;
+	background: #2c3e50;
+	color: #fff;
+	font-size: 24px;
+	overflow-y: scroll;
+	position: absolute;
+	text-align: center;
+}
+
+.Admin_table {
+	margin: 0 auto;
+	text-align: center;
+	width: 60%
+}
+
+.Admin_table tr:nth-child(even) {
+	background: #34495e;
+}
+
+.Admin_table tr:hover {
+	background: #5E84AA;
+}
+
+.Admin_table td {
+	border: 1px solid #000;
+}
+
+.Admin_edit {
+	background: #6D98C4;
+}
+
+.Admin_save {
+	background: #27ae60;
+}
+
+.Admin_delete {
+	background: #733477;
+}
+
+.Admin_sure {
+	background: #c0392b;
+}
+
+.Admin_edit:hover {
+	background: #7FFBF8;
+	color: #000;
+	cursor: pointer;
+}
+
+.Admin_save:hover {
+	background: #38FA8A;
+	color: #000;
+	cursor: pointer;
+}
+
+.Admin_delete:hover {
+	background: #EE6CF7;
+	color: #000;
+	cursor: pointer;
+}
+
+.Admin_sure:hover {
+	background: #e74c3c;
+	color: #000;
+	cursor: pointer;
+}
+
+.Admin input {
+	background: none;
+	border: none;
+	color: #fff;
+	font-size: 24px;
+	text-align: center;
+	width: 100%;
+}
+
+/*--------------------------------------*\
+	ActionCard
+\*--------------------------------------*/
+
+.ActionCard_button {
+	background: #fff;
+	border: 2px solid #000;
+	bottom: 15px;
+	cursor: pointer;
+	height: 40px;
+	position: absolute;
+	right: 15px;
+	width: 50%;
+}
+
+.ActionCard_button:hover {
+	background: #48CFAD;
+}
+
+.ActionCard_container {
+	background: #fff;
+	border: 10px solid #000;
+	border-radius: 10px;
+	bottom: 25%;
+	left: 40%;
+	padding: 10px;
+	position: fixed;
+	right: 40%;
+	top: 25%;
+}
+
+.ActionCard_container h2 {
+	text-align: center;
+}
+
+.ActionCard_dice {
+	text-align: center;
+}
 
 /*--------------------------------------*\
 	Analysis
@@ -36,6 +164,14 @@ display-none {
 	background: #4FC1E9;
 	flex: 6;
 	overflow-y: auto;
+	padding: 10px;
+	text-align: center;
+}
+
+.Analysis_cardHolder h4 {
+	color: #fff;
+	font-family: 'Slackey', cursive;
+	margin: 0;
 }
 
 .Analysis_diceHolder {
@@ -72,10 +208,50 @@ display-none {
 	Calendar
 \*--------------------------------------*/
 
+.Calendar_column {
+	border: 1px solid #000;
+	box-sizing: border-box;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	text-align: center;
+}
+
+.Calendar_column div:not(:last-child) {
+	border-bottom: 1px solid #000;
+}
+
 .Calendar_container {
-	left: 0;
-	position: absolute;
+	background: #fff;
+	border: 30px solid red;
+	box-sizing: border-box;
+	display: flex;
+	font-family: 'Roboto Slab', serif;
+	font-size: 3vw;
+	justify-content: space-between;
+	left: 14.78%;
+	margin-top: 130px;
+	position: fixed;
 	top: 0;
+	width: 70.45%;
+}
+
+.Calendar_header {
+	background: #ccc;
+	border-bottom: 1px solid #000;
+	font-size: 10px;
+}
+
+.Calendar_sick {
+	background: lightgreen;
+}
+
+.Calendar_sick span {
+	font-size: 1vw;
+}
+
+.Calendar_today {
+	background: #ccc;
 }
 
 /*--------------------------------------*\
@@ -132,10 +308,60 @@ display-none {
 	display: flex;
 	justify-content: space-between;
 }
+.Logo {
+	color: #E9573F;
+	font-family: 'Slackey', cursive;
+	font-size: 42px;
+}
+
+
 
 /*--------------------------------------*\
 	Header
 \*--------------------------------------*/
+
+/*--------------------------------------*\
+	Login
+\*--------------------------------------*/
+
+.Login {
+	background: #95a5a6;
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	text-align: center;
+	top: 0;
+	z-index: 300;
+}
+
+.Login h1 {
+	font-family: 'Slackey', cursive;
+}
+
+.Login_button {
+	width: 50px;
+}
+
+.Login_error {
+	background: #d9534f;
+	color: #fff;
+}
+
+.Login_newAccountForm input {
+	background: #333;
+	color: #fff;
+}
+
+.Login_newAccountLink:hover {
+	color: #fff;
+	cursor: pointer;
+}
+
+.Login_success {
+	background: #5cb85c;
+	color: #fff;
+}
 
 /*--------------------------------------*\
 	MaintenanceCards
@@ -145,9 +371,111 @@ display-none {
 	PlayButton
 \*--------------------------------------*/
 
+.myButton {
+	-moz-box-shadow: 0px 10px 14px -7px #276873;
+	-webkit-box-shadow: 0px 10px 14px -7px #276873;
+	box-shadow: 0px 10px 14px -7px #276873;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
+	background:-moz-linear-gradient(top, #599bb3 5%, #408c99 100%);
+	background:-webkit-linear-gradient(top, #599bb3 5%, #408c99 100%);
+	background:-o-linear-gradient(top, #599bb3 5%, #408c99 100%);
+	background:-ms-linear-gradient(top, #599bb3 5%, #408c99 100%);
+	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99',GradientType=0);
+	background-color: #D770AD;
+	-moz-border-radius:8px;
+	-webkit-border-radius:8px;
+	border-radius:8px;
+	display:inline-block;
+	cursor:pointer;
+	color: white;
+	font-family:Arial;
+	font-size:20px;
+	font-weight:bold;
+	margin-right: 15px;
+	padding:13px 32px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3d768a;
+}
+.myButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #408c99), color-stop(1, #599bb3));
+	background:-moz-linear-gradient(top, #408c99 5%, #599bb3 100%);
+	background:-webkit-linear-gradient(top, #408c99 5%, #599bb3 100%);
+	background:-o-linear-gradient(top, #408c99 5%, #599bb3 100%);
+	background:-ms-linear-gradient(top, #408c99 5%, #599bb3 100%);
+	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#408c99', endColorstr='#599bb3',GradientType=0);
+	background-color:#408c99;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+/*--------------------------------------*\
+	Retrospective
+\*--------------------------------------*/
+
+.Retrospective {
+  background-color: lightgreen;
+  bottom: 25%;
+  left: 25%;
+  position: absolute;
+  right: 25%;
+  text-align: center;
+  top: 25%;
+}
+
+.Retrospective button {
+  background-color: yellow;
+  border: none;
+  float: right;
+  height: 30px;
+  width: 100px;
+}
+
+.Retrospective h2 {
+  margin-bottom: 0;
+}
+
+.Retrospective p {
+  margin-top: 0;
+}
+
+.Retrospective textarea {
+  height: 70%;
+  width: 100%;
+}
+
+.Retrospective_container {
+  height: 80%;
+  margin: auto;
+  width: 70%;
+}
+
+/*--------------------------------------*\
+	Retrospectives
+\*--------------------------------------*/
+
+.Retrospectives {
+  background-color: lightgreen;
+  bottom: 25%;
+  left: 25%;
+  position: absolute;
+  right: 25%;
+  text-align: center;
+  top: 25%;
+  z-index: 100;
+}
+
 /*--------------------------------------*\
 	Status
 \*--------------------------------------*/
+
+.Status_score {
+	font-size: 200px;
+	margin-top: 200px;
+}
 
 /*--------------------------------------*\
 	Test
@@ -158,9 +486,10 @@ display-none {
 \*--------------------------------------*/
 
 .UserStories_userStory {
-	background: #5D9CEC;
-	color: #fff;
+	background: #fff6dd;
+	color: #000;
 	margin-bottom: 15px;
+	padding: 5px;
 }
 
 /*--------------------------------------*\
@@ -172,7 +501,8 @@ display-none {
 \*--------------------------------------*/
 
 .Workers_active {
-	border: 1px solid red;
+	/*border: 1px solid red;*/
+	filter: saturate(800%);
 }
 
 .Workers_worker {
@@ -181,13 +511,25 @@ display-none {
 	background: lightblue;
 	border-radius: 50%;
 	float: left;
+	font-family: 'Slackey', cursive;
+	font-size: 25px;
 	height: 3vw;
 	margin-left: 0.7vw;
+	text-align: center;
 	width: 3vw;
+}
+
+.Workers_worker p {
+	margin-top: 12%;
+}
+
+.Workers_worker.analyst, .Workers_worker.tester {
+	background: #ed5565;
 }
 
 .Workers_workers {
 	margin-right: 100px;
+	margin-top: 5px;
 }
 
 @keyframes Workers_pulse {

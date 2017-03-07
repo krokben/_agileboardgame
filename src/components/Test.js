@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
+import DiceHolder from './DiceHolder';
+import UserStories from './UserStories';
+import MaintenanceCards from './MaintenanceCards';
+import DefectCards from './DefectCards';
 
 export default class Test extends Component {
 	render() {
 		return (
 			<div className="Analysis_boardColumn">
-				<div className="Analysis_diceHolder">
-					Dices
-				</div>
+				<DiceHolder
+					location='test'
+					workers={this.props.workers}
+					chooseWorker={this.props.chooseWorker}
+					placeWorker={this.props.placeWorker}
+				/>
 				<div className="Analysis_cardHolder">
-					Test
+					<h4>Test</h4>
+					<UserStories location="test" cards={this.props.cards} />
+					<MaintenanceCards location="test" cards={this.props.cards} />
+					<DefectCards location="test" cards={this.props.cards} />
 				</div>
 			</div>
 		);
