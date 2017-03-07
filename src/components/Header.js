@@ -10,6 +10,7 @@ export default class Header extends Component {
 			<div className="Footer_container">
 				<WorkDay days={this.props.days} />
 				<button onClick={this.resetGameState}>Reset</button>
+                <button onClick={this.props.logout}>Logout</button>
                 {this.props.game === '1' ? <button onClick={this.props.showAdmin}>Admin</button> : null}
 				<Workers location="header" workers={this.props.workers} chooseWorker={this.props.chooseWorker} />
 				<CalendarLink showCalendar={this.props.showCalendar} />

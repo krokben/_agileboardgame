@@ -54,13 +54,21 @@ export default class App extends Component {
 
 	componentDidMount() {
 		this.fetchData(); // this also runs this.checkGameStatus()
+        if (localStorage.getItem('user') !== null) {
+            let game = this.state.game;
+            game = localStorage.getItem('user');
+            this.setState({game});
+            let login = this.state.login;
+            login = false;
+            this.setState({login});
+        }
 	}
 
 	render() {
 		return (
 			<div>
                 {this.state.login ? <Login login={this.login.bind(this)} ref={(loginPage) => this.loginPage = loginPage} /> : null}
-				<Header game={this.state.game} days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)} showAdmin={this.showAdmin.bind(this)} />
+				<Header logout={this.logout.bind(this)} game={this.state.game} days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)} showAdmin={this.showAdmin.bind(this)} />
 				<div className="App_board">
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
@@ -669,6 +677,7 @@ export default class App extends Component {
                     let login = that.state.login;
                     login = false;
                     that.setState({login});
+                    localStorage.setItem('user', response.data.games[0].id); // set localstorage
                 } else {
                     let error = that.loginPage.state.error;
                     error = true;
@@ -678,6 +687,18 @@ export default class App extends Component {
             .catch(function(error) {
                 console.log(error);
         });
+    }
+
+    logout() {
+        if (localStorage.getItem('user') !== null) {
+            localStorage.removeItem('user');
+            let game = this.state.game;
+            game = '0';
+            this.setState({game});
+            let login = this.state.login;
+            login = true;
+            this.setState({login});
+        }
     }
 
     returnWorkers() {
