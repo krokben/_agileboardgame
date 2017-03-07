@@ -6,7 +6,7 @@
 class _card extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
 
 	# Här deklareras de variabler/members som objektet ska ha
-	public $id, $index, $type, $title, $price, $analysis, $development, $test, $hidden;
+	public $id, $index, $type, $title, $price, $analysis, $development, $test, $location;
 
 	# Här skapas konstruktorn som körs när objektet skapas
 	function __construct($resource_id, $request){
@@ -73,13 +73,31 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 	# Denna funktion körs om vi anropat resursen genom HTTP-metoden POST
 	function POST($input, $db){
 		# I denna funktion skapar vi en ny user med den input vi fått
-		$title = mysqli_real_escape_string($db, $input['title']);
-		$price = mysqli_real_escape_string($db, $input['price']);
+		$input = array_keys($input);
+		$input = json_decode($input[0]);
+
+		$index = mysqli_real_escape_string($db, $input->index);
+		$type = mysqli_real_escape_string($db, $input->type);
+		$title = mysqli_real_escape_string($db, $input->title);
+		$price = mysqli_real_escape_string($db, $input->price);
+		$analysis = mysqli_real_escape_string($db, $input->analysis);
+		$development = mysqli_real_escape_string($db, $input->development);
+		$test = mysqli_real_escape_string($db, $input->test);
+		$location = mysqli_real_escape_string($db, $input->location);
+
+		$this->index = $index;
+		$this->type = $type;
+		$this->title = $title;
+		$this->price = $price;
+		$this->analysis = $analysis;
+		$this->development = $development;
+		$this->test = $test;
+		$this->location = $location;
 
 		$query = "
 			INSERT INTO cards 
-			(title, price) 
-			VALUES ('$title','$price')
+			(index, type, title, price, analysis, development, test, location) 
+			VALUES ('$index', '$type', '$title','$price', '$analysis', '$development', '$test', '$location')
 		";
 
 		mysqli_query($db, $query);

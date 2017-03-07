@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class Admin extends Component {
 	constructor() {
@@ -29,10 +30,10 @@ export default class Admin extends Component {
 						<tr>
 							<td><input type="text" placeholder="Title..." ref={(newTitle) => this.newTitle = newTitle} /></td>
 							<td><input type="text" placeholder="Price..." ref={(newPrice) => this.newPrice = newPrice} /></td>
-							<td><input type="text" placeholder="Analysis..." ref={(newAnalysis) => this.newPrice = newAnalysis} /></td>
-							<td><input type="text" placeholder="Development..." ref={(newDevelopment) => this.newPrice = newDevelopment} /></td>
-							<td><input type="text" placeholder="Test..." ref={(newTest) => this.newPrice = newTest} /></td>
-							<td className="Admin_save" colSpan={2}>Add new</td>
+							<td><input type="text" placeholder="Analysis..." ref={(newAnalysis) => this.newAnalysis = newAnalysis} /></td>
+							<td><input type="text" placeholder="Development..." ref={(newDevelopment) => this.newDevelopment = newDevelopment} /></td>
+							<td><input type="text" placeholder="Test..." ref={(newTest) => this.newTest = newTest} /></td>
+							<td className="Admin_save" colSpan={2} onClick={this.addNew.bind(this)}>Add new</td>
 						</tr>
 						{this.renderCards()}
 					</tbody>
@@ -70,6 +71,36 @@ export default class Admin extends Component {
 				);
 			}
 		});
+	}
+
+	addNew() {
+		const that = this;
+
+		const userStories = this.props.cards.filter((x) => x.type === 'userstory');
+		const lastIndex = userStories[userStories.length - 1].index;
+		const thisIndex = Number(lastIndex) + 1;
+
+		axios({
+      method: 'post',
+      url: 'http://localhost/_agileboardgame/api/?/card',
+      data: {
+      		index: thisIndex,
+          type: 'userstory',
+          title: 'us' + thisIndex,
+          price: that.newPrice.value,
+          analysis: that.newAnalysis.value,
+          development: that.newDevelopment.value,
+          test: that.newTest.value,
+          location: 'none'
+      },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .then(function(response) {
+      	console.log(response.data);
+      })
+      .catch(function(error) {
+        console.log(error);
+    });
 	}
 
 	handleEdit(id) {
