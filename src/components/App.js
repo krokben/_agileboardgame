@@ -53,7 +53,6 @@ export default class App extends Component {
 	}
 
 	componentDidMount() {
-		this.fetchData(); // this also runs this.checkGameStatus()
         if (localStorage.getItem('user') !== null) {
             let game = this.state.game;
             game = localStorage.getItem('user');
@@ -62,6 +61,11 @@ export default class App extends Component {
             login = false;
             this.setState({login});
         }
+        setTimeout(() => {
+            if (this.state.game !== '0') { // only runs when there is localstorage with value other than '0'
+            this.fetchData(); // this also runs this.checkGameStatus()
+            }
+        }, 100);
 	}
 
 	render() {
@@ -678,6 +682,7 @@ export default class App extends Component {
                     login = false;
                     that.setState({login});
                     localStorage.setItem('user', response.data.games[0].id); // set localstorage
+                    that.fetchData(); // fetch all data
                 } else {
                     let error = that.loginPage.state.error;
                     error = true;
@@ -692,12 +697,13 @@ export default class App extends Component {
     logout() {
         if (localStorage.getItem('user') !== null) {
             localStorage.removeItem('user');
-            let game = this.state.game;
-            game = '0';
-            this.setState({game});
-            let login = this.state.login;
-            login = true;
-            this.setState({login});
+            // let game = this.state.game;
+            // game = '0';
+            // this.setState({game});
+            // let login = this.state.login;
+            // login = true;
+            // this.setState({login});
+            location.reload();
         }
     }
 

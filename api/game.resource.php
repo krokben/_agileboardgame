@@ -19,27 +19,9 @@ class _game extends Resource{ // Klassen ärver egenskaper från den generella k
 		$this->request = $request;
 	}
 
-	# Denna funktion körs om vi anropat resursen genom HTTP-metoden GET
+	# Denna funktion körs om vi anropat resursen genom HTTP-metoden POST
 	function POST($input, $db){
-
-		# Här kollar vi om det efterfrågats en "collection" inom resursen, exempelvis "friends" i URL:en /?/user/15/friends
-		$collection = "";
-		if(isset($this->request[0])) $collection = $this->request[0];
-
-		# Beroende på vilken "collectsion" som anropats gör vi olika saker
-		switch($collection){
-			case 'friends':
-					echo "friends!";
-				break;
-			case 'books':
-					echo "books!";
-				break;
-			case 'posts':
-					echo "posts!";
-				break;
-			default: // Om det inte är en collection, eller om den inte är definierad ovan
-				$this->getGameData($input, $db);
-		}
+			$this->getGameData($input, $db);
 	}
 
 	# Den här funktionen är privat och kan bara köras inom objektet, inte utanför
@@ -84,49 +66,35 @@ class _game extends Resource{ // Klassen ärver egenskaper från den generella k
 	function PUT($input, $db){
 		# I denna funktion uppdateras en specifik user med den input vi fått
 		# Observera att allt uppdaterad varje gång och att denna borde byggas om så att bara det vi skickar med uppdateras
-		if($this->id){
+		$input = array_keys($input);
+		$input = json_decode($input[0]);
 
+		$name = mysqli_real_escape_string($db, $input->name);
+		$password = mysqli_real_escape_string($db, $input->password);
 
-			$input = array_keys($input);
-			$input = json_decode($input[0]);
+		if(isset($name) && isset($password)) {
+			$hasUser = "
+				SELECT * FROM games
+				WHERE name = '$name'
+			";
 
-			$title = mysqli_real_escape_string($db, $input->title);
-			$price = mysqli_real_escape_string($db, $input->price);
-			$analysis = mysqli_real_escape_string($db, $input->analysis);
-			$development = mysqli_real_escape_string($db, $input->development);
-			$test = mysqli_real_escape_string($db, $input->test);
-			$type = mysqli_real_escape_string($db, $input->type);
-			$location = mysqli_real_escape_string($db, $input->location);
+			$result = mysqli_query($db, $hasUser);
+			$data = [];
+			while($row = mysqli_fetch_assoc($result)){
+				$data[] = $row;
+			}
 
-			// foreach($input as $k => $v){
-			// 	$sqlparts[] = "`$k` = '$v'"; 
-			// }
-
-			// $sql_params = implode($sqlparts, ",")
-
-			if(isset($title)) {
+			if (count($data) === 0) {
 				$query = "
-					UPDATE games 
-					SET title = '$title', price = '$price',
-					analysis = '$analysis', development = '$development',
-					test = '$test', type = '$type',
-					location = '$location'
-					WHERE id = $this->id
+					INSERT INTO games
+					(name, password)
+					VALUES ('$name','$password')
 				";
 
 				mysqli_query($db, $query);
+			} else {
+				$this->message = 'Sorry, that user name is already taken...';
 			}
-			else if(isset($location)) {
-				$query = "
-					UPDATE games 
-					SET location = '$location'
-					WHERE id = $this->id
-				";
-
-				mysqli_query($db, $query);
-			}
-		}else{
-			echo "No resource given";
 		}
 	}
 

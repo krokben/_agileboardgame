@@ -18,7 +18,6 @@ export default class Admin extends Component {
 				<table className="Admin_table">
 					<thead>
 						<tr>
-							<th>id</th>
 							<th>Title</th>
 							<th>Price</th>
 							<th>Analysis</th>
@@ -27,6 +26,14 @@ export default class Admin extends Component {
 						</tr>
 					</thead>
 					<tbody>
+						<tr>
+							<td><input type="text" placeholder="Title..." ref={(newTitle) => this.newTitle = newTitle} /></td>
+							<td><input type="text" placeholder="Price..." ref={(newPrice) => this.newPrice = newPrice} /></td>
+							<td><input type="text" placeholder="Analysis..." ref={(newAnalysis) => this.newPrice = newAnalysis} /></td>
+							<td><input type="text" placeholder="Development..." ref={(newDevelopment) => this.newPrice = newDevelopment} /></td>
+							<td><input type="text" placeholder="Test..." ref={(newTest) => this.newPrice = newTest} /></td>
+							<td className="Admin_save" colSpan={2}>Add new</td>
+						</tr>
 						{this.renderCards()}
 					</tbody>
 				</table>
@@ -52,7 +59,6 @@ export default class Admin extends Component {
 			} else {
 				return (
 					<tr key={x.id}>
-						<td>id: {x.id}</td>
 						<td>{x.title}</td>
 						<td>{x.price}</td>
 						<td>{x.analysis}</td>

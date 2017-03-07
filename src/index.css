@@ -339,6 +339,30 @@ body {
 	font-family: 'Slackey', cursive;
 }
 
+.Login_button {
+	width: 50px;
+}
+
+.Login_error {
+	background: #d9534f;
+	color: #fff;
+}
+
+.Login_newAccountForm input {
+	background: #333;
+	color: #fff;
+}
+
+.Login_newAccountLink:hover {
+	color: #fff;
+	cursor: pointer;
+}
+
+.Login_success {
+	background: #5cb85c;
+	color: #fff;
+}
+
 /*--------------------------------------*\
 	MaintenanceCards
 \*--------------------------------------*/
