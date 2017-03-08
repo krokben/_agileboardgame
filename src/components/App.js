@@ -727,7 +727,6 @@ export default class App extends Component {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
             .then(function(response) {
-                console.log(response.data.games[0]);
                 if (response.data.games[0] !== undefined) {
                     let game = that.state.game;
                     game = response.data.games[0].id;

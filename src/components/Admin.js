@@ -97,6 +97,11 @@ export default class Admin extends Component {
       })
       .then(function(response) {
       	that.props.fetchCards();
+      	// reset values
+      	that.newPrice.value = null;
+      	that.newAnalysis.value = null;
+      	that.newDevelopment.value = null;
+      	that.newTest.value = null;
       })
       .catch(function(error) {
         console.log(error);
