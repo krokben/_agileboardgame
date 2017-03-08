@@ -68,6 +68,14 @@ export default class ActionCard extends Component {
 					</div>
 				);
 			}
+		} else if (this.props.days[14].current === 'yes') { // Action card 4
+			return (
+	 			<div>
+	 				<h2>Action card 4</h2>
+	 				<p>If Maintenance task 1 is not completed, the system goes down. According to the contract this means that the downtime will be subtracted from your pay for the sprint. Please subtract 200$ from the total and pull in M1 with highest priority.</p>
+	 				<button className="ActionCard_button" onClick={this.actionCard4.bind(this)}>OK!</button>
+	 			</div>
+		 	);
 		}
 	}
 
@@ -118,5 +126,10 @@ export default class ActionCard extends Component {
 		let doubleCard = this.state.doubleCard;
 		doubleCard = 'ac11';
 		this.setState({doubleCard});
+	}
+
+	actionCard4() {
+		this.props.actionCard4();
+		this.props.closeActionCard();
 	}
 }

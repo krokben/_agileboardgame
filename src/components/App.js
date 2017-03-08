@@ -88,9 +88,9 @@ export default class App extends Component {
 				</div>
 				{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
-                {this.state.actionCard ? <ActionCard days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
+                {this.state.actionCard ? <ActionCard actionCard4={this.actionCard4.bind(this)} days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
 				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
-                {this.state.admin && this.state.game === '1' ? <Admin cards={this.state.cards} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
+                {this.state.admin && this.state.game === '1' ? <Admin cards={this.state.cards} fetchCards={this.fetchCards.bind(this)} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
 				<Footer hasRetrospective={this.hasRetrospective.bind(this)} showRetrospective={this.state.showRetrospective} actionCard={this.state.actionCard} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
@@ -176,6 +176,45 @@ export default class App extends Component {
         });
     }
 
+    fetchCards() {
+        // admin function
+        const that = this;
+        const cards = this.state.cards;
+
+        axios.get('http://localhost/_agileboardgame/api/?/card')
+            .then(function(response) {
+                response.data.cards.forEach((item) => {
+                    if (cards[item.id - 1] !== undefined) {
+                        cards[item.id - 1].id = item.id,
+                        cards[item.id - 1].index = item.index,
+                        cards[item.id - 1].type = item.type,
+                        cards[item.id - 1].title = item.title,
+                        cards[item.id - 1].price = item.price,
+                        cards[item.id - 1].analysis = item.analysis,
+                        cards[item.id - 1].development = item.development,
+                        cards[item.id - 1].test = item.test,
+                        cards[item.id - 1].location = item.location
+                    } else {
+                        cards.push({
+                            id: item.id,
+                            index: item.index,
+                            type: item.type,
+                            title: item.title,
+                            price: item.price,
+                            analysis: item.analysis,
+                            development: item.development,
+                            test: item.test,
+                            location: item.location
+                        });
+                    }
+                });
+                that.setState({cards});
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    }
+
 	fetchData() {
         const that = this;
         axios.get('http://localhost/_agileboardgame/api/?/card')
@@ -254,6 +293,22 @@ export default class App extends Component {
             .catch(function(error) {
                 console.log(error);
         });
+    }
+
+    actionCard4() {
+        const m1 = this.state.cards.find((x) => x.title === 'm1');
+        console.log(m1.location !== 'done' || m1.location !== 'dead');
+        if (m1.location === 'done' || m1.location === 'dead') {
+            return null;
+        } else {
+            let score = this.state.score;
+            score -= 200;
+            this.setState({score});
+            const cards = this.state.cards;
+            cards[m1.id - 1].location = 'backlog';
+            cards[m1.id].location = 'cardpool';
+            this.setState({cards});
+        }
     }
 
     checkGameStatus() {
@@ -772,9 +827,6 @@ export default class App extends Component {
         this.state.workers.filter((worker) => worker.location === 'test').forEach((x) => {
             test += Math.floor((Math.random() * 6) + 1);
         });
-        console.log('analysis result: ' + analysis);
-        console.log('development result: ' + development);
-        console.log('test result: ' + test);
         this.subtractScore(analysis, 'analysis');
         this.subtractScore(development, 'development');
         this.subtractScore(test, 'test');
@@ -797,7 +849,7 @@ export default class App extends Component {
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 		})
 		.then(function(response) {
-				console.log(response);
+				// console.log(response);
 		})
 		.catch(function(error) {
 				console.log(error);

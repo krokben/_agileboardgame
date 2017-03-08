@@ -28,7 +28,7 @@ export default class Admin extends Component {
 					</thead>
 					<tbody>
 						<tr>
-							<td><input type="text" placeholder="Title..." ref={(newTitle) => this.newTitle = newTitle} /></td>
+							<td><input type="text" placeholder={'us' + Number(Number(this.props.cards.filter((x) => x.type === 'userstory')[this.props.cards.filter((x) => x.type === 'userstory').length - 1].index) + 1)} ref={(newTitle) => this.newTitle = newTitle} disabled /></td>
 							<td><input type="text" placeholder="Price..." ref={(newPrice) => this.newPrice = newPrice} /></td>
 							<td><input type="text" placeholder="Analysis..." ref={(newAnalysis) => this.newAnalysis = newAnalysis} /></td>
 							<td><input type="text" placeholder="Development..." ref={(newDevelopment) => this.newDevelopment = newDevelopment} /></td>
@@ -46,7 +46,7 @@ export default class Admin extends Component {
 		return this.props.cards.filter((x) => x.type === 'userstory').map(x => {
 			if (this.state.editing === x.id) {
 				return (
-					<tr key={x.id}>
+					<tr key={`adminedit-${x.id}`}>
 						<td>id: {x.id}</td>
 						<td ref={(title) => this.title = title}>{x.title}</td>
 						<td><input type="text" defaultValue={x.price} ref={(price) => this.price = price} /></td>
@@ -59,7 +59,7 @@ export default class Admin extends Component {
 				);
 			} else {
 				return (
-					<tr key={x.id}>
+					<tr key={`admin-${x.id}`}>
 						<td>{x.title}</td>
 						<td>{x.price}</td>
 						<td>{x.analysis}</td>
@@ -96,7 +96,7 @@ export default class Admin extends Component {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       })
       .then(function(response) {
-      	console.log(response.data);
+      	that.props.fetchCards();
       })
       .catch(function(error) {
         console.log(error);

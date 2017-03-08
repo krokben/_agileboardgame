@@ -85,22 +85,12 @@ class _card extends Resource{ // Klassen ärver egenskaper från den generella k
 		$test = mysqli_real_escape_string($db, $input->test);
 		$location = mysqli_real_escape_string($db, $input->location);
 
-		$this->index = $index;
-		$this->type = $type;
-		$this->title = $title;
-		$this->price = $price;
-		$this->analysis = $analysis;
-		$this->development = $development;
-		$this->test = $test;
-		$this->location = $location;
-
 		$query = "
-			INSERT INTO cards 
-			(index, type, title, price, analysis, development, test, location) 
+			INSERT INTO cards (`index`, type, title, price, analysis, development, test, location) 
 			VALUES ('$index', '$type', '$title','$price', '$analysis', '$development', '$test', '$location')
 		";
 
-		mysqli_query($db, $query);
+		mysqli_query($db, $query) or die(mysqli_error($db));
 	}
 
 	# Denna funktion körs om vi anropat resursen genom HTTP-metoden PUT

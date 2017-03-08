@@ -72,7 +72,7 @@ export default class Calendar extends Component {
             }
 
             return <div
-                key={day.id}
+                key={`day-${day.id}`}
                 id={day.id}
                 className={sickClassName}
                 onClick={() => this.props.clickDay(day.id)}
