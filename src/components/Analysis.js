@@ -10,9 +10,11 @@ export default class Analysis extends Component {
 			<div className="Analysis_boardColumn">
 				<DiceHolder
 					location='analysis'
+					analysis={this.props.analysis}
 					workers={this.props.workers}
 					chooseWorker={this.props.chooseWorker}
 					placeWorker={this.props.placeWorker}
+					ref={(diceHolder) => this.diceHolder = diceHolder}
 				/>
 				<div className="Analysis_cardHolder">
 					<h4>Analysis</h4>

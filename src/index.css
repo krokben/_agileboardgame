@@ -176,7 +176,23 @@ body {
 
 .Analysis_diceHolder {
 	background: #fff;
+	display: flex;
 	flex: 1;
+	flex-direction: column;
+	font-family: 'Slackey', cursive;
+	font-size: 30px;
+	justify-content: center;
+}
+.Analysis_diceHolder_score {
+	text-align: center;
+	width: 100%;
+}
+
+.Analysis_diceHolder_active {
+	animation: Workers_pulse 1s ease-out;
+	animation-iteration-count: infinite;
+	background: yellow;
+	clip-path: polygon(48% 19%, 61% 35%, 80% 40%, 68% 57%, 70% 76%, 50% 70%, 29% 75%, 32% 57%, 18% 39%, 39% 35%);
 }
 
 /*--------------------------------------*\

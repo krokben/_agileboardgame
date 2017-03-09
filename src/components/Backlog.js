@@ -8,7 +8,6 @@ export default class Backlog extends Component {
 		return (
 			<div className="Analysis_boardColumn">
 				<div className="Analysis_diceHolder">
-					Empty
 				</div>
 				<div className="Analysis_cardHolder">
 					<h4>Backlog</h4>

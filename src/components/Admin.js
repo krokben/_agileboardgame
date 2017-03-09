@@ -44,17 +44,16 @@ export default class Admin extends Component {
 
 	renderCards() {
 		return this.props.cards.filter((x) => x.type === 'userstory').map(x => {
-			if (this.state.editing === x.id) {
+			if (this.state.editing === x.title.match(/\d+/)[0]) {
 				return (
 					<tr key={`adminedit-${x.id}`}>
-						<td>id: {x.id}</td>
 						<td ref={(title) => this.title = title}>{x.title}</td>
 						<td><input type="text" defaultValue={x.price} ref={(price) => this.price = price} /></td>
 						<td><input type="text" defaultValue={x.analysis} ref={(analysis) => this.analysis = analysis} /></td>
 						<td><input type="text" defaultValue={x.development} ref={(development) => this.development = development} /></td>
 						<td><input type="text" defaultValue={x.test} ref={(test) => this.test = test} /></td>
-						{this.state.saving === x.id ? <td className="Admin_save" onClick={() => this.handleSave(x.id)}>Save</td> : <td className="Admin_edit" onClick={() => this.handleEdit (x.title.match(/\d+/)[0])}>Edit</td>}
-						{this.state.deleting === x.id ? <td className="Admin_sure" onClick={() => this.delete(x.id)}>Sure?</td> : <td className="Admin_delete" onClick={() => this.handleDelete(x.id)}>Delete</td>}
+						{this.state.saving === x.title.match(/\d+/)[0] ? <td className="Admin_save" onClick={() => this.handleSave(x.id)}>Save</td> : <td className="Admin_edit" onClick={() => this.handleEdit(x.title.match(/\d+/)[0])}>Edit</td>}
+						{this.state.deleting === x.title.match(/\d+/)[0] ? <td className="Admin_sure" onClick={() => this.delete(x.id)}>Sure?</td> : <td className="Admin_delete" onClick={() => this.handleDelete(x.title.match(/\d+/)[0])}>Delete</td>}
 					</tr>
 				);
 			} else {
@@ -65,8 +64,8 @@ export default class Admin extends Component {
 						<td>{x.analysis}</td>
 						<td>{x.development}</td>
 						<td>{x.test}</td>
-						{this.state.saving === x.id ? <td className="Admin_save" onClick={() => this.handleSave(x.id)}>Save</td> : <td className="Admin_edit" onClick={() => this.handleEdit (x.title.match(/\d+/)[0])}>Edit</td>}
-						{this.state.deleting === x.id ? <td className="Admin_sure" onClick={() => this.delete(x.id)}>Sure?</td> : <td className="Admin_delete" onClick={() => this.handleDelete(x.id)}>Delete</td>}
+						{this.state.saving === x.title.match(/\d+/)[0] ? <td className="Admin_save" onClick={() => this.handleSave(x.id)}>Save</td> : <td className="Admin_edit" onClick={() => this.handleEdit(x.title.match(/\d+/)[0])}>Edit</td>}
+						{this.state.deleting === x.title.match(/\d+/)[0] ? <td className="Admin_sure" onClick={() => this.delete(x.id)}>Sure?</td> : <td className="Admin_delete" onClick={() => this.handleDelete(x.title.match(/\d+/)[0])}>Delete</td>}
 					</tr>
 				);
 			}
