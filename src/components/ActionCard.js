@@ -14,7 +14,8 @@ export default class ActionCard extends Component {
 			stopped: true,
 			dice: dice,
 			result: Math.floor((Math.random() * 6) + 1),
-			doubleCard: 'ac3'
+			doubleCard: 'ac3',
+			ac5: {id: 0}
 		}
 	}
 
@@ -34,7 +35,7 @@ export default class ActionCard extends Component {
 					<p>One of the developers gets a fever and will be away for one dice throw of days.</p>
 					<div className="ActionCard_dice" onClick={this.stopDice.bind(this)} ref={(dice) => this.dice = dice}><img src={this.state.dice} role="presentation" /></div>
 					{this.state.dice !== dice ? <p>Your developer is sick for {this.state.result} days.</p> : null}
-					{this.state.dice !== dice ? <button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button> : null}
+					{this.state.dice !== dice ? <button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button> : null}
 				</div>
 			);
 		} else if (this.props.days[5].current === 'yes') { // Action card 2
@@ -42,7 +43,7 @@ export default class ActionCard extends Component {
 				<div>
 					<h2>Action card 2</h2>
 					<p>The customer hires a new test manager who decides that all functionality needs to be regression tested. All stories now require double testing effort.</p>
-					<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+					<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 				</div>
 			);
 		} else if (this.props.days[10].current === 'yes') { // Action card 3
@@ -59,7 +60,7 @@ export default class ActionCard extends Component {
 					<div>
 						<h2>Action card 11</h2>
 						<p>Oh no! The competition went public with the same thing we are developing, so business decided to pull the plug on all current development and start fresh with something new. Remove all user stories in test, development and analysis.</p>
-						<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+						<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 					</div>
 				);
 			}
@@ -68,7 +69,7 @@ export default class ActionCard extends Component {
 	 			<div>
 	 				<h2>Action card 4</h2>
 	 				<p>If Maintenance task 1 is not completed, the system goes down. According to the contract this means that the downtime will be subtracted from your pay for the sprint. Please subtract 200$ from the total and pull in M1 with highest priority.</p>
-	 				<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 			</div>
 		 	);
 		} else if (this.props.days[17].current === 'yes') { // Action card 5
@@ -76,7 +77,7 @@ export default class ActionCard extends Component {
 	 			<div>
 	 				<h2>Action card 5</h2>
 	 				<p>A critical defect! Set the defect with highest priority that has not been started yet. If the team manages to fix the defect in this sprint the customer will pay 400$. After the sprint ends the customer will not pay any extra.</p>
-	 				<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 			</div>
 		 	);
 		} else if (this.props.days[15].current === 'yes') { // Action card 8
@@ -84,17 +85,42 @@ export default class ActionCard extends Component {
 				<div>
 	 				<h2>Action card 8</h2>
 	 				<p>Action card 8 och den.</p>
-	 				<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 			</div>
 			);
-		} else if (this.props.days[21].current === 'yes') { // Action card 10
+		} else if (this.props.days[19].current === 'yes') { // Action card 9
+			return (
+				<div>
+	 				<h2>Action card 9</h2>
+	 				<p>Action card 9 och den.</p>
+	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
+	 			</div>
+			);
+		} else if (this.props.days[20].current === 'yes') { // Action card 10
 			return (
 				<div>
 	 				<h2>Action card 10</h2>
 	 				<p>Action card 10 och den.</p>
-	 				<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
-	 				{this.props.cards.find((x) => x.type === 'defect').location === 'done' ? <div className="ActionCard_congrats">Congratulations! Your team fixed the defect in time. <span>+400$</span></div> : null}
+	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
+	 				{this.renderCongrats()}
 	 			</div>
+			);
+		}
+	}
+
+	closeCongrats() {
+		this.congrats.style.display = 'none';
+		this.props.ac5Score();
+	}
+
+	renderCongrats() {
+		const defect = this.props.ac5;
+		if (defect !== 0 && this.props.cards[defect - 1].location === 'done') {
+			return (
+				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
+					Congratulations! Your team fixed the defect in time. <span>+400$</span>
+					<button className="ActionCard_button" onClick={this.closeCongrats.bind(this)}>OK!</button>
+				</div>
 			);
 		}
 	}
@@ -132,14 +158,6 @@ export default class ActionCard extends Component {
 			}
 			this.props.isSick(this.state.result);
 		}
-	}
-
-	okay() {
-		// const stateCopy = {...this.state};
-		// stateCopy.rolled = true;
-		// this.setState(stateCopy);
-
-		this.props.closeActionCard();
 	}
 
 	actionCard3() {
