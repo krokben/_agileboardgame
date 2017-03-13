@@ -541,6 +541,19 @@ export default class App extends Component {
             retrospectives.push({id: x.id, text: x.val});
             this.setState({retrospectives});
         });
+				//score
+				this.state.gamestate.filter((x) => {
+            return (
+                x.game_id === this.state.game &&
+                x.type === 'score'
+            )
+        }).forEach((x) => {
+						console.log("game status score: " + x.val);
+            let score = this.state.score;
+
+						score = Number(x.val);
+            this.setState({score});
+        });
     }
 
     choose(card) {
@@ -763,7 +776,7 @@ export default class App extends Component {
 
     changeLocations() {
         const that = this;
-        this.state.cards.filter((card) => card.analysis === 0).map((x) => {
+        this.state.cards.filter((card) => card.location === 'analysis' && card.analysis === 0).map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'development';
             cards[x.id - 1].moved = new Date().getTime();
@@ -810,7 +823,7 @@ export default class App extends Component {
 
             return false;
         });
-        this.state.cards.filter((card) => card.development === 0).map((x) => {
+        this.state.cards.filter((card) => card.location === 'development' && card.development === 0).map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'test';
             this.setState({cards});
@@ -836,11 +849,14 @@ export default class App extends Component {
 
             return false;
         });
-        this.state.cards.filter((card) => card.test === 0).map((x) => {
-            const cards = this.state.cards;
+        this.state.cards.filter((card) => card.location === 'test' && card.test === 0).map((x) => {
+						let score = this.state.score;
+						score += Number(x.price);
+						this.setState({score});
+
+						const cards = this.state.cards;
             cards[x.id - 1].location = 'done';
             this.setState({cards});
-
             axios({
             method: 'post',
             url: 'http://localhost/_agileboardgame/api/?/gamestate',
@@ -862,7 +878,10 @@ export default class App extends Component {
 
             return false;
         });
-        this.countScore();
+				setTimeout(() => {
+						this.countScore();
+				}, 100);
+
     }
 
 		closeRetrospective() {
@@ -872,11 +891,24 @@ export default class App extends Component {
 		}
 
     countScore() {
-        let score = this.state.score;
-        this.state.cards.filter((card) => card.location === 'done').forEach((x) => {
-            score += Number(x.price);
-            this.setState({score});
-        });
+				const that = this;
+
+				axios({
+				method: 'post',
+				url: 'http://localhost/_agileboardgame/api/?/gamestate',
+				data: {
+						game_id: that.state.game,
+						type: 'score',
+						val: that.state.score
+				},
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				})
+				.then(function(response) {
+						// console.log(response);
+				})
+				.catch(function(error) {
+						console.log(error);
+				});
     }
 
 		displayRetrospective(idx) {
