@@ -91,7 +91,7 @@ export default class App extends Component {
 				</div>
 				{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
-                {this.state.actionCard ? <ActionCard actionCard4={this.actionCard4.bind(this)} days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
+                {this.state.actionCard ? <ActionCard days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
 				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
                 {this.state.admin && this.state.game === '1' ? <Admin cards={this.state.cards} fetchCards={this.fetchCards.bind(this)} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
 				<Footer hasRetrospective={this.hasRetrospective.bind(this)} showRetrospective={this.state.showRetrospective} actionCard={this.state.actionCard} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
@@ -300,7 +300,6 @@ export default class App extends Component {
 
     actionCard4() {
         const m1 = this.state.cards.find((x) => x.title === 'm1');
-        console.log(m1.location !== 'done' || m1.location !== 'dead');
         if (m1.location === 'done' || m1.location === 'dead') {
             return null;
         } else {
@@ -310,6 +309,18 @@ export default class App extends Component {
             const cards = this.state.cards;
             cards[m1.id - 1].location = 'backlog';
             cards[m1.id].location = 'cardpool';
+            this.setState({cards});
+        }
+    }
+
+    actionCard5() {
+        const defectCard = this.state.cards.find((x) => x.type === 'defect' && x.location === 'cardpool');
+        if (defectCard !== undefined) {
+            const cards = this.state.cards;
+            cards[defectCard.id - 1].location = 'backlog';
+            if (cards[defectCard.id] !== undefined) { // only run if not last defect card
+                cards[defectCard.id].location = 'cardpool';
+            }
             this.setState({cards});
         }
     }
@@ -563,6 +574,10 @@ export default class App extends Component {
         } else if (this.state.days[10].current === 'yes') { // Action card 3 & 11
             this.halfTestTime();
             this.killCardsInPlay();
+        } else if (this.state.days[14].current === 'yes') { // Action card 4
+            this.actionCard4();
+        } else if (this.state.days[17].current === 'yes') { // Action card 5
+            this.actionCard5();
         }
     }
 

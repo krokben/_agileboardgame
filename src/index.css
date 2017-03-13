@@ -129,6 +129,17 @@ body {
 	background: #48CFAD;
 }
 
+.ActionCard_congrats {
+	left: 25%;
+	position: absolute;
+	right: 25%;
+	top: 10%;
+}
+
+.Actioncard_congrats span {
+	font-size: 40px;
+}
+
 .ActionCard_container {
 	background: #fff;
 	border: 10px solid #000;
