@@ -130,13 +130,18 @@ body {
 }
 
 .ActionCard_congrats {
+	background: peachpuff;
+	bottom: 25%;
+	font-size: 20px;
 	left: 25%;
-	position: absolute;
+	padding: 15px;
+	position: fixed;
 	right: 25%;
-	top: 10%;
+	top: 25%;
+	z-index: 400;
 }
 
-.Actioncard_congrats span {
+.ActionCard_congrats span {
 	font-size: 40px;
 }
 
