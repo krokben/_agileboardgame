@@ -15,7 +15,7 @@ export default class Workers extends Component {
 				return (
 					<div
 						className={'Workers_worker ' + item.type}
-						key={item.id}
+						key={`worker-${item.id}`}
 						id={item.id}
 						onClick={() => this.props.chooseWorker(this[item.index])}
 						ref={(worker) => {this[item.index] = worker}}

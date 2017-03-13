@@ -163,11 +163,5 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 		";
 
 		mysqli_query($db, $query);
-		$query2 = "
-			INSERT INTO gamestate
-			SELECT * FROM default_gamestate
-		";
-
-		mysqli_query($db, $query2);
 	}
 }

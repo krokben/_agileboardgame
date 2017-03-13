@@ -11,7 +11,6 @@ export default class ActionCard extends Component {
 	constructor() {
 		super();
 		this.state = {
-			rolled: false,
 			stopped: true,
 			dice: dice,
 			result: Math.floor((Math.random() * 6) + 1),
@@ -20,15 +19,11 @@ export default class ActionCard extends Component {
 	}
 
 	render() {
-		if (!this.state.rolled) {
-			return (
-				<div className="ActionCard_container">
-					{this.renderActionCard()}
-				</div>
-			);
-		} else {
-			return null;
-		}
+		return (
+			<div className="ActionCard_container">
+				{this.renderActionCard()}
+			</div>
+		);
 	}
 
 	renderActionCard() {
@@ -68,6 +63,39 @@ export default class ActionCard extends Component {
 					</div>
 				);
 			}
+		} else if (this.props.days[14].current === 'yes') { // Action card 4
+			return (
+	 			<div>
+	 				<h2>Action card 4</h2>
+	 				<p>If Maintenance task 1 is not completed, the system goes down. According to the contract this means that the downtime will be subtracted from your pay for the sprint. Please subtract 200$ from the total and pull in M1 with highest priority.</p>
+	 				<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+	 			</div>
+		 	);
+		} else if (this.props.days[17].current === 'yes') { // Action card 5
+			return (
+	 			<div>
+	 				<h2>Action card 5</h2>
+	 				<p>A critical defect! Set the defect with highest priority that has not been started yet. If the team manages to fix the defect in this sprint the customer will pay 400$. After the sprint ends the customer will not pay any extra.</p>
+	 				<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+	 			</div>
+		 	);
+		} else if (this.props.days[15].current === 'yes') { // Action card 8
+			return (
+				<div>
+	 				<h2>Action card 8</h2>
+	 				<p>Action card 8 och den.</p>
+	 				<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+	 			</div>
+			);
+		} else if (this.props.days[21].current === 'yes') { // Action card 10
+			return (
+				<div>
+	 				<h2>Action card 10</h2>
+	 				<p>Action card 10 och den.</p>
+	 				<button className="ActionCard_button" onClick={this.okay.bind(this)}>OK!</button>
+	 				{this.props.cards.find((x) => x.type === 'defect').location === 'done' ? <div className="ActionCard_congrats">Congratulations! Your team fixed the defect in time. <span>+400$</span></div> : null}
+	 			</div>
+			);
 		}
 	}
 
@@ -107,9 +135,9 @@ export default class ActionCard extends Component {
 	}
 
 	okay() {
-		const stateCopy = {...this.state};
-		stateCopy.rolled = true;
-		this.setState(stateCopy);
+		// const stateCopy = {...this.state};
+		// stateCopy.rolled = true;
+		// this.setState(stateCopy);
 
 		this.props.closeActionCard();
 	}

@@ -15,7 +15,7 @@ export default class MaintenanceCards extends Component {
 				return (
 					<div
 						className="UserStories_userStory"
-						key={item.id} data-key={item.id}
+						key={`maintenance-${item.id}`} data-key={item.id}
 						id={item.title}
 						ref={(card) => this[item.id] = card}
 						onClick={this.props.choose !== undefined ? () => this.props.choose(this[item.id]) : null}

@@ -48,7 +48,10 @@ export default class App extends Component {
 			retrospectives,
 			retrospectiveDiv: false,
 			retrospectiveIndex: 0,
-            score: 0
+            score: 0,
+            analysis: {score: 0},
+            development: {score: 0},
+            test: {score: 0},
 		};
 	}
 
@@ -77,9 +80,9 @@ export default class App extends Component {
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 						<Backlog cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Analysis cards={this.state.cards} choose={this.choose.bind(this)} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Development cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
-						<Test cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
+						<Analysis analysis={this.state.analysis} cards={this.state.cards} choose={this.choose.bind(this)} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} ref={(analysis) => this.analysis = analysis} />
+						<Development development={this.state.development} cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} ref={(development) => this.development = development} />
+						<Test test={this.state.test} cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} ref={(test) => this.test = test} />
 						<Done cards={this.state.cards} placeWorker={this.placeWorker.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
 					</div>
 					<div className="App_status">
@@ -90,7 +93,7 @@ export default class App extends Component {
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
                 {this.state.actionCard ? <ActionCard days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
 				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
-                {this.state.admin && this.state.game === '1' ? <Admin cards={this.state.cards} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
+                {this.state.admin && this.state.game === '1' ? <Admin cards={this.state.cards} fetchCards={this.fetchCards.bind(this)} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
 				<Footer hasRetrospective={this.hasRetrospective.bind(this)} showRetrospective={this.state.showRetrospective} actionCard={this.state.actionCard} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
 			</div>
 
@@ -176,6 +179,45 @@ export default class App extends Component {
         });
     }
 
+    fetchCards() {
+        // admin function
+        const that = this;
+        const cards = this.state.cards;
+
+        axios.get('http://localhost/_agileboardgame/api/?/card')
+            .then(function(response) {
+                response.data.cards.forEach((item) => {
+                    if (cards[item.id - 1] !== undefined) {
+                        cards[item.id - 1].id = item.id;
+                        cards[item.id - 1].index = item.index;
+                        cards[item.id - 1].type = item.type;
+                        cards[item.id - 1].title = item.title;
+                        cards[item.id - 1].price = item.price;
+                        cards[item.id - 1].analysis = item.analysis;
+                        cards[item.id - 1].development = item.development;
+                        cards[item.id - 1].test = item.test;
+                        cards[item.id - 1].location = item.location;
+                    } else {
+                        cards.push({
+                            id: item.id,
+                            index: item.index,
+                            type: item.type,
+                            title: item.title,
+                            price: item.price,
+                            analysis: item.analysis,
+                            development: item.development,
+                            test: item.test,
+                            location: item.location
+                        });
+                    }
+                });
+                that.setState({cards});
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+    }
+
 	fetchData() {
         const that = this;
         axios.get('http://localhost/_agileboardgame/api/?/card')
@@ -254,6 +296,33 @@ export default class App extends Component {
             .catch(function(error) {
                 console.log(error);
         });
+    }
+
+    actionCard4() {
+        const m1 = this.state.cards.find((x) => x.title === 'm1');
+        if (m1.location === 'done' || m1.location === 'dead') {
+            return null;
+        } else {
+            let score = this.state.score;
+            score -= 200;
+            this.setState({score});
+            const cards = this.state.cards;
+            cards[m1.id - 1].location = 'backlog';
+            cards[m1.id].location = 'cardpool';
+            this.setState({cards});
+        }
+    }
+
+    actionCard5() {
+        const defectCard = this.state.cards.find((x) => x.type === 'defect' && x.location === 'cardpool');
+        if (defectCard !== undefined) {
+            const cards = this.state.cards;
+            cards[defectCard.id - 1].location = 'backlog';
+            if (cards[defectCard.id] !== undefined) { // only run if not last defect card
+                cards[defectCard.id].location = 'cardpool';
+            }
+            this.setState({cards});
+        }
     }
 
     checkGameStatus() {
@@ -339,7 +408,7 @@ export default class App extends Component {
             )
         }).forEach((x) => {
             const retrospectives = this.state.retrospectives;
-            retrospectives[x.type_id - 1].text = x.val;
+            retrospectives.push({id: x.id, text: x.val});
             this.setState({retrospectives});
         });
 				//score
@@ -430,6 +499,16 @@ export default class App extends Component {
         }
 
     chooseWorker(worker) {
+        // change css on diceholder
+        if (worker.id === '1' || worker.id === '6') {
+            this.analysis.diceHolder.diceHolder.classList.toggle('Analysis_diceHolder_active');
+            this.test.diceHolder.diceHolder.classList.toggle('Analysis_diceHolder_active');
+        } else {
+            this.analysis.diceHolder.diceHolder.classList.toggle('Analysis_diceHolder_active');
+            this.development.diceHolder.diceHolder.classList.toggle('Analysis_diceHolder_active');
+            this.test.diceHolder.diceHolder.classList.toggle('Analysis_diceHolder_active');
+        }
+
         let workerState = this.state.workers[worker.id - 1];
         if (workerState.location === 'header') {
             if (worker.classList.contains('Workers_active')) {
@@ -464,6 +543,22 @@ export default class App extends Component {
     }
 
     placeWorker(location) {
+        // change css on diceholder
+        this.analysis.diceHolder.diceHolder.classList.remove('Analysis_diceHolder_active');
+        this.development.diceHolder.diceHolder.classList.remove('Analysis_diceHolder_active');
+        this.test.diceHolder.diceHolder.classList.remove('Analysis_diceHolder_active');
+
+        // remove last dice results
+        let analysis = this.state.analysis;
+        analysis.score = 0;
+        this.setState({analysis});
+        let development = this.state.development;
+        development.score = 0;
+        this.setState({development});
+        let test = this.state.test;
+        test.score = 0;
+        this.setState({test});
+
         const activeWorker = this.state.workers.filter((worker) => worker.active)[0]
         if (activeWorker !== undefined) {
             if (location === 'analysis' || location === 'test') {
@@ -492,6 +587,10 @@ export default class App extends Component {
         } else if (this.state.days[10].current === 'yes') { // Action card 3 & 11
             this.halfTestTime();
             this.killCardsInPlay();
+        } else if (this.state.days[14].current === 'yes') { // Action card 4
+            this.actionCard4();
+        } else if (this.state.days[17].current === 'yes') { // Action card 5
+            this.actionCard5();
         }
     }
 
@@ -704,7 +803,6 @@ export default class App extends Component {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
             .then(function(response) {
-                console.log(response.data.games[0]);
                 if (response.data.games[0] !== undefined) {
                     let game = that.state.game;
                     game = response.data.games[0].id;
@@ -792,48 +890,59 @@ export default class App extends Component {
 		}
 
     rollDice() {
-        let analysis = 0;
-        let development = 0;
-        let test = 0;
+        let analysisScore = 0;
+        let developmentScore = 0;
+        let testScore = 0;
         this.state.workers.filter((worker) => worker.location === 'analysis').forEach((x) => {
-            analysis += Math.floor((Math.random() * 6) + 1);
+            analysisScore += Math.floor((Math.random() * 6) + 1);
         });
         this.state.workers.filter((worker) => worker.location === 'development').forEach((x) => {
-            development += Math.floor((Math.random() * 6) + 1);
+            developmentScore += Math.floor((Math.random() * 6) + 1);
         });
         this.state.workers.filter((worker) => worker.location === 'test').forEach((x) => {
-            test += Math.floor((Math.random() * 6) + 1);
+            testScore += Math.floor((Math.random() * 6) + 1);
         });
-        console.log('analysis result: ' + analysis);
-        console.log('development result: ' + development);
-        console.log('test result: ' + test);
-        this.subtractScore(analysis, 'analysis');
-        this.subtractScore(development, 'development');
-        this.subtractScore(test, 'test');
-        // this.subtractScore(result);
+        this.subtractScore(analysisScore, 'analysis');
+        this.subtractScore(developmentScore, 'development');
+        this.subtractScore(testScore, 'test');
+
+        let analysis = this.state.analysis;
+        analysis.score = analysisScore;
+        this.setState({analysis});
+        let development = this.state.development;
+        development.score = developmentScore;
+        this.setState({development});
+        let test = this.state.test;
+        test.score = testScore;
+        this.setState({test});
     }
 
 
 	saveRetrospective(val) {
+        const that = this;
 		const sprint = this.state.days.filter((x) => x.current === 'yes')[0].sprint
 		const stateCopy = {...this.state};
 		stateCopy.retrospectives.push({id:sprint, text: val});
 		this.setState(stateCopy);
 		console.log(val);
 		axios({
-				method: 'post',
-				url: 'http://localhost/_agileboardgame/api/?/retrospective',
-				data: {
-						text: val
-				},
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-		})
-		.then(function(response) {
-				console.log(response);
-		})
-		.catch(function(error) {
-				console.log(error);
-		});
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'retrospective',
+                type_id: '',
+                prop: 'text',
+                val: val
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response) {
+                // console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+        });
 		// Close window
 		let showRetrospective = this.state.showRetrospective;
 		showRetrospective = !showRetrospective;
@@ -858,7 +967,6 @@ export default class App extends Component {
             if (result <= 0) {
                 diceScore = initialScore - initialPoints; // turn negative number into positive on score
 								result = 0; // make card.analysis 0
-                console.log('score: ' + diceScore);
             } else if (result > 0) {
 					diceScore = 0;
 			}

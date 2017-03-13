@@ -19,21 +19,25 @@ export default class Header extends Component {
 	}
 
 	resetGameState() {
-		axios({
-            method: 'RESETGAME',
-            url: 'http://localhost/_agileboardgame/api/?/card'
-        });
+		// axios({
+  //           method: 'RESETGAME',
+  //           url: 'http://localhost/_agileboardgame/api/?/card'
+  //       });
+  //       axios({
+  //           method: 'RESETGAME',
+  //           url: 'http://localhost/_agileboardgame/api/?/worker'
+  //       });
+  //       axios({
+  //           method: 'RESETGAME',
+  //           url: 'http://localhost/_agileboardgame/api/?/day'
+  //       });
+  //       axios({
+  //           method: 'RESETGAME',
+  //           url: 'http://localhost/_agileboardgame/api/?/retrospective'
+  //       });
         axios({
             method: 'RESETGAME',
-            url: 'http://localhost/_agileboardgame/api/?/worker'
-        });
-        axios({
-            method: 'RESETGAME',
-            url: 'http://localhost/_agileboardgame/api/?/day'
-        });
-        axios({
-            method: 'RESETGAME',
-            url: 'http://localhost/_agileboardgame/api/?/retrospective'
+            url: 'http://localhost/_agileboardgame/api/?/gamestate'
         });
         location.reload();
 	}
