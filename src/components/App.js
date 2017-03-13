@@ -232,8 +232,7 @@ export default class App extends Component {
                     analysis: item.analysis,
                     development: item.development,
                     test: item.test,
-                    location: item.location,
-                    moved: item.moved
+                    location: item.location
                 }));
                 that.setState({cards: that.state.cards});
             })
@@ -318,7 +317,6 @@ export default class App extends Component {
             const cards = this.state.cards;
             cards[m1.id - 1].location = 'backlog';
             cards[m1.id].location = 'cardpool';
-            cards[m1.id - 1].moved = new Date().getTime();
             this.setState({cards});
 
             axios({
@@ -331,7 +329,7 @@ export default class App extends Component {
                 prop: 'location',
                 val: 'backlog'
             },
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
             .then(function(response) {
                 // console.log(response);
@@ -346,30 +344,11 @@ export default class App extends Component {
             data: {
                 game_id: that.state.game,
                 type: 'card',
-                type_id: m1.id + 1,
+                type_id: Number(m1.id) + 1,
                 prop: 'location',
                 val: 'cardpool'
             },
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            })
-            .then(function(response) {
-                // console.log(response);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-
-            axios({
-            method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
-            data: {
-                game_id: that.state.game,
-                type: 'card',
-                type_id: m1.id,
-                prop: 'moved',
-                val: new Date().getTime()
-            },
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
             .then(function(response) {
                 // console.log(response);
@@ -386,7 +365,26 @@ export default class App extends Component {
         if (defectCard !== undefined) {
             const cards = this.state.cards;
             cards[defectCard.id - 1].location = 'backlog';
-            cards[defectCard.id - 1].moved = new Date().getTime();
+
+            axios({
+                method: 'post',
+                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                data: {
+                    game_id: that.state.game,
+                    type: 'card',
+                    type_id: defectCard.id,
+                    prop: 'location',
+                    val: 'backlog'
+                },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                })
+                .then(function(response) {
+                    // console.log(response);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+
             if (cards[defectCard.id] !== undefined) { // only run if not last defect card
                 cards[defectCard.id].location = 'cardpool';
                 // put in memory
@@ -400,11 +398,11 @@ export default class App extends Component {
                 data: {
                     game_id: that.state.game,
                     type: 'card',
-                    type_id: defectCard.id + 1,
+                    type_id: Number(defectCard.id) + 1,
                     prop: 'location',
                     val: 'cardpool'
                 },
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 })
                 .then(function(response) {
                     // console.log(response);
@@ -414,44 +412,6 @@ export default class App extends Component {
                 });
             }
             this.setState({cards});
-
-            axios({
-            method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
-            data: {
-                game_id: that.state.game,
-                type: 'card',
-                type_id: defectCard.id,
-                prop: 'location',
-                val: 'backlog'
-            },
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            })
-            .then(function(response) {
-                // console.log(response);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-
-            axios({
-            method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
-            data: {
-                game_id: that.state.game,
-                type: 'card',
-                type_id: defectCard.id,
-                prop: 'moved',
-                val: new Date().getTime()
-            },
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            })
-            .then(function(response) {
-                // console.log(response);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
         }
     }
 
@@ -541,19 +501,6 @@ export default class App extends Component {
             retrospectives.push({id: x.id, text: x.val});
             this.setState({retrospectives});
         });
-				//score
-				this.state.gamestate.filter((x) => {
-            return (
-                x.game_id === this.state.game &&
-                x.type === 'score'
-            )
-        }).forEach((x) => {
-						console.log("game status score: " + x.val);
-            let score = this.state.score;
-
-						score = Number(x.val);
-            this.setState({score});
-        });
     }
 
     choose(card) {
@@ -594,7 +541,7 @@ export default class App extends Component {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
         .then(function(response) {
-            // console.log(response);
+            console.log(response);
         })
         .catch(function(error) {
             console.log(error);
@@ -776,10 +723,9 @@ export default class App extends Component {
 
     changeLocations() {
         const that = this;
-        this.state.cards.filter((card) => card.location === 'analysis' && card.analysis === 0).map((x) => {
+        this.state.cards.filter((card) => card.analysis === 0).map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'development';
-            cards[x.id - 1].moved = new Date().getTime();
             this.setState({cards});
 
             axios({
@@ -801,29 +747,9 @@ export default class App extends Component {
                 console.log(error);
             });
 
-            // set timestamp for when card was moved
-            axios({
-            method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
-            data: {
-                game_id: that.state.game,
-                type: 'card',
-                type_id: x.id,
-                prop: 'moved',
-                val: new Date().getTime()
-            },
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            })
-            .then(function(response) {
-                // console.log(response);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-
             return false;
         });
-        this.state.cards.filter((card) => card.location === 'development' && card.development === 0).map((x) => {
+        this.state.cards.filter((card) => card.development === 0).map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'test';
             this.setState({cards});
@@ -849,14 +775,11 @@ export default class App extends Component {
 
             return false;
         });
-        this.state.cards.filter((card) => card.location === 'test' && card.test === 0).map((x) => {
-						let score = this.state.score;
-						score += Number(x.price);
-						this.setState({score});
-
-						const cards = this.state.cards;
+        this.state.cards.filter((card) => card.test === 0).map((x) => {
+            const cards = this.state.cards;
             cards[x.id - 1].location = 'done';
             this.setState({cards});
+
             axios({
             method: 'post',
             url: 'http://localhost/_agileboardgame/api/?/gamestate',
@@ -878,10 +801,7 @@ export default class App extends Component {
 
             return false;
         });
-				setTimeout(() => {
-						this.countScore();
-				}, 100);
-
+        this.countScore();
     }
 
 		closeRetrospective() {
@@ -891,24 +811,11 @@ export default class App extends Component {
 		}
 
     countScore() {
-				const that = this;
-
-				axios({
-				method: 'post',
-				url: 'http://localhost/_agileboardgame/api/?/gamestate',
-				data: {
-						game_id: that.state.game,
-						type: 'score',
-						val: that.state.score
-				},
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-				})
-				.then(function(response) {
-						// console.log(response);
-				})
-				.catch(function(error) {
-						console.log(error);
-				});
+        let score = this.state.score;
+        this.state.cards.filter((card) => card.location === 'done').forEach((x) => {
+            score += Number(x.price);
+            this.setState({score});
+        });
     }
 
 		displayRetrospective(idx) {
