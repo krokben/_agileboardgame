@@ -35,6 +35,7 @@ export default class App extends Component {
             calendar: false,
             actionCard: false,
             ac5: 0,
+            ac8: 0,
             diceScore: {
               analysis: 0,
               development: 0,
@@ -92,7 +93,7 @@ export default class App extends Component {
 				</div>
 				{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
-                {this.state.actionCard ? <ActionCard days={this.state.days} cards={this.state.cards} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} ac5={this.state.ac5} ac5Score={this.ac5Score.bind(this)} /> : null}
+                {this.state.actionCard ? <ActionCard days={this.state.days} cards={this.state.cards} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} ac5={this.state.ac5} ac5Score={this.ac5Score.bind(this)} ac8={this.state.ac8} ac8Score={this.ac8Score.bind(this)} /> : null}
 				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
                 {this.state.admin && this.state.game === '1' ? <Admin cards={this.state.cards} fetchCards={this.fetchCards.bind(this)} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
 				<Footer hasRetrospective={this.hasRetrospective.bind(this)} showRetrospective={this.state.showRetrospective} actionCard={this.state.actionCard} days={this.state.days} countDays={this.countDays.bind(this)} rollDice={this.rollDice.bind(this)} changeLocations={this.changeLocations.bind(this)} ref={(footer) => this.footer = footer} />
@@ -232,7 +233,8 @@ export default class App extends Component {
                     analysis: item.analysis,
                     development: item.development,
                     test: item.test,
-                    location: item.location
+                    location: item.location,
+                    prio: false
                 }));
                 that.setState({cards: that.state.cards});
             })
@@ -305,6 +307,12 @@ export default class App extends Component {
         this.setState({score});
     }
 
+    ac8Score() {
+        let score = this.state.score;
+        score += 200;
+        this.setState({score});
+    }
+
     actionCard4() {
         const that = this;
         const m1 = this.state.cards.find((x) => x.title === 'm1');
@@ -317,6 +325,7 @@ export default class App extends Component {
             const cards = this.state.cards;
             cards[m1.id - 1].location = 'backlog';
             cards[m1.id].location = 'cardpool';
+            cards[m1.id - 1].prio = true;
             this.setState({cards});
 
             axios({
@@ -365,6 +374,7 @@ export default class App extends Component {
         if (defectCard !== undefined) {
             const cards = this.state.cards;
             cards[defectCard.id - 1].location = 'backlog';
+            cards[defectCard.id - 1].prio = true;
 
             axios({
                 method: 'post',
@@ -413,6 +423,12 @@ export default class App extends Component {
             }
             this.setState({cards});
         }
+    }
+
+    actionCard8(val) {
+        let ac8 = this.state.ac8;
+        ac8 = val;
+        this.setState({ac8});
     }
 
     checkGameStatus() {
@@ -654,7 +670,7 @@ export default class App extends Component {
         }
     }
 
-    closeActionCard() {
+    closeActionCard(val) {
         let actionCard = this.state.actionCard;
         actionCard = false;
         this.setState({actionCard});
@@ -668,6 +684,8 @@ export default class App extends Component {
             this.actionCard4();
         } else if (this.state.days[17].current === 'yes') { // Action card 5
             this.actionCard5();
+        } else if (this.state.days[15].current === 'yes') { // Action card 8
+            this.actionCard8(val);
         }
     }
 
@@ -723,7 +741,7 @@ export default class App extends Component {
 
     changeLocations() {
         const that = this;
-        this.state.cards.filter((card) => card.analysis === 0).map((x) => {
+        this.state.cards.filter((card) => card.analysis === 0 && card.location !== 'dead').map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'development';
             this.setState({cards});
@@ -749,7 +767,7 @@ export default class App extends Component {
 
             return false;
         });
-        this.state.cards.filter((card) => card.development === 0).map((x) => {
+        this.state.cards.filter((card) => card.development === 0 && card.location !== 'dead').map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'test';
             this.setState({cards});
@@ -775,7 +793,7 @@ export default class App extends Component {
 
             return false;
         });
-        this.state.cards.filter((card) => card.test === 0).map((x) => {
+        this.state.cards.filter((card) => card.test === 0 && card.location !== 'dead').map((x) => {
             const cards = this.state.cards;
             cards[x.id - 1].location = 'done';
             this.setState({cards});
@@ -815,6 +833,15 @@ export default class App extends Component {
         this.state.cards.filter((card) => card.location === 'done').forEach((x) => {
             score += Number(x.price);
             this.setState({score});
+            // action card 8 counter
+            if (this.state.days[16].current === 'yes' ||
+                this.state.days[17].current === 'yes' ||
+                this.state.days[18].current === 'yes' ||
+                this.state.days[19].current === 'yes') {
+                let ac8 = this.state.ac8;
+                ac8--;
+                this.setState({ac8});
+            }
         });
     }
 
@@ -940,10 +967,37 @@ export default class App extends Component {
     }
 
 		hasRetrospective() {
+            const that = this;
 			let showRetrospective = this.state.showRetrospective;
 			if (this.state.days.filter((day) => day.current === 'yes' && day.title === '1' && day.sprint !== '1').length !== 0) {
 				showRetrospective = !showRetrospective;
 				this.setState({showRetrospective});
+
+                // on new sprint, remove all cards from done column
+                const cards = this.state.cards;
+                cards.filter((x) => x.location === 'done').forEach((x) => {
+                    cards[x.id - 1].location = 'dead';
+
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                        data: {
+                            game_id: that.state.game,
+                            type: 'card',
+                            type_id: x.id,
+                            prop: 'location',
+                            val: 'dead'
+                        },
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                        })
+                        .then(function(response) {
+                            // console.log(response);
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                    });
+                });
+                this.setState({cards});
 			}
 		}
 
