@@ -10,9 +10,7 @@ export default class UserStories extends Component {
 	}
 
     renderUserStories() {
-    	const cards = this.props.cards.slice().sort((a, b) => a.moved > b.moved); // make copy sorted by "moved"
-    	console.log(cards);
-    	return cards.map((item) => {
+    	return this.props.cards.map((item) => {
     		if (item.type === 'userstory' && item.location === this.props.location) {
 				return (
 					<div
