@@ -84,8 +84,9 @@ export default class ActionCard extends Component {
 			return (
 				<div>
 	 				<h2>Action card 8</h2>
-	 				<p>Action card 8 och den.</p>
-	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
+	 				<p>The management wants the team to work with a sprint commitment. Decide together how many stories the team can make before the sprint is over. The team gets 200$ extra if they succeed.</p>
+	 				<input type="number" min="0" max="20" defaultValue="0" ref={(x) => this.ac8input = x}/>
+	 				<button className="ActionCard_button" onClick={() => this.props.closeActionCard(this.ac8input.value)}>OK!</button>
 	 			</div>
 			);
 		} else if (this.props.days[19].current === 'yes') { // Action card 9
@@ -103,6 +104,7 @@ export default class ActionCard extends Component {
 	 				<p>Action card 10 och den.</p>
 	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 				{this.renderCongrats()}
+	 				{this.renderCongratsAc8()}
 	 			</div>
 			);
 		}
@@ -119,6 +121,18 @@ export default class ActionCard extends Component {
 			return (
 				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
 					Congratulations! Your team fixed the defect in time. <span>+400$</span>
+					<button className="ActionCard_button" onClick={this.closeCongrats.bind(this)}>OK!</button>
+				</div>
+			);
+		}
+	}
+
+	renderCongratsAc8() {
+		const ac8 = this.props.ac8;
+		if (ac8 === 0) {
+			return (
+				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
+					Congratulations! Your team fixed all the stories you decided in time. <span>+200$</span>
 					<button className="ActionCard_button" onClick={this.closeCongrats.bind(this)}>OK!</button>
 				</div>
 			);
