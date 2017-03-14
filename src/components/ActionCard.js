@@ -80,7 +80,15 @@ export default class ActionCard extends Component {
 	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 			</div>
 		 	);
-		} else if (this.props.days[15].current === 'yes') { // Action card 8
+		} else if (this.props.days[23].current === 'yes') { // Action card 6
+			return (
+	 			<div>
+	 				<h2>Action card 6</h2>
+	 				<p>Action card 6 liksom.</p>
+	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
+	 			</div>
+		 	);
+		}	else if (this.props.days[15].current === 'yes') { // Action card 8
 			return (
 				<div>
 	 				<h2>Action card 8</h2>
@@ -101,18 +109,39 @@ export default class ActionCard extends Component {
 			return (
 				<div>
 	 				<h2>Action card 10</h2>
-	 				<p>Action card 10 och den.</p>
+	 				<p>Oh no! System is depending on finishing M5 at the end of this sprint. Unfortunately M5 is depending on M2, M3 and M4. Let us hope that the team has been working with them during previous sprints. If not - pull all remaining meintenance tasks into the sprint. If M5 is not finished by the end of the sprint the fine is 800$.</p>
 	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 				{this.renderCongrats()}
 	 				{this.renderCongratsAc8()}
 	 			</div>
 			);
+		} else if (this.props.days[25].current === 'yes') { // Multiple choice card 2
+			return (
+				<div>
+	 				<h2>Multiple choice card 2</h2>
+	 				<p>Blabla</p>
+	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
+	 				{this.renderCongratsAc10()}
+	 			</div>
+			);
 		}
 	}
 
-	closeCongrats() {
+	closeCongrats(ac) {
 		this.congrats.style.display = 'none';
-		this.props.ac5Score();
+		switch(ac) {
+			case 'ac5':
+				this.props.ac5Score();
+				break;
+			case 'ac8':
+				this.props.ac8Score();
+				break;
+			case 'ac10':
+				this.props.ac10Score();
+				break;
+			default:
+				return null;
+		}
 	}
 
 	renderCongrats() {
@@ -121,7 +150,7 @@ export default class ActionCard extends Component {
 			return (
 				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
 					Congratulations! Your team fixed the defect in time. <span>+400$</span>
-					<button className="ActionCard_button" onClick={this.closeCongrats.bind(this)}>OK!</button>
+					<button className="ActionCard_button" onClick={() =>this.closeCongrats('ac5')}>OK!</button>
 				</div>
 			);
 		}
@@ -133,7 +162,26 @@ export default class ActionCard extends Component {
 			return (
 				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
 					Congratulations! Your team fixed all the stories you decided in time. <span>+200$</span>
+					<button className="ActionCard_button" onClick={() =>this.closeCongrats('ac8')}>OK!</button>
+				</div>
+			);
+		}
+	}
+
+	renderCongratsAc10() {
+		console.log(this.props.cards.filter((x) => x.title === 'm5' && x.location === 'dead'));
+		if (this.props.cards.filter((x) => x.title === 'm5' && x.location === 'dead').length === 1) {
+			return (
+				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
+					Congratulations! Your team fixed Maintenance card 5 in time.
 					<button className="ActionCard_button" onClick={this.closeCongrats.bind(this)}>OK!</button>
+				</div>
+			);
+		} else {
+			return (
+				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
+					Sorry! Your team didn't fix Maintenance card 5 in time. <span>-800$</span>
+					<button className="ActionCard_button" onClick={() =>this.closeCongrats('ac10')}>OK!</button>
 				</div>
 			);
 		}
