@@ -556,6 +556,98 @@ export default class App extends Component {
         }
     }
 
+    actionCard7() {
+        const that = this;
+        const cards = this.state.cards;
+        let card;
+        const testPrio = cards.find((x) => x.development === 0 && x.prio);
+        const test = cards.find((x) => x.development === 0 && !x.prio);
+        const analysisPrio = cards.find((x) => x.analysis === 0 && x.prio);
+        const analysis = cards.find((x) => x.analysis === 0 && !x.prio);
+        console.log(analysis);
+        if (testPrio !== undefined) {
+            card = testPrio;
+        } else if (test !== undefined) {
+            card = test;
+        } else if (analysisPrio !== undefined) {
+            card = analysisPrio;
+        } else if (analysis !== undefined) {
+            card = analysis;
+        }
+        cards[card.id - 1].analysis = Number(card.analysis) + 2;
+        cards[card.id - 1].development = Number(card.development) + 4;
+        cards[card.id - 1].test = Number(card.test) + 2;
+        cards[card.id - 1].location = 'backlog';
+        cards[card.id - 1].prio = true;
+        this.setState({cards});
+
+        axios({
+        method: 'post',
+        url: 'http://localhost/_agileboardgame/api/?/gamestate',
+        data: {
+            game_id: that.state.game,
+            type: 'card',
+            type_id: card.id,
+            prop: 'analysis',
+            val: cards[card.id - 1].analysis
+        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        axios({
+        method: 'post',
+        url: 'http://localhost/_agileboardgame/api/?/gamestate',
+        data: {
+            game_id: that.state.game,
+            type: 'card',
+            type_id: card.id,
+            prop: 'development',
+            val: cards[card.id - 1].development
+        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        axios({
+        method: 'post',
+        url: 'http://localhost/_agileboardgame/api/?/gamestate',
+        data: {
+            game_id: that.state.game,
+            type: 'card',
+            type_id: card.id,
+            prop: 'test',
+            val: cards[card.id - 1].test
+        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        axios({
+        method: 'post',
+        url: 'http://localhost/_agileboardgame/api/?/gamestate',
+        data: {
+            game_id: that.state.game,
+            type: 'card',
+            type_id: card.id,
+            prop: 'location',
+            val: cards[card.id - 1].location
+        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        axios({
+        method: 'post',
+        url: 'http://localhost/_agileboardgame/api/?/gamestate',
+        data: {
+            game_id: that.state.game,
+            type: 'card',
+            type_id: card.id,
+            prop: 'prio',
+            val: cards[card.id - 1].prio
+        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+    }
+
     actionCard8(val) {
         let ac8 = this.state.ac8;
         ac8 = val;
@@ -853,6 +945,8 @@ export default class App extends Component {
             this.actionCard4();
         } else if (this.state.days[17].current === 'yes') { // Action card 5
             this.actionCard5();
+        } else if (this.state.days[27].current === 'yes') { // Action card 7
+            this.actionCard7();
         } else if (this.state.days[15].current === 'yes') { // Action card 8
             this.actionCard8(val);
         } else if (this.state.days[20].current === 'yes') { // Action card 10

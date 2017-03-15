@@ -88,6 +88,14 @@ export default class ActionCard extends Component {
 	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 			</div>
 		 	);
+		} else if (this.props.days[27].current === 'yes') { // Action card 7
+			return (
+	 			<div>
+	 				<h2>Action card 7</h2>
+	 				<p>The stakeholders request a demo immediately to review the functionality. The story that has made the most progress in the sprint gets rejected due to unclear user interface. Add 2 analysis points, 4 development points and 2 testing points and pull it back into the top of the backlog with highest priority. No change in money for the US.</p>
+	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
+	 			</div>
+		 	);
 		}	else if (this.props.days[15].current === 'yes') { // Action card 8
 			return (
 				<div>
