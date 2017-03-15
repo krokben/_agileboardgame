@@ -654,6 +654,11 @@ export default class App extends Component {
         this.setState({ac8});
     }
 
+    actionCard9() {
+        const id = this.state.days[19].id;
+        this.state.days.splice(id, 0, {id: 'saturday', actioncard: 'no', current: 'no', message: '', sprint: '4', title: '6'}, {id: 'sunday', actioncard: 'no', current: 'no', message: '', sprint: '4', title: '7'});
+    }
+
     actionCard10() {
         const mCards = this.state.cards.filter((x) => x.type === 'maintenance' && (x.location === 'done' || x.location === 'dead'));
         if (mCards.length < 5) {
@@ -766,7 +771,6 @@ export default class App extends Component {
         });
         // score
         this.state.gamestate.filter((x) => {
-            console.log(x);
             return (
                 x.game_id === this.state.game &&
                 x.type === 'score' &&
@@ -802,7 +806,7 @@ export default class App extends Component {
                 nextLocation = 'done';
                 break;
             default:
-                console.log('done');
+                // console.log('done');
         }
         // change clicked card's location to next location
         axios({
@@ -818,7 +822,7 @@ export default class App extends Component {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
         .then(function(response) {
-            console.log(response);
+            // console.log(response);
         })
         .catch(function(error) {
             console.log(error);
@@ -949,6 +953,8 @@ export default class App extends Component {
             this.actionCard7();
         } else if (this.state.days[15].current === 'yes') { // Action card 8
             this.actionCard8(val);
+        } else if (this.state.days[19].current === 'yes') { // Action card 9
+            this.actionCard9(val);
         } else if (this.state.days[20].current === 'yes') { // Action card 10
             this.actionCard10();
         }
@@ -957,9 +963,18 @@ export default class App extends Component {
     countDays(day) {
         const that = this;
         const stateCopy = {...this.state};
-				stateCopy.days[day - 1].current = 'no';
-				stateCopy.days[day].current = 'yes';
-				this.setState(stateCopy);
+        if (day === 'saturday') {
+            stateCopy.days[20].current = 'no';
+            stateCopy.days[21].current = 'yes';
+        } else if (day === 'sunday') {
+            stateCopy.days[21].current = 'no';
+            stateCopy.days[22].current = 'yes';
+        } else {
+            stateCopy.days[day - 1].current = 'no';
+            stateCopy.days[day].current = 'yes';
+        }
+
+		this.setState(stateCopy);
         // change current day to not be current
         axios({
             method: 'post',
@@ -1242,16 +1257,32 @@ export default class App extends Component {
     }
 
     hasActionCard(day) {
-        if (this.state.days[day].current === 'yes' && this.state.days[day].actioncard === 'yes') {
+        let hasWeekend = false;
+        if (day === 'saturday' || day === 'sunday') { // action card 9
+            hasWeekend = true;
+        } else {
+            if (this.state.days[day].current === 'yes' && this.state.days[day].actioncard === 'yes') {
             let actionCard = this.state.actionCard;
             actionCard = true;
             this.setState({actionCard});
-        } else {
-            if (this.state.actionCard) {
-                let actionCard = this.state.actionCard;
-                actionCard = false;
-                this.setState({actionCard});
+            } else {
+                if (this.state.actionCard) {
+                    let actionCard = this.state.actionCard;
+                    actionCard = false;
+                    this.setState({actionCard});
+                }
             }
+        }
+        // reset amount of days to normal (from action card 9's effect)
+        if (this.state.days[22].current === 'yes' && hasWeekend) {
+            this.state.days.splice(19, 2);
+            setTimeout(() => {
+                this.state.days.splice(21, 1); // also remove tuesday from sprint
+            }, 100);
+        }
+        // put tuesday back
+        if (this.state.days[21].current === 'yes' && this.state.days[21].title === '3') {
+            this.state.days.splice(21, 0, {actioncard: 'no', current: 'no', id: '23', message: '', sprint: '5', title: '3'});
         }
     }
 
@@ -1325,7 +1356,6 @@ export default class App extends Component {
 		const stateCopy = {...this.state};
 		stateCopy.retrospectives.push({id:sprint, text: val});
 		this.setState(stateCopy);
-		console.log(val);
 		axios({
             method: 'post',
             url: 'http://localhost/_agileboardgame/api/?/gamestate',

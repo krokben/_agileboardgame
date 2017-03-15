@@ -24,6 +24,12 @@ export default class WorkDay extends Component {
 							case '5':
 								weekday = 'friday';
 								break;
+							case '6':
+								weekday = 'saturday';
+								break;
+							case '7':
+								weekday = 'sunday';
+								break;
 							default:
 								weekday = '';
 						}

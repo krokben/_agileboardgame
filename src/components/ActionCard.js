@@ -109,7 +109,7 @@ export default class ActionCard extends Component {
 			return (
 				<div>
 	 				<h2>Action card 9</h2>
-	 				<p>Action card 9 och den.</p>
+	 				<p>How is the commitment going? The team can decide to work during the weekend to be done in time. However they will lose one day of the next sprint. It is up to the team to decide.</p>
 	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 			</div>
 			);
