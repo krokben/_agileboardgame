@@ -661,9 +661,11 @@ export default class App extends Component {
         this.setState({ac8});
     }
 
-    actionCard9() {
+    actionCard9(choice) {
         const id = this.state.days[19].id;
-        this.state.days.splice(id, 0, {id: 'saturday', actioncard: 'no', current: 'no', message: '', sprint: '4', title: '6'}, {id: 'sunday', actioncard: 'no', current: 'no', message: '', sprint: '4', title: '7'});
+        if (choice === 'yes') {
+            this.state.days.splice(id, 0, {id: 'saturday', actioncard: 'no', current: 'no', message: '', sprint: '4', title: '6'}, {id: 'sunday', actioncard: 'no', current: 'no', message: '', sprint: '4', title: '7'});
+        }
     }
 
     actionCard10() {
@@ -962,7 +964,7 @@ export default class App extends Component {
             this.actionCard8(val);
         } else if (this.state.days[19].current === 'yes') { // Action card 9
             this.actionCard9(val);
-        } else if (this.state.days[20].current === 'yes') { // Action card 10
+        } else if (this.state.days[25].current === 'yes') { // Action card 10
             this.actionCard10();
         }
     }

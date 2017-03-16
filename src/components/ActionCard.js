@@ -110,10 +110,11 @@ export default class ActionCard extends Component {
 				<div>
 	 				<h2>Action card 9</h2>
 	 				<p>How is the commitment going? The team can decide to work during the weekend to be done in time. However they will lose one day of the next sprint. It is up to the team to decide.</p>
-	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
+	 				<button className="ActionCard_yes" onClick={() => this.props.closeActionCard('yes')}>Yes!</button>
+	 				<button className="ActionCard_no" onClick={() => this.props.closeActionCard('no')}>No.</button>
 	 			</div>
 			);
-		} else if (this.props.days[20].current === 'yes') { // Action card 10
+		} else if (this.props.days[25].current === 'yes') { // Action card 10
 			return (
 				<div>
 	 				<h2>Action card 10</h2>
@@ -121,15 +122,6 @@ export default class ActionCard extends Component {
 	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 				{this.renderCongrats()}
 	 				{this.renderCongratsAc8()}
-	 			</div>
-			);
-		} else if (this.props.days[25].current === 'yes') { // Multiple choice card 2
-			return (
-				<div>
-	 				<h2>Multiple choice card 2</h2>
-	 				<p>Blabla</p>
-	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
-	 				{this.renderCongratsAc10()}
 	 			</div>
 			);
 		}
