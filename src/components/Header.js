@@ -12,6 +12,7 @@ export default class Header extends Component {
 				<button onClick={this.resetGameState}>Reset</button>
                 <button onClick={this.props.logout}>Logout</button>
                 {this.props.game === '1' ? <button onClick={this.props.showAdmin}>Admin</button> : null}
+                 <button onClick={this.props.showRules}>Rules</button>
 				<Workers location="header" workers={this.props.workers} chooseWorker={this.props.chooseWorker} />
 				<CalendarLink showCalendar={this.props.showCalendar} />
 			</div>
