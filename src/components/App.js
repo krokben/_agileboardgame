@@ -15,6 +15,7 @@ import Retrospective from './Retrospective';
 import Retrospectives from './Retrospectives';
 import Admin from './Admin';
 import Login from './Login';
+import Rules from './Rules';
 
 const gamestate = [];
 const retrospectives = [];
@@ -48,6 +49,7 @@ export default class App extends Component {
 			retrospectives,
 			retrospectiveDiv: false,
 			retrospectiveIndex: 0,
+            rules: false,
             score: 0,
             analysis: {score: 0},
             development: {score: 0},
@@ -75,7 +77,7 @@ export default class App extends Component {
 		return (
 			<div>
                 {this.state.login ? <Login login={this.login.bind(this)} ref={(loginPage) => this.loginPage = loginPage} /> : null}
-				<Header logout={this.logout.bind(this)} game={this.state.game} days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)} showAdmin={this.showAdmin.bind(this)} />
+				<Header logout={this.logout.bind(this)} game={this.state.game} days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)} showAdmin={this.showAdmin.bind(this)} showRules={this.showRules.bind(this)}/>
 				<div className="App_board">
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
@@ -89,6 +91,7 @@ export default class App extends Component {
 						<Status score={this.state.score} />
 					</div>
 				</div>
+                {this.state.rules ? <Rules closeRules={this.closeRules.bind(this)} /> : null}
 				{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
                 {this.state.actionCard ? <ActionCard days={this.state.days} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} /> : null}
@@ -99,7 +102,11 @@ export default class App extends Component {
 
 		);
 	}
-
+    closeRules() {
+        let rules = this.state.rules;
+        rules = false;
+        this.setState({rules});
+    }
     adminDelete(id) {
         const that = this;
         axios({
@@ -921,6 +928,12 @@ export default class App extends Component {
         let admin = this.state.admin;
         admin = !admin;
         this.setState({admin});
+    }
+
+    showRules() {
+        let rules = this.state.rules;
+        rules = !rules;
+        this.setState({rules});
     }
 
     subtractScore(score, loc) {
