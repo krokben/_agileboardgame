@@ -503,8 +503,26 @@ body {
 	left: 0;
 	bottom: 0;
 	right: 0;
-    background-color: red;
+    background-color: white;
+    overflow-y: scroll;
+    padding-left: 25px;
+    padding-right: 25px;
 }
+
+.rulesButton {
+	text-align: center;
+}
+
+.Rules h1 {
+	color: #E9573F;
+	font-family: 'Slackey', cursive;
+	font-size: 42px;
+	text-align: center;
+}
+
+
+
+
 
 /*--------------------------------------*\
 	Status
