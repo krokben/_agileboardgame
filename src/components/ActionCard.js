@@ -68,7 +68,7 @@ export default class ActionCard extends Component {
 			return (
 	 			<div>
 	 				<h2>Action card 4</h2>
-	 				<p>If Maintenance task 1 is not completed, the system goes down. According to the contract this means that the downtime will be subtracted from your pay for the sprint. Please subtract 200$ from the total and pull in M1 with highest priority.</p>
+	 				<p>If Maintenance task 1 is not completed, the system goes down. According to the contract this means that the downtime will be subtracted from your pay for the sprint. Please subtract $200 from the total and pull in M1 with highest priority.</p>
 	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 			</div>
 		 	);
@@ -76,7 +76,7 @@ export default class ActionCard extends Component {
 			return (
 	 			<div>
 	 				<h2>Action card 5</h2>
-	 				<p>A critical defect! Set the defect with highest priority that has not been started yet. If the team manages to fix the defect in this sprint the customer will pay 400$. After the sprint ends the customer will not pay any extra.</p>
+	 				<p>A critical defect! Set the defect with highest priority that has not been started yet. If the team manages to fix the defect in this sprint the customer will pay $400. After the sprint ends the customer will not pay any extra.</p>
 	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 			</div>
 		 	);
@@ -84,8 +84,10 @@ export default class ActionCard extends Component {
 			return (
 	 			<div>
 	 				<h2>Action card 6</h2>
-	 				<p>Action card 6 liksom.</p>
-	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
+	 				<p>The tester is involved in a traffic incident and will be away for one dice throw of days.</p>
+	 				<div className="ActionCard_dice" onClick={this.stopDice.bind(this)} ref={(dice) => this.dice = dice}><img src={this.state.dice} role="presentation" /></div>
+					{this.state.dice !== dice ? <p>Your developer is sick for {this.state.result} days.</p> : null}
+					{this.state.dice !== dice ? <button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button> : null}
 	 			</div>
 		 	);
 		} else if (this.props.days[27].current === 'yes') { // Action card 7
@@ -100,7 +102,7 @@ export default class ActionCard extends Component {
 			return (
 				<div>
 	 				<h2>Action card 8</h2>
-	 				<p>The management wants the team to work with a sprint commitment. Decide together how many stories the team can make before the sprint is over. The team gets 200$ extra if they succeed.</p>
+	 				<p>The management wants the team to work with a sprint commitment. Decide together how many stories the team can make before the sprint is over. The team gets $200 extra if they succeed.</p>
 	 				<input type="number" min="0" max="20" defaultValue="0" ref={(x) => this.ac8input = x}/>
 	 				<button className="ActionCard_button" onClick={() => this.props.closeActionCard(this.ac8input.value)}>OK!</button>
 	 			</div>
@@ -118,12 +120,31 @@ export default class ActionCard extends Component {
 			return (
 				<div>
 	 				<h2>Action card 10</h2>
-	 				<p>Oh no! System is depending on finishing M5 at the end of this sprint. Unfortunately M5 is depending on M2, M3 and M4. Let us hope that the team has been working with them during previous sprints. If not - pull all remaining meintenance tasks into the sprint. If M5 is not finished by the end of the sprint the fine is 800$.</p>
+	 				<p>Oh no! System is depending on finishing M5 at the end of this sprint. Unfortunately M5 is depending on M2, M3 and M4. Let us hope that the team has been working with them during previous sprints. If not - pull all remaining meintenance tasks into the sprint. If M5 is not finished by the end of the sprint the fine is $800.</p>
 	 				<button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button>
 	 				{this.renderCongrats()}
 	 				{this.renderCongratsAc8()}
 	 			</div>
 			);
+		} else if (this.props.days[31].current === 'yes') { // Action card 12
+			return (
+	 			<div>
+	 				<h2>Action card 12</h2>
+	 				<p>A developer got dengue fever and quits to take care of himself. You have received a replacement developer, but that person will need to sit next to another developer for the rest of the sprint. Remove a developer for the remainder of the sprint.</p>
+	 				<div className="ActionCard_dice" onClick={this.stopDice.bind(this)} ref={(dice) => this.dice = dice}><img src={this.state.dice} role="presentation" /></div>
+					{this.state.dice !== dice ? <p>Your developer is sick for {this.state.result} days.</p> : null}
+					{this.state.dice !== dice ? <button className="ActionCard_button" onClick={this.props.closeActionCard}>OK!</button> : null}
+	 			</div>
+		 	);
+		} else if (this.props.days[35].current === 'yes') { // Action card 13
+			return (
+	 			<div>
+	 				<h2>Action card 13</h2>
+	 				<p>Roll the dice and put as many defects as the dice shows on top of the backlog. If the team has already completed some defects, pull in what is left. If all are completed, team receives a bonus of $400.</p>
+	 				<div className="ActionCard_dice" onClick={this.stopDiceDefects.bind(this)} ref={(dice) => this.dice = dice}><img src={this.state.dice} role="presentation" /></div>
+					{this.state.dice !== dice ? <button className="ActionCard_button" onClick={() => this.props.closeActionCard(this.state.dice)}>OK!</button> : null}
+	 			</div>
+		 	);
 		}
 	}
 
@@ -149,7 +170,7 @@ export default class ActionCard extends Component {
 		if (defect !== 0 && this.props.cards[defect - 1].location === 'done') {
 			return (
 				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
-					Congratulations! Your team fixed the defect in time. <span>+400$</span>
+					Congratulations! Your team fixed the defect in time. <span>+$400</span>
 					<button className="ActionCard_button" onClick={() =>this.closeCongrats('ac5')}>OK!</button>
 				</div>
 			);
@@ -161,7 +182,7 @@ export default class ActionCard extends Component {
 		if (ac8 === 0) {
 			return (
 				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
-					Congratulations! Your team fixed all the stories you decided in time. <span>+200$</span>
+					Congratulations! Your team fixed all the stories you decided in time. <span>+$200</span>
 					<button className="ActionCard_button" onClick={() =>this.closeCongrats('ac8')}>OK!</button>
 				</div>
 			);
@@ -180,7 +201,7 @@ export default class ActionCard extends Component {
 		} else {
 			return (
 				<div className="ActionCard_congrats" ref={(x) => this.congrats = x}>
-					Sorry! Your team didn't fix Maintenance card 5 in time. <span>-800$</span>
+					Sorry! Your team didn't fix Maintenance card 5 in time. <span>-$800</span>
 					<button className="ActionCard_button" onClick={() =>this.closeCongrats('ac10')}>OK!</button>
 				</div>
 			);
@@ -192,33 +213,67 @@ export default class ActionCard extends Component {
 			const stateCopy = {...this.state};
 			switch(this.state.result) {
 				case 1:
-		            stateCopy.dice = dice1;
-		            this.setState(stateCopy);
-		            break;
-		        case 2:
-		            stateCopy.dice = dice2;
-		            this.setState(stateCopy);
-		            break;
-		        case 3:
-		            stateCopy.dice = dice3;
-		            this.setState(stateCopy);
-		            break;
-		        case 4:
-		            stateCopy.dice = dice4;
-		            this.setState(stateCopy);
-		            break;
-		        case 5:
-		            stateCopy.dice = dice5;
-		            this.setState(stateCopy);
-		            break;
-		        case 6:
-		            stateCopy.dice = dice6;
-		            this.setState(stateCopy);
-		            break;
-		        default:
-		        	return false;
+            stateCopy.dice = dice1;
+            this.setState(stateCopy);
+            break;
+        case 2:
+            stateCopy.dice = dice2;
+            this.setState(stateCopy);
+            break;
+        case 3:
+            stateCopy.dice = dice3;
+            this.setState(stateCopy);
+            break;
+        case 4:
+            stateCopy.dice = dice4;
+            this.setState(stateCopy);
+            break;
+        case 5:
+            stateCopy.dice = dice5;
+            this.setState(stateCopy);
+            break;
+        case 6:
+            stateCopy.dice = dice6;
+            this.setState(stateCopy);
+            break;
+        default:
+        	return false;
 			}
 			this.props.isSick(this.state.result);
+		}
+	}
+
+	stopDiceDefects() {
+		if (this.state.dice === dice) {
+			const stateCopy = {...this.state};
+			switch(this.state.result) {
+				case 1:
+            stateCopy.dice = 1;
+            this.setState(stateCopy);
+            break;
+        case 2:
+            stateCopy.dice = 2;
+            this.setState(stateCopy);
+            break;
+        case 3:
+            stateCopy.dice = 3;
+            this.setState(stateCopy);
+            break;
+        case 4:
+            stateCopy.dice = 4;
+            this.setState(stateCopy);
+            break;
+        case 5:
+            stateCopy.dice = 5;
+            this.setState(stateCopy);
+            break;
+        case 6:
+            stateCopy.dice = 6;
+            this.setState(stateCopy);
+            break;
+        default:
+        	return false;
+			}
 		}
 	}
 

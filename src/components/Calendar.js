@@ -54,13 +54,9 @@ export default class Calendar extends Component {
         );
     }
 
-    // renderRetro() {
-    //   const retros = this.props.retrospectives.map()
-    // }
-
     renderCalendar(weekday) {
         return this.props.days.filter((x) => x.title === weekday).map((day) => {
-            const sickWorkers = this.props.workers.filter((x) => x.sick !== '0');
+            const sickWorkers = this.props.workers.filter((x) => x.sick !== 0);
             const today = this.props.days.filter((x) => x.current === 'yes')[0];
             let sickClassName = null;
 

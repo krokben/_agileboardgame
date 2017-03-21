@@ -95,7 +95,7 @@ export default class App extends Component {
 				</div>
                 {this.state.rules ? <Rules closeRules={this.closeRules.bind(this)} /> : null}
 				{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
-                {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} /> : null}
+                {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} ref={(calendar) => this.calendar = calendar} /> : null}
                 {this.state.actionCard ? <ActionCard days={this.state.days} cards={this.state.cards} closeActionCard={this.closeActionCard.bind(this)} isSick={this.isSick.bind(this)} ac5={this.state.ac5} ac5Score={this.ac5Score.bind(this)} ac8={this.state.ac8} ac8Score={this.ac8Score.bind(this)} ac10Score={this.ac10Score.bind(this)} /> : null}
 				{this.state.showRetrospective ? <Retrospective saveRetrospective={this.saveRetrospective.bind(this)} /> : null}
                 {this.state.admin && this.state.game === '1' ? <Admin cards={this.state.cards} fetchCards={this.fetchCards.bind(this)} adminDelete={this.adminDelete.bind(this)} adminEdit={this.adminEdit.bind(this)} ref={(x) => this.admin = x} showAdmin={this.showAdmin.bind(this)} /> : null}
@@ -255,7 +255,7 @@ export default class App extends Component {
                     index: item.index,
                     type: item.type,
                     location: item.location,
-                    sick: item.sick
+                    sick: Number(item.sick)
                 }));
                 that.setState({workers: that.state.workers});
             })
@@ -571,7 +571,6 @@ export default class App extends Component {
         const test = cards.find((x) => x.development === 0 && !x.prio);
         const analysisPrio = cards.find((x) => x.analysis === 0 && x.prio);
         const analysis = cards.find((x) => x.analysis === 0 && !x.prio);
-        console.log(analysis);
         if (testPrio !== undefined) {
             card = testPrio;
         } else if (test !== undefined) {
@@ -581,78 +580,80 @@ export default class App extends Component {
         } else if (analysis !== undefined) {
             card = analysis;
         }
-        cards[card.id - 1].analysis = Number(card.analysis) + 2;
-        cards[card.id - 1].development = Number(card.development) + 4;
-        cards[card.id - 1].test = Number(card.test) + 2;
-        cards[card.id - 1].location = 'backlog';
-        cards[card.id - 1].prio = true;
-        this.setState({cards});
 
-        axios({
-        method: 'post',
-        url: 'http://localhost/_agileboardgame/api/?/gamestate',
-        data: {
-            game_id: that.state.game,
-            type: 'card',
-            type_id: card.id,
-            prop: 'analysis',
-            val: cards[card.id - 1].analysis
-        },
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
+        if(card !== undefined) {
+            cards[card.id - 1].analysis = Number(card.analysis) + 2;
+            cards[card.id - 1].development = Number(card.development) + 4;
+            cards[card.id - 1].test = Number(card.test) + 2;
+            cards[card.id - 1].location = 'backlog';
+            cards[card.id - 1].prio = true;
+            this.setState({cards});
 
-        axios({
-        method: 'post',
-        url: 'http://localhost/_agileboardgame/api/?/gamestate',
-        data: {
-            game_id: that.state.game,
-            type: 'card',
-            type_id: card.id,
-            prop: 'development',
-            val: cards[card.id - 1].development
-        },
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: card.id,
+                prop: 'analysis',
+                val: cards[card.id - 1].analysis
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
 
-        axios({
-        method: 'post',
-        url: 'http://localhost/_agileboardgame/api/?/gamestate',
-        data: {
-            game_id: that.state.game,
-            type: 'card',
-            type_id: card.id,
-            prop: 'test',
-            val: cards[card.id - 1].test
-        },
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: card.id,
+                prop: 'development',
+                val: cards[card.id - 1].development
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
 
-        axios({
-        method: 'post',
-        url: 'http://localhost/_agileboardgame/api/?/gamestate',
-        data: {
-            game_id: that.state.game,
-            type: 'card',
-            type_id: card.id,
-            prop: 'location',
-            val: cards[card.id - 1].location
-        },
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: card.id,
+                prop: 'test',
+                val: cards[card.id - 1].test
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
 
-        axios({
-        method: 'post',
-        url: 'http://localhost/_agileboardgame/api/?/gamestate',
-        data: {
-            game_id: that.state.game,
-            type: 'card',
-            type_id: card.id,
-            prop: 'prio',
-            val: cards[card.id - 1].prio
-        },
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: card.id,
+                prop: 'location',
+                val: cards[card.id - 1].location
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
 
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: card.id,
+                prop: 'prio',
+                val: cards[card.id - 1].prio
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
+        }
     }
 
     actionCard8(val) {
@@ -677,6 +678,50 @@ export default class App extends Component {
                 cards[x.id - 1].prio = true;
             });
             this.setState({cards});
+        }
+    }
+
+    actionCard13(val) {
+        const that = this;
+        const defects = this.state.cards.filter((x) => x.type === 'defect');
+        const defectsDone = defects.filter((x) => x.location === 'dead' || x.location === 'done');
+        const cards = this.state.cards;
+        let score = this.state.score;
+        if (defectsDone !== undefined && defectsDone.length === 6) {
+            score += 400;
+            this.setState({score});
+        } else {
+            defects.filter((x) => x.location === 'none' || x.location === 'cardpool').forEach((x) => {
+                cards[x.id - 1].location = 'backlog';
+                cards[x.id - 1].prio = true;
+                this.setState({cards});
+
+                axios({
+                method: 'post',
+                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                data: {
+                    game_id: that.state.game,
+                    type: 'card',
+                    type_id: x.id,
+                    prop: 'location',
+                    val: cards[x.id - 1].location
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                });
+
+                axios({
+                method: 'post',
+                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                data: {
+                    game_id: that.state.game,
+                    type: 'card',
+                    type_id: x.id,
+                    prop: 'prio',
+                    val: true
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                });
+            });
         }
     }
 
@@ -966,6 +1011,8 @@ export default class App extends Component {
             this.actionCard9(val);
         } else if (this.state.days[25].current === 'yes') { // Action card 10
             this.actionCard10();
+        } else if (this.state.days[35].current === 'yes') { // Action card 13
+            this.actionCard13(val);
         }
     }
 
@@ -1252,8 +1299,8 @@ export default class App extends Component {
     }
 
     clickDay(day) {
-        if (this.state.days[day -1].message === '') {
-            if (this.state.workers.filter((x) => x.sick !== '0')[0].sick === Number(day)) { // Sick worker
+        if (this.state.days[day - 1].message === '') {
+            if (this.state.workers.filter((x) => x.sick !== 0)[0].sick === Number(day)) { // Sick worker
                 const stateCopy = {...this.state};
                 stateCopy.days[day - 1].message = <span>sick dev returns</span>;
                 this.setState(stateCopy);
@@ -1486,8 +1533,15 @@ export default class App extends Component {
     isSick(days) {
         const returnDate = Number(this.state.days.filter((day) => day.current === 'yes')[0].id) + days;
         const stateCopy = {...this.state};
-        stateCopy.workers[2].sick = returnDate; // First developer worker
+        if (this.state.days[2].current === 'yes') {
+            stateCopy.workers[1].sick = returnDate; // First developer worker
+        } else if (this.state.days[23].current === 'yes') {
+            stateCopy.workers[5].sick = returnDate; // Test worker
+        } else if (this.state.days[31].current === 'yes') {
+            stateCopy.workers[1].sick = returnDate; // First developer worker
+        }
         this.setState(stateCopy);
+
         // insert axios here
     }
 }
