@@ -28,14 +28,19 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 
 		# Beroende på vilken "collectsion" som anropats gör vi olika saker
 		switch($collection){
-			case 'friends':
-					echo "friends!";
-				break;
-			case 'books':
-					echo "books!";
-				break;
-			case 'posts':
-					echo "posts!";
+			case 'final':
+					$query = "
+						SELECT * 
+						FROM gamestate
+						WHERE prop = 'final'
+					";
+
+					$result = mysqli_query($db, $query);
+					$data = [];
+					while($row = mysqli_fetch_assoc($result)){
+						$data[] = $row;
+					}
+					$this->gamestate = $data;
 				break;
 			default: // Om det inte är en collection, eller om den inte är definierad ovan
 				$this->getGamestateData($input, $db);

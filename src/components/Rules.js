@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import scrumboard from './../img/scrumboard.jpg';
 import usImage from './../img/us1.jpg';
 import acExample from './../img/actioncardexample.jpg';
-import multiChoice from './../img/multiplechoice.jpg';
 import scrumImage from './../img/scrumcalendar.jpg';
 
 
@@ -34,7 +33,7 @@ export default class Rules extends Component {
         <br /><br />
         <h3>Scrum board:</h3>
         <br />
-        <img src={scrumboard} />
+        <img src={scrumboard} alt="SCRUM board" />
         <br /><br />
         <h3>Types of stories:</h3>
         Stories are what moves from left to right on the Scrum board. There are three types of stories:
@@ -45,7 +44,7 @@ export default class Rules extends Component {
           <li>Maintenance tasks (M)</li>
         </ul>
         <br /><br />
-        <img src={usImage} />
+        <img src={usImage} alt="User story" />
         <br /><br />
         A = Analysis task<br />
         D = Development<br />
@@ -60,7 +59,7 @@ export default class Rules extends Component {
         Each action card is tied to a specific time in sprint. The action cards all have an impact on the current sprint for limited duration of time.
         Each card that has an impact on sprint is placed over the Scrum board during the impact period.
         <br /><br />
-        <img src={acExample} />
+        <img src={acExample} alt="Action card" />
         <br /><br />
         <h3>Retrospective:</h3>
         After each sprint, please do a short retrospective (5 mins) of what can be improved in next sprint.
@@ -70,7 +69,7 @@ export default class Rules extends Component {
         <br /><br />
         In the example Release plan below the game is in the third sprint with second day finished, money earned so far is $1250. Note also the Action Cards (AC1-6) and Multiple Choice Cards (MC1-5) are written in the release plan, to keep track of when each card should be put into play.
         <br /><br />
-        <img src={scrumImage} />
+        <img src={scrumImage} alt="SCRUM" />
         <br /><br />
         <h3>Getting started:</h3>
         <ol>
