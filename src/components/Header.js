@@ -9,11 +9,13 @@ export default class Header extends Component {
 		return (
 			<div className="Header">
 				<WorkDay days={this.props.days} />
-				<button className="Header_reset" onClick={this.resetGameState}>Reset</button>
-        <button className="Header_logout" onClick={this.props.logout}>Logout</button>
-        {this.props.game === '1' ? <button className="Header_admin" onClick={this.props.showAdmin}>Admin</button> : null}
-        <button className="Header_rules" onClick={this.props.showRules}>Rules</button>
-				<Workers location="header" workers={this.props.workers} chooseWorker={this.props.chooseWorker} />
+        <div className="Header_buttons">
+				  <button className="Header_reset" onClick={this.resetGameState}>Reset</button>
+          <button className="Header_logout" onClick={this.props.logout}>Logout</button>
+          {this.props.game === '1' ? <button className="Header_admin" onClick={this.props.showAdmin}>Admin</button> : null}
+          <button className="Header_rules" onClick={this.props.showRules}>Rules</button>
+				</div>
+        <Workers location="header" workers={this.props.workers} chooseWorker={this.props.chooseWorker} />
 				<CalendarLink showCalendar={this.props.showCalendar} />
 			</div>
 		);
