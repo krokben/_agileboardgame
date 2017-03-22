@@ -125,16 +125,16 @@ INSERT INTO `days` (`id`, `title`, `current`, `sprint`, `actioncard`) VALUES
 (18,	3,	'no',	4,	'yes'),
 (19,	4,	'no',	4,	'no'),
 (20,	5,	'no',	4,	'yes'),
-(21,	1,	'no',	5,	'yes'),
+(21,	1,	'no',	5,	'no'),
 (22,	2,	'no',	5,	'no'),
 (23,	3,	'no',	5,	'no'),
 (24,	4,	'no',	5,	'yes'),
 (25,	5,	'no',	5,	'no'),
-(26,	1,	'no',	6,	'yes'),
+(26,	1,	'no',	6,	'no'),
 (27,	2,	'no',	6,	'no'),
 (28,	3,	'no',	6,	'yes'),
 (29,	4,	'no',	6,	'no'),
-(30,	5,	'no',	6,	'yes'),
+(30,	5,	'no',	6,	'no'),
 (31,	1,	'no',	7,	'no'),
 (32,	2,	'no',	7,	'yes'),
 (33,	3,	'no',	7,	'no'),
@@ -367,4 +367,4 @@ INSERT INTO `workers` (`id`, `index`, `type`, `location`, `sick`) VALUES
 (5,	'worker5',	'developer',	'header',	0),
 (6,	'worker6',	'tester',	'header',	0);
 
--- 2017-03-14 12:33:09
+-- 2017-03-21 13:41:23

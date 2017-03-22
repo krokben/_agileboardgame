@@ -2,7 +2,6 @@ body {
   margin: 0;
   font-family: sans-serif;
   overflow: hidden;
-
 }
 /* button {
 	border-radius: 7px;
@@ -163,6 +162,38 @@ body {
 
 .ActionCard_dice {
 	text-align: center;
+}
+
+.ActionCard_no {
+	background: #e74c3c;
+	border: 2px solid #000;
+	bottom: 15px;
+	color: #fff;
+	cursor: pointer;
+	height: 40px;
+	position: absolute;
+	right: 15px;
+	width: 41.5%;
+}
+
+.ActionCard_no:hover {
+	background: #34495e;
+}
+
+.ActionCard_yes {
+	background: #2ecc71;
+	border: 2px solid #000;
+	bottom: 15px;
+	color: #fff;
+	cursor: pointer;
+	height: 40px;
+	left: 15px;
+	position: absolute;
+	width: 41.5%;
+}
+
+.ActionCard_yes:hover {
+	background: #34495e;
 }
 
 /*--------------------------------------*\
@@ -346,8 +377,6 @@ body {
 	font-size: 42px;
 }
 
-
-
 /*--------------------------------------*\
 	Header
 \*--------------------------------------*/
@@ -501,12 +530,47 @@ body {
 }
 
 /*--------------------------------------*\
+	Rules
+\*--------------------------------------*/
+
+.Rules {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+    background-color: white;
+    overflow-y: scroll;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.rulesButton {
+	text-align: center;
+}
+
+.Rules h1 {
+	color: #E9573F;
+	font-family: 'Slackey', cursive;
+	font-size: 42px;
+	text-align: center;
+}
+
+
+
+
+
+/*--------------------------------------*\
 	Status
 \*--------------------------------------*/
 
 .Status_score {
-	font-size: 200px;
-	margin-top: 200px;
+	align-self: flex-end;
+	bottom: 100px;
+	flex: 1;
+	font-size: 24px;
+	position: absolute;
+	text-align: right;
 }
 
 /*--------------------------------------*\
