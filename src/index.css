@@ -23,10 +23,6 @@ body {
 }
 
 /*--------------------------------------*\
-	Actions
-\*--------------------------------------*/
-
-/*--------------------------------------*\
 	Admin
 \*--------------------------------------*/
 
@@ -257,12 +253,16 @@ body {
 	display: flex;
 	flex: 6;
 	justify-content: space-between;
-	height: 82.5vh;
+	height: 78.5vh;
 	width: 80vw;
 }
 
 .App_status {
 	flex: 1;
+}
+
+@media only screen and (min-width: 1030px) {
+	.App_mainBoard {height: 82.5vh;}
 }
 
 /*--------------------------------------*\
@@ -381,14 +381,21 @@ body {
 .Footer_container {
 	display: flex;
 	justify-content: space-between;
-	padding: 0 15px 15px 180px;
+	padding: 0 60px 15px 30px;
 }
 
 .Logo {
 	color: #ED6888;
+	flex: 15;
 	font-family: 'Slackey', cursive;
 	font-size: 42px;
+	text-align: center;
 }
+
+@media only screen and (min-width: 1030px) {
+	.Footer_container {padding: 0 15px 15px 180px;}
+}
+
 
 /*--------------------------------------*\
 	Header
@@ -436,8 +443,8 @@ body {
 }
 
 .Header_buttons {
-	flex: 1;
-	padding-left: 74px;
+	left: 210px;
+	position: absolute;
 }
 
 /*--------------------------------------*\
@@ -589,10 +596,6 @@ body {
 	text-align: center;
 }
 
-
-
-
-
 /*--------------------------------------*\
 	Status
 \*--------------------------------------*/
@@ -619,6 +622,7 @@ body {
 	background: #fff6dd;
 	border: 1px solid #CCC5B1;
 	color: #000;
+	height: 100px;
 	margin-bottom: 15px;
 	padding: 5px;
 }
@@ -641,7 +645,6 @@ body {
 \*--------------------------------------*/
 
 .Workers_active {
-	/*border: 1px solid red;*/
 	filter: saturate(800%);
 }
 
@@ -669,7 +672,6 @@ body {
 
 .Workers_workers {
 	margin-right: 100px;
-	margin-top: 5px;
 }
 
 @keyframes Workers_pulse {

@@ -163,10 +163,15 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 	# Denna funktion körs om vi anropat resursen genom HTTP-metoden RESETGAME
 	function RESETGAME($input, $db){
 		# I denna funktion truncatar vi tabellen och laddar en default-tabellen
-		$query = "
-			TRUNCATE TABLE gamestate
-		";
-
-		mysqli_query($db, $query);
+		if($this->id){
+			$query = "
+				DELETE FROM gamestate
+				WHERE game_id = $this->id
+			";
+			
+			mysqli_query($db, $query);
+		}else{
+			echo "No resource given";
+		}
 	}
 }

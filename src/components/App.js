@@ -808,7 +808,7 @@ export default class App extends Component {
             )
         }).forEach((x) => {
             const workers = this.state.workers;
-            workers[x.type_id - 1].sick = x.val;
+            workers[x.type_id - 1].sick = Number(x.val);
             this.setState({workers});
         });
         // retrospectives
@@ -848,7 +848,13 @@ export default class App extends Component {
                 nextLocation = 'backlog';
                 break;
             case 'backlog':
-                nextLocation = 'analysis';
+                if (this.state.cards.filter((x) => x.location === 'backlog' && x.prio === true)[0] === undefined) {
+                    nextLocation = 'analysis';
+                } else if (this.state.cards[id - 1].prio === true) {
+                    nextLocation = 'analysis';
+                } else {
+                    nextLocation = 'backlog';
+                }
                 break;
             case 'analysis':
                 nextLocation = 'development';
@@ -1531,17 +1537,52 @@ export default class App extends Component {
     }
 
     isSick(days) {
+        const that = this;
         const returnDate = Number(this.state.days.filter((day) => day.current === 'yes')[0].id) + days;
         const stateCopy = {...this.state};
         if (this.state.days[2].current === 'yes') {
             stateCopy.workers[1].sick = returnDate; // First developer worker
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'worker',
+                type_id: 2,
+                prop: 'sick',
+                val: returnDate
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
         } else if (this.state.days[23].current === 'yes') {
             stateCopy.workers[5].sick = returnDate; // Test worker
+            // axios({
+            // method: 'post',
+            // url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            // data: {
+            //     game_id: that.state.game,
+            //     type: 'worker',
+            //     type_id: 6,
+            //     prop: 'sick',
+            //     val: returnDate
+            // },
+            // headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            // });
         } else if (this.state.days[31].current === 'yes') {
             stateCopy.workers[1].sick = returnDate; // First developer worker
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'worker',
+                type_id: 2,
+                prop: 'sick',
+                val: returnDate
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
         }
         this.setState(stateCopy);
-
-        // insert axios here
     }
 }
