@@ -1,7 +1,7 @@
 <?php
-# 
+#
 # Den här klassen ska köras om vi anropat resursen user i vårt API genom /?/user
-# 
+#
 
 class _gamestate extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
 
@@ -10,7 +10,7 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 
 	# Här skapas konstruktorn som körs när objektet skapas
 	function __construct($resource_id, $request){
-		
+
 		# Om vi fått med ett id på resurser (Ex /?/user/15) och det är ett nummer sparar vi det i objektet genom $this->id
 		if(is_numeric($resource_id))
 			$this->id = $resource_id;
@@ -30,7 +30,7 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 		switch($collection){
 			case 'final':
 					$query = "
-						SELECT * 
+						SELECT *
 						FROM gamestate
 						WHERE prop = 'final'
 					";
@@ -51,7 +51,7 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 	private function getGamestateData($input, $db){
 		if($this->id){ // Om vår URL innehåller ett ID på resursen hämtas bara den usern
 			$query = "
-				SELECT * 
+				SELECT *
 				FROM gamestate
 				WHERE id = $this->id
 			";
@@ -59,11 +59,14 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 			$result = mysqli_query($db, $query);
 			$user = mysqli_fetch_assoc($result);
 
-			$this->title = $gamestate['title'];
-			$this->price = $gamestate['price'];
+			$this->game_id = $gamestate['game_id'];
+			$this->type = $gamestate['type'];
+			$this->type_id = $gamestate['type_id'];
+			$this->prop = $gamestate['prop'];
+			$this->val = $gamestate['val'];
 		}else{ // om vår URL inte innehåller ett ID hämtas alla users
 			$query = "
-				SELECT * 
+				SELECT *
 				FROM gamestate
 			";
 			$result = mysqli_query($db, $query);
@@ -88,8 +91,8 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 		$val = mysqli_real_escape_string($db, $input->val);
 
 		$query = "
-			INSERT INTO gamestate 
-			(game_id, type, type_id, prop, val) 
+			INSERT INTO gamestate
+			(game_id, type, type_id, prop, val)
 			VALUES ('$game_id', '$type', '$type_id', '$prop', '$val')
 		";
 
@@ -115,14 +118,14 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 			$location = mysqli_real_escape_string($db, $input->location);
 
 			// foreach($input as $k => $v){
-			// 	$sqlparts[] = "`$k` = '$v'"; 
+			// 	$sqlparts[] = "`$k` = '$v'";
 			// }
 
 			// $sql_params = implode($sqlparts, ",")
 
 			if(isset($title)) {
 				$query = "
-					UPDATE gamestate 
+					UPDATE gamestate
 					SET title = '$title', price = '$price',
 					analysis = '$analysis', development = '$development',
 					test = '$test', type = '$type',
@@ -134,7 +137,7 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 			}
 			else if(isset($location)) {
 				$query = "
-					UPDATE gamestate 
+					UPDATE gamestate
 					SET location = '$location'
 					WHERE id = $this->id
 				";
@@ -151,7 +154,7 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 		# I denna funktion tar vi bort en specifik user med det ID vi fått med
 		if($this->id){
 			$query = "
-				DELETE FROM gamestate 
+				DELETE FROM gamestate
 				WHERE id = $this->id
 			";
 

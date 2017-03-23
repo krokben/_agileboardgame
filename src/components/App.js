@@ -16,6 +16,7 @@ import Retrospectives from './Retrospectives';
 import Admin from './Admin';
 import Login from './Login';
 import Rules from './Rules';
+import HighScore from './HighScore';
 
 const gamestate = [];
 const retrospectives = [];
@@ -43,7 +44,8 @@ export default class App extends Component {
               test: 0,
               done: 0
             },
-			days,
+						days,
+						highscore: false,
             calendarActions: {
               putWorker: 0
             },
@@ -93,6 +95,7 @@ export default class App extends Component {
 						<Status score={this.state.score} />
 					</div>
 				</div>
+							{this.state.highscore ? <HighScore highScore={this.state.highscore} /> : null}
                 {this.state.rules ? <Rules closeRules={this.closeRules.bind(this)} /> : null}
 				{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} ref={(calendar) => this.calendar = calendar} /> : null}
@@ -1079,6 +1082,32 @@ export default class App extends Component {
         this.hasActionCard(day); // Check for action card
         this.returnSickWorker(); // Check if sick worker should return today
         this.returnWorkers();
+				if (this.state.days[40].current === 'yes' || this.state.cards.filter((x) => x.location === 'dead').length === this.state.cards.length) {
+					const that = this;
+					axios({
+					method: 'post',
+					url: 'http://localhost/_agileboardgame/api/?/gamestate',
+					data: {
+							game_id: that.state.game,
+							type: 'score',
+							type_id: 0,
+							prop: 'final',
+							val: that.state.score
+					},
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+					})
+					.then(function(response) {
+							// console.log(response);
+					})
+					.catch(function(error) {
+							console.log(error);
+					});
+					var highscore = this.state.highscore;
+					highscore = true;
+					this.setState({highscore});
+
+				}
+				console.log();
     }
 
     changeLocations() {
@@ -1225,6 +1254,7 @@ export default class App extends Component {
         cards.map((x) => x.test *= 2);
         this.setState({cards});
     }
+
 
     halfTestTime() {
         const cards = this.state.cards;
