@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import scrumboard from './../img/scrumboard.jpg';
-import usImage from './../img/us1.jpg';
+
 import acExample from './../img/actioncardexample.jpg';
-import multiChoice from './../img/multiplechoice.jpg';
+
 import scrumImage from './../img/scrumcalendar.jpg';
+import usExample from './../img/usexample.jpg';
+import cardExample from './../img/cardexample.jpg';
 
 
 export default class Rules extends Component {
@@ -45,7 +47,7 @@ export default class Rules extends Component {
           <li>Maintenance tasks (M)</li>
         </ul>
         <br /><br />
-        <img src={usImage} />
+        <img src={usExample} />
         <br /><br />
         A = Analysis task<br />
         D = Development<br />
@@ -60,7 +62,7 @@ export default class Rules extends Component {
         Each action card is tied to a specific time in sprint. The action cards all have an impact on the current sprint for limited duration of time.
         Each card that has an impact on sprint is placed over the Scrum board during the impact period.
         <br /><br />
-        <img src={acExample} />
+        <img src={cardExample} />
         <br /><br />
         <h3>Retrospective:</h3>
         After each sprint, please do a short retrospective (5 mins) of what can be improved in next sprint.
