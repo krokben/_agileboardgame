@@ -14,6 +14,7 @@ export default class Admin extends Component {
 	render() {
 		return (
 			<div className="Admin">
+				<button className="Header_reset" onClick={this.resetGameState.bind(this)}>Reset</button>
 				<h1>Agile Board Game - Admin</h1>
 				<button onClick={this.props.showAdmin}>Close</button>
 				<table className="Admin_table">
@@ -137,5 +138,13 @@ export default class Admin extends Component {
 		deleting = '0';
 		this.setState({deleting});
 		this.props.adminDelete(id);
+	}
+
+	resetGameState() {
+    axios({
+        method: 'RESETGAME',
+        url: 'http://localhost/_agileboardgame/api/?/card'
+    });
+    location.reload();
 	}
 }

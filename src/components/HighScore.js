@@ -21,7 +21,7 @@ componentDidMount() {
 	render() {
 		return (
 			<div className="HighScore">
-				<h1>Highscore</h1>
+				<h1>High Score</h1>
 				<button onClick={this.props.closeHighScore}>Close</button>
 				<table className="HighScore_table">
 					<tbody>

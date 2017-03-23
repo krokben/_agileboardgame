@@ -608,8 +608,10 @@ body {
 \*--------------------------------------*/
 
 .Retrospectives {
-  background-color: lightgreen;
+  background-color: #257E9C;
+  border-radius: 5px;
   bottom: 25%;
+  color: #fff;
   left: 25%;
   position: absolute;
   right: 25%;
