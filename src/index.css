@@ -511,6 +511,7 @@ body {
 
 .rulesButton {
 	text-align: center;
+	text-decoration-color: red;
 }
 
 .Rules h1 {
