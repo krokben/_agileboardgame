@@ -451,13 +451,45 @@ body {
 	Header
 \*--------------------------------------*/
 
+/*--------------------------------------*\
+	Header
+\*--------------------------------------*/
+
 .HighScore {
-	position: absolute;
+	background-color: #9b59b6;
 	top:0;
 	right:0;
 	bottom:0;
 	left:0;
-	background-color: lightgray;
+	position: absolute;
+	text-align: center;
+}
+
+.HighScore h1 {
+	color: #fff;
+	font-family: 'Slackey', cursive;
+	font-size: 42px;
+	text-align: center;
+}
+
+.HighScore_table {
+	color: #fff;
+	margin: 0 auto;
+	margin-top: 50px;
+	text-align: center;
+	width: 60%
+}
+
+.HighScore_table tr:nth-child(even) {
+	background: #8e44ad;
+}
+
+.HighScore_table tr:hover {
+	background: #5E84AA;
+}
+
+.HighScore_table td {
+	border: 1px solid #000;
 }
 
 /*--------------------------------------*\

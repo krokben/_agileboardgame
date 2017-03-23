@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import scrumboard from './../img/scrumboard.jpg';
-import acExample from './../img/actioncardexample.jpg';
 import scrumImage from './../img/scrumcalendar.jpg';
 import usExample from './../img/usexample.jpg';
 import cardExample from './../img/cardexample.jpg';

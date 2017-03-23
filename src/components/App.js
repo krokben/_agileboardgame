@@ -44,8 +44,8 @@ export default class App extends Component {
               test: 0,
               done: 0
             },
-						days,
-						highscore: false,
+			days,
+			highscore: false,
             calendarActions: {
               putWorker: 0
             },
@@ -81,7 +81,7 @@ export default class App extends Component {
 		return (
 			<div>
                 {this.state.login ? <Login login={this.login.bind(this)} ref={(loginPage) => this.loginPage = loginPage} /> : null}
-				<Header logout={this.logout.bind(this)} game={this.state.game} days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)} showAdmin={this.showAdmin.bind(this)} showRules={this.showRules.bind(this)}/>
+				<Header logout={this.logout.bind(this)} game={this.state.game} days={this.state.days} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} showCalendar={this.showCalendar.bind(this)} showAdmin={this.showAdmin.bind(this)} showRules={this.showRules.bind(this)} showHighScore={this.showHighScore.bind(this)}/>
 				<div className="App_board">
 					<div className="App_mainBoard">
 						<CardPool cards={this.state.cards} choose={this.choose.bind(this)} workers={this.state.workers} chooseWorker={this.chooseWorker.bind(this)} />
@@ -95,7 +95,7 @@ export default class App extends Component {
 						<Status score={this.state.score} />
 					</div>
 				</div>
-							{this.state.highscore ? <HighScore highScore={this.state.highscore} /> : null}
+							{this.state.highscore ? <HighScore highScore={this.state.highscore} closeHighScore={this.closeHighScore.bind(this)} game={this.state.game} /> : null}
                 {this.state.rules ? <Rules closeRules={this.closeRules.bind(this)} /> : null}
 				{this.state.retrospectiveDiv ? <Retrospectives closeRetrospective={this.closeRetrospective.bind(this)} retrospectiveIndex={this.state.retrospectiveIndex} retrospectives={this.state.retrospectives} /> : null}
                 {this.state.calendar ? <Calendar retrospectives={this.state.retrospectives} displayRetrospective={this.displayRetrospective.bind(this)} days={this.state.days} workers={this.state.workers} clickDay={this.clickDay.bind(this)} ref={(calendar) => this.calendar = calendar} /> : null}
@@ -107,11 +107,6 @@ export default class App extends Component {
 
 		);
 	}
-    closeRules() {
-        let rules = this.state.rules;
-        rules = false;
-        this.setState({rules});
-    }
     adminDelete(id) {
         const that = this;
         axios({
@@ -910,7 +905,7 @@ export default class App extends Component {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
             .then(function(response) {
-                console.log(response);
+                // console.log(response);
             })
             .catch(function(error) {
                 console.log(error);
@@ -1226,6 +1221,18 @@ export default class App extends Component {
 		this.setState({retrospectiveDiv});
 	}
 
+    closeRules() {
+        let rules = this.state.rules;
+        rules = false;
+        this.setState({rules});
+    }
+
+    closeHighScore() {
+        let highscore = this.state.highscore;
+        highscore = false;
+        this.setState({highscore});
+    }
+
     countScore() {
         this.state.cards.filter((card) => card.location === 'done').forEach((x) => {
             // action card 8 counter
@@ -1263,12 +1270,33 @@ export default class App extends Component {
     }
 
     killCardsInPlay() {
+        const that = this;
         const cards = this.state.cards;
         cards.filter((x) => x.location === 'analysis' || x.location === 'development' || x.location === 'test')
             .map((x) => x.location = 'dead');
         this.setState({cards});
 
-        // add axios here to move cards' locations to 'dead'
+        this.state.cards.filter((x) => x.location === 'dead').forEach((x) => {
+            axios({
+            method: 'post',
+            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            data: {
+                game_id: that.state.game,
+                type: 'card',
+                type_id: x.id,
+                prop: 'location',
+                val: 'dead'
+            },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response) {
+                // console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        });
+
     }
 
     login(name, password) {
@@ -1476,6 +1504,12 @@ export default class App extends Component {
         let admin = this.state.admin;
         admin = !admin;
         this.setState({admin});
+    }
+
+    showHighScore() {
+        let highscore = this.state.highscore;
+        highscore = !highscore;
+        this.setState({highscore});
     }
 
     showRules() {

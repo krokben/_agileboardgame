@@ -22,8 +22,13 @@ componentDidMount() {
 		return (
 			<div className="HighScore">
 				<h1>Highscore</h1>
-				<div>{this.state.highscorelist.filter((x) => x.prop === 'final').map((x) => <div key={`highscore-${x.id}`}>{this.state.gamename.find((y) => y.id === x.game_id).name} {x.val}</div>)}</div>
-
+				<button onClick={this.props.closeHighScore}>Close</button>
+				<table className="HighScore_table">
+					<tbody>
+					{this.state.highscorelist.filter((x) => x.prop === 'final')
+						.map((x) => <tr key={`highscore-${x.id}`}><td>{this.state.gamename.find((y) => y.id === x.game_id).name}</td><td>{x.val}</td></tr>)}
+					</tbody>
+				</table>
 			</div>
 		);
 	}
