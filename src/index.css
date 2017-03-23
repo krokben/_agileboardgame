@@ -518,8 +518,10 @@ body {
 \*--------------------------------------*/
 
 .Retrospective {
-  background-color: lightgreen;
+  background-color: #257E9C;
+  border-radius: 5px;
   bottom: 25%;
+  color: #fff;
   left: 25%;
   position: absolute;
   right: 25%;
@@ -528,7 +530,7 @@ body {
 }
 
 .Retrospective button {
-  background-color: yellow;
+  background-color: #97D6ED;
   border: none;
   float: right;
   height: 30px;
@@ -544,6 +546,8 @@ body {
 }
 
 .Retrospective textarea {
+	background: #3E97B6;
+	color: #fff;
   height: 70%;
   width: 100%;
 }

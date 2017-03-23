@@ -15,7 +15,7 @@ export default class Header extends Component {
           {this.props.game === '1' ? <button className="Header_admin" onClick={this.props.showAdmin}>Admin</button> : null}
           <button className="Header_rules" onClick={this.props.showRules}>Rules</button>
 				</div>
-        <Workers location="header" workers={this.props.workers} chooseWorker={this.props.chooseWorker} />
+        <Workers className="Workers_workers" location="header" workers={this.props.workers} chooseWorker={this.props.chooseWorker} />
 				<CalendarLink showCalendar={this.props.showCalendar} />
 			</div>
 		);

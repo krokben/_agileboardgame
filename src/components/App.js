@@ -986,11 +986,11 @@ export default class App extends Component {
                 stateCopy.workers[id].active = false; // change to inactive
                 this.setState(stateCopy);
             } else if (location === 'development' && activeWorker.type === 'developer') {
-                    const id = activeWorker.id - 1;
-                    const stateCopy = {...this.state};
-                    stateCopy.workers[id].location = location; // change location
-                    stateCopy.workers[id].active = false; // change to inactive
-                    this.setState(stateCopy);
+                const id = activeWorker.id - 1;
+                const stateCopy = {...this.state};
+                stateCopy.workers[id].location = location; // change location
+                stateCopy.workers[id].active = false; // change to inactive
+                this.setState(stateCopy);
             }
         }
     }
