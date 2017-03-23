@@ -1,8 +1,8 @@
 body {
+	background-image: url('img/bg.png');
   margin: 0;
   font-family: sans-serif;
   overflow: hidden;
-
 }
 /* button {
 	border-radius: 7px;
@@ -21,10 +21,6 @@ body {
 .display-none {
 	display: none;
 }
-
-/*--------------------------------------*\
-	Actions
-\*--------------------------------------*/
 
 /*--------------------------------------*\
 	Admin
@@ -130,13 +126,18 @@ body {
 }
 
 .ActionCard_congrats {
+	background: peachpuff;
+	bottom: 25%;
+	font-size: 20px;
 	left: 25%;
-	position: absolute;
+	padding: 15px;
+	position: fixed;
 	right: 25%;
-	top: 10%;
+	top: 25%;
+	z-index: 400;
 }
 
-.Actioncard_congrats span {
+.ActionCard_congrats span {
 	font-size: 40px;
 }
 
@@ -160,6 +161,38 @@ body {
 	text-align: center;
 }
 
+.ActionCard_no {
+	background: #e74c3c;
+	border: 2px solid #000;
+	bottom: 15px;
+	color: #fff;
+	cursor: pointer;
+	height: 40px;
+	position: absolute;
+	right: 15px;
+	width: 41.5%;
+}
+
+.ActionCard_no:hover {
+	background: #34495e;
+}
+
+.ActionCard_yes {
+	background: #2ecc71;
+	border: 2px solid #000;
+	bottom: 15px;
+	color: #fff;
+	cursor: pointer;
+	height: 40px;
+	left: 15px;
+	position: absolute;
+	width: 41.5%;
+}
+
+.ActionCard_yes:hover {
+	background: #34495e;
+}
+
 /*--------------------------------------*\
 	Analysis
 \*--------------------------------------*/
@@ -172,7 +205,9 @@ body {
 }
 
 .Analysis_cardHolder {
-	background: #4FC1E9;
+	background: #fff;
+	border: 2px solid #4FC1E9;
+	border-radius: 5px;
 	flex: 6;
 	overflow-y: auto;
 	padding: 10px;
@@ -180,13 +215,12 @@ body {
 }
 
 .Analysis_cardHolder h4 {
-	color: #fff;
+	color: #4FC1E9;
 	font-family: 'Slackey', cursive;
 	margin: 0;
 }
 
 .Analysis_diceHolder {
-	background: #fff;
 	display: flex;
 	flex: 1;
 	flex-direction: column;
@@ -202,8 +236,8 @@ body {
 .Analysis_diceHolder_active {
 	animation: Workers_pulse 1s ease-out;
 	animation-iteration-count: infinite;
-	background: yellow;
-	clip-path: polygon(48% 19%, 61% 35%, 80% 40%, 68% 57%, 70% 76%, 50% 70%, 29% 75%, 32% 57%, 18% 39%, 39% 35%);
+	background: #ED6888;
+	clip-path: polygon(38% 18%, 66% 18%, 66% 38%, 85% 40%, 52% 89%, 52% 88%, 20% 40%, 38% 39%);
 }
 
 /*--------------------------------------*\
@@ -219,12 +253,16 @@ body {
 	display: flex;
 	flex: 6;
 	justify-content: space-between;
-	height: 85vh;
+	height: 78.5vh;
 	width: 80vw;
 }
 
 .App_status {
 	flex: 1;
+}
+
+@media only screen and (min-width: 1030px) {
+	.App_mainBoard {height: 82.5vh;}
 }
 
 /*--------------------------------------*\
@@ -250,7 +288,8 @@ body {
 
 .Calendar_container {
 	background: #fff;
-	border: 30px solid red;
+	border: 30px solid #ED6888;
+	border-radius: 5px;
 	box-sizing: border-box;
 	display: flex;
 	font-family: 'Roboto Slab', serif;
@@ -286,7 +325,8 @@ body {
 \*--------------------------------------*/
 
 .CalendarLink_container {
-	background: #48CFAD;
+	background: #ED6888;
+	border-radius: 5px;
 	height: 400px;
 	margin-right: -120px;
 	position: absolute;
@@ -296,6 +336,7 @@ body {
 }
 
 .CalendarLink_icon {
+	cursor: pointer;
 	font-size: 100px;
 	margin-left: 5px;
 	margin-top: 0;
@@ -306,9 +347,15 @@ body {
 \*--------------------------------------*/
 
 .CardPool_container {
-	background: #EC87C0;
 	flex: 1;
-	padding: 5px;
+	padding: 56px 5px 5px 5px;
+}
+
+.CardPool_container h4 {
+	color: #555;
+	font-family: 'Slackey', cursive;
+	margin: 5px 0 10px 0;
+	text-align: center;
 }
 
 /*--------------------------------------*\
@@ -334,16 +381,71 @@ body {
 .Footer_container {
 	display: flex;
 	justify-content: space-between;
+	padding: 0 60px 15px 30px;
 }
+
 .Logo {
-	color: #E9573F;
+	color: #ED6888;
+	flex: 15;
 	font-family: 'Slackey', cursive;
 	font-size: 42px;
+	text-align: center;
 }
+
+@media only screen and (min-width: 1030px) {
+	.Footer_container {padding: 0 15px 15px 180px;}
+}
+
 
 /*--------------------------------------*\
 	Header
 \*--------------------------------------*/
+
+.Header {
+	display: flex;
+	justify-content: space-between;
+	padding: 15px 15px 0 0;
+}
+
+.Header_reset, .Header_logout, .Header_admin, .Header_rules {
+	background: #fff;
+	border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  height: 50px;
+  margin-right: 15px;
+  width: 100px;
+}
+
+.Header_reset:hover, .Header_logout:hover, .Header_admin:hover, .Header_rules:hover {
+	border: 2px solid #000;
+	color: #000;
+}
+
+.Header_reset {
+	border: 2px solid #f44336;
+	color: #f44336;
+}
+
+.Header_logout {
+	border: 2px solid #008cba;
+	color: #008cba;
+}
+
+.Header_admin {
+	border: 2px solid #4caf50;
+	color: #4caf50;
+}
+
+.Header_rules {
+	border: 2px solid #e67e22;
+	color: #e67e22;
+}
+
+.Header_buttons {
+	left: 210px;
+	position: absolute;
+}
 
 /*--------------------------------------*\
 	Login
@@ -396,45 +498,19 @@ body {
 	PlayButton
 \*--------------------------------------*/
 
-.myButton {
-	-moz-box-shadow: 0px 10px 14px -7px #276873;
-	-webkit-box-shadow: 0px 10px 14px -7px #276873;
-	box-shadow: 0px 10px 14px -7px #276873;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #599bb3), color-stop(1, #408c99));
-	background:-moz-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-webkit-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-o-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:-ms-linear-gradient(top, #599bb3 5%, #408c99 100%);
-	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#599bb3', endColorstr='#408c99',GradientType=0);
-	background-color: #D770AD;
-	-moz-border-radius:8px;
-	-webkit-border-radius:8px;
-	border-radius:8px;
-	display:inline-block;
-	cursor:pointer;
-	color: white;
-	font-family:Arial;
-	font-size:20px;
-	font-weight:bold;
-	margin-right: 15px;
-	padding:13px 32px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #3d768a;
+.PlayButton_button {
+	background: #fff;
+	border: 2px solid #ED6888;
+	border-radius: 5px;
+  color: #ED6888;
+  cursor: pointer;
+  font-size: 30px;
+  width: 13%;
 }
-.myButton:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #408c99), color-stop(1, #599bb3));
-	background:-moz-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-webkit-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-o-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:-ms-linear-gradient(top, #408c99 5%, #599bb3 100%);
-	background:linear-gradient(to bottom, #408c99 5%, #599bb3 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#408c99', endColorstr='#599bb3',GradientType=0);
-	background-color:#408c99;
-}
-.myButton:active {
-	position:relative;
-	top:1px;
+
+.PlayButton_button:hover {
+	border: 2px solid #000;
+	color: #000;
 }
 
 /*--------------------------------------*\
@@ -442,8 +518,10 @@ body {
 \*--------------------------------------*/
 
 .Retrospective {
-  background-color: lightgreen;
+  background-color: #257E9C;
+  border-radius: 5px;
   bottom: 25%;
+  color: #fff;
   left: 25%;
   position: absolute;
   right: 25%;
@@ -452,7 +530,7 @@ body {
 }
 
 .Retrospective button {
-  background-color: yellow;
+  background-color: #97D6ED;
   border: none;
   float: right;
   height: 30px;
@@ -468,6 +546,8 @@ body {
 }
 
 .Retrospective textarea {
+	background: #3E97B6;
+	color: #fff;
   height: 70%;
   width: 100%;
 }
@@ -511,26 +591,28 @@ body {
 
 .rulesButton {
 	text-align: center;
+	text-decoration-color: red;
 }
 
 .Rules h1 {
-	color: #E9573F;
+	color: #e67e22;
 	font-family: 'Slackey', cursive;
 	font-size: 42px;
 	text-align: center;
 }
-
-
-
-
 
 /*--------------------------------------*\
 	Status
 \*--------------------------------------*/
 
 .Status_score {
-	font-size: 200px;
-	margin-top: 200px;
+	align-self: flex-end;
+	bottom: 100px;
+	flex: 1;
+	font-size: 24px;
+	position: absolute;
+	right: 15px;
+	text-align: right;
 }
 
 /*--------------------------------------*\
@@ -543,7 +625,9 @@ body {
 
 .UserStories_userStory {
 	background: #fff6dd;
+	border: 1px solid #CCC5B1;
 	color: #000;
+	height: 100px;
 	margin-bottom: 15px;
 	padding: 5px;
 }
@@ -552,12 +636,20 @@ body {
 	WorkDay
 \*--------------------------------------*/
 
+.WorkDay {
+	padding-left: 15px;
+}
+
+.WorkDay_sprint {
+	font-family: 'Slackey', cursive;
+	font-size: 32px;
+}
+
 /*--------------------------------------*\
 	Workers
 \*--------------------------------------*/
 
 .Workers_active {
-	/*border: 1px solid red;*/
 	filter: saturate(800%);
 }
 
@@ -580,12 +672,11 @@ body {
 }
 
 .Workers_worker.analyst, .Workers_worker.tester {
-	background: #ed5565;
+	background: #6ACBEA;
 }
 
 .Workers_workers {
 	margin-right: 100px;
-	margin-top: 5px;
 }
 
 @keyframes Workers_pulse {

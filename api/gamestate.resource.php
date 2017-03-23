@@ -28,14 +28,19 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 
 		# Beroende på vilken "collectsion" som anropats gör vi olika saker
 		switch($collection){
-			case 'friends':
-					echo "friends!";
-				break;
-			case 'books':
-					echo "books!";
-				break;
-			case 'posts':
-					echo "posts!";
+			case 'final':
+					$query = "
+						SELECT * 
+						FROM gamestate
+						WHERE prop = 'final'
+					";
+
+					$result = mysqli_query($db, $query);
+					$data = [];
+					while($row = mysqli_fetch_assoc($result)){
+						$data[] = $row;
+					}
+					$this->gamestate = $data;
 				break;
 			default: // Om det inte är en collection, eller om den inte är definierad ovan
 				$this->getGamestateData($input, $db);
@@ -158,10 +163,15 @@ class _gamestate extends Resource{ // Klassen ärver egenskaper från den genere
 	# Denna funktion körs om vi anropat resursen genom HTTP-metoden RESETGAME
 	function RESETGAME($input, $db){
 		# I denna funktion truncatar vi tabellen och laddar en default-tabellen
-		$query = "
-			TRUNCATE TABLE gamestate
-		";
-
-		mysqli_query($db, $query);
+		if($this->id){
+			$query = "
+				DELETE FROM gamestate
+				WHERE game_id = $this->id
+			";
+			
+			mysqli_query($db, $query);
+		}else{
+			echo "No resource given";
+		}
 	}
 }

@@ -7,39 +7,26 @@ import CalendarLink from './CalendarLink';
 export default class Header extends Component {
 	render() {
 		return (
-			<div className="Footer_container">
+			<div className="Header">
 				<WorkDay days={this.props.days} />
-				<button onClick={this.resetGameState}>Reset</button>
-                <button onClick={this.props.logout}>Logout</button>
-                {this.props.game === '1' ? <button onClick={this.props.showAdmin}>Admin</button> : null}
-                 <button onClick={this.props.showRules}>Rules</button>
-				<Workers location="header" workers={this.props.workers} chooseWorker={this.props.chooseWorker} />
+        <div className="Header_buttons">
+				  <button className="Header_reset" onClick={this.resetGameState.bind(this)}>Reset</button>
+          <button className="Header_logout" onClick={this.props.logout}>Logout</button>
+          {this.props.game === '1' ? <button className="Header_admin" onClick={this.props.showAdmin}>Admin</button> : null}
+          <button className="Header_rules" onClick={this.props.showRules}>Rules</button>
+				</div>
+        <Workers className="Workers_workers" location="header" workers={this.props.workers} chooseWorker={this.props.chooseWorker} />
 				<CalendarLink showCalendar={this.props.showCalendar} />
 			</div>
 		);
 	}
 
 	resetGameState() {
-		// axios({
-  //           method: 'RESETGAME',
-  //           url: 'http://localhost/_agileboardgame/api/?/card'
-  //       });
-  //       axios({
-  //           method: 'RESETGAME',
-  //           url: 'http://localhost/_agileboardgame/api/?/worker'
-  //       });
-  //       axios({
-  //           method: 'RESETGAME',
-  //           url: 'http://localhost/_agileboardgame/api/?/day'
-  //       });
-  //       axios({
-  //           method: 'RESETGAME',
-  //           url: 'http://localhost/_agileboardgame/api/?/retrospective'
-  //       });
-        axios({
-            method: 'RESETGAME',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate'
-        });
-        location.reload();
+    const that = this;
+    axios({
+        method: 'RESETGAME',
+        url: 'http://localhost/_agileboardgame/api/?/gamestate/' + that.props.game
+    });
+    location.reload();
 	}
 }
