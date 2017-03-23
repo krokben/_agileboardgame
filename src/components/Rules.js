@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import scrumboard from './../img/scrumboard.jpg';
-import usImage from './../img/us1.jpg';
-import acExample from './../img/actioncardexample.jpg';
+import usImage from './../img/usexample.jpg';
+import acExample from './../img/cardexample.jpg';
+import multiChoice from './../img/multiplechoice.jpg';
 import scrumImage from './../img/scrumcalendar.jpg';
-
 
 export default class Rules extends Component {
 	render() {
@@ -43,7 +43,7 @@ export default class Rules extends Component {
           <li>Defects (D)</li>
           <li>Maintenance tasks (M)</li>
         </ul>
-        <br /><br />
+        <br />
         <img src={usImage} alt="User story" />
         <br /><br />
         A = Analysis task<br />
