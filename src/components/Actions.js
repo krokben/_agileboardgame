@@ -4,7 +4,7 @@ export default class Actions extends Component {
 	render() {
 		return (
 			<div>
-				ACTION CARDS
+				
 			</div>
 		);
 	}

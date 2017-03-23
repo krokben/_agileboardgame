@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export default class Workers extends Component {
 	render() {
 		return (
-			<div className='Workers_workers'>
+			<div className={this.props.className}>
 				{this.renderWorkers()}
 			</div>
 		);
