@@ -18,6 +18,7 @@ import Login from './Login';
 import Rules from './Rules';
 import HighScore from './HighScore';
 
+const connection = 'http://localhost/_agileboardgame/api/?/';
 const gamestate = [];
 const retrospectives = [];
 const days = [];
@@ -111,7 +112,7 @@ export default class App extends Component {
         const that = this;
         axios({
             method: 'delete',
-            url: 'http://localhost/_agileboardgame/api/?/card/' + id,
+            url: connection + 'card/' + id,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
         .then(function(response) {
@@ -191,7 +192,7 @@ export default class App extends Component {
         const that = this;
         const cards = this.state.cards;
 
-        axios.get('http://localhost/_agileboardgame/api/?/card')
+        axios.get(connection + 'card')
             .then(function(response) {
                 response.data.cards.forEach((item) => {
                     if (cards[item.id - 1] !== undefined) {
@@ -227,7 +228,7 @@ export default class App extends Component {
 
 	fetchData() {
         const that = this;
-        axios.get('http://localhost/_agileboardgame/api/?/card')
+        axios.get(connection + 'card')
             .then(function(response) {
                 response.data.cards.map((item) => that.state.cards.push({
                     id: item.id,
@@ -246,7 +247,7 @@ export default class App extends Component {
             .catch(function(error) {
                 console.log(error);
             });
-        axios.get('http://localhost/_agileboardgame/api/?/worker')
+        axios.get(connection + 'worker')
             .then(function(response) {
                 response.data.workers.map((item) => that.state.workers.push({
                     id: item.id,
@@ -260,7 +261,7 @@ export default class App extends Component {
             .catch(function(error) {
                 console.log(error);
             });
-		axios.get('http://localhost/_agileboardgame/api/?/day')
+		axios.get(connection + 'day')
             .then(function(response) {
                 response.data.days.map((item) => that.state.days.push({
                     id: item.id,
@@ -275,7 +276,7 @@ export default class App extends Component {
             .catch(function(error) {
               console.log(error);
             });
-		axios.get('http://localhost/_agileboardgame/api/?/retrospective')
+		axios.get(connection + 'retrospective')
         .then(function(response) {
             response.data.retrospectives.map((item) => that.state.retrospectives.push({
                 id: item.id,
@@ -286,7 +287,7 @@ export default class App extends Component {
         .catch(function(error) {
             console.log(error);
         });
-        axios.get('http://localhost/_agileboardgame/api/?/gamestate')
+        axios.get(connection + 'gamestate')
             .then(function(response) {
                 response.data.gamestate.map((item) => that.state.gamestate.push({
                     id: item.id,
@@ -315,7 +316,7 @@ export default class App extends Component {
         setTimeout(() => {
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'score',
@@ -343,7 +344,7 @@ export default class App extends Component {
         setTimeout(() => {
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'score',
@@ -371,7 +372,7 @@ export default class App extends Component {
         setTimeout(() => {
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'score',
@@ -407,7 +408,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -426,7 +427,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -445,7 +446,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -465,7 +466,7 @@ export default class App extends Component {
             setTimeout(() => {
                 axios({
                 method: 'post',
-                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                url: connection + 'gamestate',
                 data: {
                     game_id: that.state.game,
                     type: 'score',
@@ -495,7 +496,7 @@ export default class App extends Component {
 
             axios({
                 method: 'post',
-                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                url: connection + 'gamestate',
                 data: {
                     game_id: that.state.game,
                     type: 'card',
@@ -521,7 +522,7 @@ export default class App extends Component {
 
                 axios({
                 method: 'post',
-                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                url: connection + 'gamestate',
                 data: {
                     game_id: that.state.game,
                     type: 'card',
@@ -540,7 +541,7 @@ export default class App extends Component {
 
                 axios({
                 method: 'post',
-                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                url: connection + 'gamestate',
                 data: {
                     game_id: that.state.game,
                     type: 'card',
@@ -589,7 +590,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -602,7 +603,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -615,7 +616,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -628,7 +629,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -641,7 +642,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -696,7 +697,7 @@ export default class App extends Component {
 
                 axios({
                 method: 'post',
-                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                url: connection + 'gamestate',
                 data: {
                     game_id: that.state.game,
                     type: 'card',
@@ -709,7 +710,7 @@ export default class App extends Component {
 
                 axios({
                 method: 'post',
-                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                url: connection + 'gamestate',
                 data: {
                     game_id: that.state.game,
                     type: 'card',
@@ -869,7 +870,7 @@ export default class App extends Component {
         // change clicked card's location to next location
         axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -894,7 +895,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -1038,7 +1039,7 @@ export default class App extends Component {
         // change current day to not be current
         axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'day',
@@ -1057,7 +1058,7 @@ export default class App extends Component {
         // change next day to be current
         axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'day',
@@ -1081,7 +1082,7 @@ export default class App extends Component {
 					const that = this;
 					axios({
 					method: 'post',
-					url: 'http://localhost/_agileboardgame/api/?/gamestate',
+					url: connection + 'gamestate',
 					data: {
 							game_id: that.state.game,
 							type: 'score',
@@ -1114,7 +1115,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -1140,7 +1141,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -1170,7 +1171,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -1190,7 +1191,7 @@ export default class App extends Component {
             setTimeout(() => {
                 axios({
                 method: 'post',
-                url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                url: connection + 'gamestate',
                 data: {
                     game_id: that.state.game,
                     type: 'score',
@@ -1279,7 +1280,7 @@ export default class App extends Component {
         this.state.cards.filter((x) => x.location === 'dead').forEach((x) => {
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -1304,7 +1305,7 @@ export default class App extends Component {
 
         axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/game',
+            url: connection + 'game',
             data: {
                 name: name,
                 password: password
@@ -1420,7 +1421,7 @@ export default class App extends Component {
 
                 axios({
                     method: 'post',
-                    url: 'http://localhost/_agileboardgame/api/?/gamestate',
+                    url: connection + 'gamestate',
                     data: {
                         game_id: that.state.game,
                         type: 'card',
@@ -1478,7 +1479,7 @@ export default class App extends Component {
 		this.setState(stateCopy);
 		axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'retrospective',
@@ -1540,7 +1541,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -1577,7 +1578,7 @@ export default class App extends Component {
 
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'card',
@@ -1608,7 +1609,7 @@ export default class App extends Component {
             stateCopy.workers[1].sick = returnDate; // First developer worker
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'worker',
@@ -1622,7 +1623,7 @@ export default class App extends Component {
             stateCopy.workers[5].sick = returnDate; // Test worker
             // axios({
             // method: 'post',
-            // url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            // url: connection + 'gamestate',
             // data: {
             //     game_id: that.state.game,
             //     type: 'worker',
@@ -1636,7 +1637,7 @@ export default class App extends Component {
             stateCopy.workers[1].sick = returnDate; // First developer worker
             axios({
             method: 'post',
-            url: 'http://localhost/_agileboardgame/api/?/gamestate',
+            url: connection + 'gamestate',
             data: {
                 game_id: that.state.game,
                 type: 'worker',

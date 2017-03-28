@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+const connection = 'http://localhost/_agileboardgame/api/?/';
+
 export default class Login extends Component {
 	constructor() {
 		super();
@@ -53,7 +55,7 @@ export default class Login extends Component {
 		event.preventDefault();
 		axios({
         method: 'put',
-        url: 'http://localhost/_agileboardgame/api/?/game',
+        url: connection + 'game',
         data: {
             name: that.createName.value,
             password: that.createPassword.value

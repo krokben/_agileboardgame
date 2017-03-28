@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+const connection = 'http://localhost/_agileboardgame/api/?/';
+
 const gamename = [];
 const highscorelist = [];
 export default class HighScore extends Component {
@@ -37,7 +39,7 @@ componentDidMount() {
 	getHighScore() {
 		const that = this;
 
-			axios.get('http://localhost/_agileboardgame/api/?/gamestate')
+			axios.get(connection + 'gamestate')
 					.then(function(response) {
 						console.log(response);
 						let highscorelist = that.state.highscorelist;
@@ -62,7 +64,7 @@ componentDidMount() {
 		const that = this;
 		console.log("hej");
 		setTimeout(() => {
-			axios.get('http://localhost/_agileboardgame/api/?/game')
+			axios.get(connection + 'game')
 					.then(function(response) {
 						let gamename = that.state.gamename;
 						gamename = [];

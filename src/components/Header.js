@@ -4,6 +4,8 @@ import WorkDay from './WorkDay';
 import Workers from './Workers';
 import CalendarLink from './CalendarLink';
 
+const connection = 'http://localhost/_agileboardgame/api/?/';
+
 export default class Header extends Component {
 	render() {
 		return (
@@ -26,7 +28,7 @@ export default class Header extends Component {
     const that = this;
     axios({
         method: 'RESETGAME',
-        url: 'http://localhost/_agileboardgame/api/?/gamestate/' + that.props.game
+        url: connection + 'gamestate/' + that.props.game
     });
     location.reload();
 	}

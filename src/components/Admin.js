@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+const connection = 'http://localhost/_agileboardgame/api/?/';
+
 export default class Admin extends Component {
 	constructor() {
 		super();
@@ -82,7 +84,7 @@ export default class Admin extends Component {
 
 		axios({
       method: 'post',
-      url: 'http://localhost/_agileboardgame/api/?/card',
+      url: connection + 'card',
       data: {
       		index: thisIndex,
           type: 'userstory',
@@ -143,7 +145,7 @@ export default class Admin extends Component {
 	resetGameState() {
     axios({
         method: 'RESETGAME',
-        url: 'http://localhost/_agileboardgame/api/?/card'
+        url: connection + 'card'
     });
     location.reload();
 	}
